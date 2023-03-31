@@ -43,12 +43,12 @@ What is special about using `README.Rmd` instead of just `README.md`? You can in
 ```{r data_expr}
 ## "expr" is RBP expression matrix.
 data("expr")
-head(expr)
+expr[1:5,1:5]
 ```
 ```{r data_psi}
 ## "psi" is events psi matrix."expr" and "psi" should have same column names.
 data("psi")
-head(psi)
+psi[1:5,1:5]
 ```
 ```{r MRAS}
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
@@ -74,8 +74,8 @@ You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-da
 
 You can also embed plots, for example:
 
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
+# ```{r pressure, echo = FALSE}
+# plot(pressure)
+# ```
 
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

@@ -6,6 +6,6 @@
 #' @export
 #'
 get_tab_simple<-function(path_use){
-  dat<-read.table(paste0(path_use,"/result_tab_simple.txt"))
+  dat<-read.table(paste0(path_use,"/result_tab_simple.txt"),header = T)
   return(dat)
 }
