@@ -1,0 +1,27 @@
+{
+    "id": "1D9E359D",
+    "path": "C:/Users/DELL/Desktop/MRAS/R/DS.R",
+    "project_path": "R/DS.R",
+    "type": "r_source",
+    "hash": "3626701866",
+    "contents": "",
+    "dirty": false,
+    "created": 1680078977867.0,
+    "source_on_save": false,
+    "relative_order": 14,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "0,76",
+        "scrollLine": "0",
+        "ignored_words": "dPSI,rnorm\n"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1680228286,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1680228286369,
+    "read_only": false,
+    "read_only_alternatives": []
+}

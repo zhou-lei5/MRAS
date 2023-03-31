@@ -1,0 +1,34 @@
+#' Title
+#'
+#' @param RBP_name gene name
+#' @param RBP_Events_list gene and events table
+#' @param DS_list differential splicing events list
+#'
+#' @return a score table
+#' @export
+#'
+
+score<-function(RBP_name,RBP_Events_list,DS_list){
+  if (length(which(RBP_Events_list[,1]==RBP_name))!=1){
+    gene_set<-RBP_Events_list[which(RBP_Events_list[,1]==RBP_name),]
+  }else{
+    gene_set<-matrix(RBP_Events_list[which(RBP_Events_list[,1]==RBP_name),],ncol = 5)
+    colnames(gene_set)<-c("rbp_ID","Events","type","corr","p")
+  }
+
+  gene_set<-merge(DS_list,gene_set,by="Events",all.x=T)
+  gene_set[is.na(gene_set)]<-paste0("no_",RBP_name)
+  gene_set<-cbind(gene_set,score=0,abs_score=0)
+
+  for (i in 1:nrow(gene_set)) {
+    if (gene_set$rbp_ID[i]==RBP_name){
+      gene_set$score[i]<-as.numeric(gene_set$dPSI[i])*as.numeric(gene_set$corr[i])
+      gene_set$abs_score[i]<-(abs(as.numeric(gene_set$abs_dPSI[i])))*(abs(as.numeric(gene_set$corr[i])))
+
+    }else{
+      gene_set$score[i]<-(-0.001)
+      gene_set$abs_score[i]<-(-0.001)
+    }
+  }
+  return(gene_set)
+}

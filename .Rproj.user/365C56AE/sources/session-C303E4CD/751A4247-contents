@@ -1,0 +1,739 @@
+library(ggcor)
+library(vegan)
+library(ggplot2)
+library(dplyr)
+library(ambient)
+library(circlize)
+result<-read.table("D:/project/SMRA/v2/final_2.txt")
+re_plot<-matrix(0,nrow = nrow(result),ncol = 41)
+for (num in 1:nrow(result)) {
+  rr<-result[num,1]
+  re_plot[num,grep(rr,result[num,])]<-1
+}
+re_plot<-re_plot[,-seq(3,41,2)]
+re_plot<-re_plot[,c(2:11,1,12:21)]
+re_plot[,11]<-1
+# re_plot[,11:20]<-re_plot[,11:20]
+rownames(re_plot)<-result[,1]
+circle_heatmap<-cor_tbl(re_plot,cluster = F)
+
+
+quickcor(circle_heatmap,circular = T,cluster = T,grid.colour = 'white',
+         open = 45, # 缺口大小
+         # 内圈外圈比例
+         outer = 0.2,inner = 0.5) +
+  # 单元格边框线颜色
+  geom_colour(colour = 'white') +
+  # 自定义填充颜色
+  # scale_fill_gradient2(low = 'blue',mid = 'white',high = 'red') +
+  # 更改图例名称
+  guides(fill = guide_colorbar(title = 'PSI')) +
+  # 添加聚类树
+  #anno_col_tree(bcols = rand_color(5)) +
+  #anno_row_tree(bcols = rand_color(10)) +
+  # 基因名
+  set_p_yaxis(bcols = rand_color(100)) +
+  # 样本名
+  set_p_xaxis(bcols = rand_color(5))
+
+
+
+bbb<-matrix(0,120,1)
+for (ww in 1:120) {
+  bbb[ww,1]<-length(which(Event_eclip[,ww+1]!=0))
+
+}
+rownames(bbb)<-colnames(Event_eclip)[2:121]
+bbb<-cbind(rownames(bbb),bbb)
+colnames(bbb)<-c("RBP","num")
+bbb<-as.data.frame(bbb)
+ggplot(data = bbb, mapping = aes(x = factor(RBP), y = as.numeric(num), fill = num,group=1)) +
+  geom_line() +
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ylab("Num")+
+  xlab("RBP")
+
+exp<-expr_use[target,]
+exp<-as.matrix(exp)
+mode(exp)
+
+exp[is.na(exp)]=0
+mode(exp)
+exp[is.nan(exp)]=0
+exp[is.infinite(exp)]=0
+exp <- exp[apply(exp, 1, function(x) sd(x)!=0),]
+annotation_col = data.frame(
+  group=factor(batch_matrix$LEVEL)
+)
+
+rownames(annotation_col)<-batch_matrix$sample_name
+pheatmap::pheatmap(exp, breaks=unique(c(seq(-1,1, length=100))) ,scale = "row",
+                   annotation_col = annotation_col, annotation_names_col=TRUE,
+                   #annotation_row = annotation_row, annotation_names_row=TRUE,
+                   cluster_rows = T, cluster_cols =T,
+                   clustering_distance_rows="euclidean",
+                   #clustering_distance_cols = "euclidean",
+                   #annotation_colors = ann_colors,
+                   show_rownames = T, show_colnames=T, angle_col=45,gaps_col = 59,
+                   fontsize=4, fontsize_row=4, fontsize_col=4,border_color=NA,
+                   #color=c(colorRampPalette(colors = c("navy","white","firebrick3"))(100)),
+                   width=14, height=15, clustering_method='ward.D')
+
+
+
+##################################
+###########   v3     #############
+##################################
+library(circlize)
+library(ComplexHeatmap)
+library(paletteer)
+lwd_pt <- .pt*72.27/96
+theme_set(theme_bw(base_size = 8, base_line_size = 0.5/lwd_pt, base_rect_size = 0.5/lwd_pt))
+
+dat<-read.delim("D:/project/SMRA/v3/encode/reslut1131_summary.txt",header = F)
+colnames(dat)<-c("RBP","low","ENCODE","eclip","defalut","BS")
+dat<-dat[order(dat$defalut),]
+dat[is.na(dat)]<-0
+dat$defalut<-ifelse((dat$defalut>10)|(dat$defalut<1),"Not",ifelse(dat$defalut>5,"Top10",ifelse(dat$defalut>1,"Top5","Top1")))
+dat$BS<-ifelse((dat$BS>10)|(dat$BS<1),"Not",ifelse(dat$BS>5,"Top10",ifelse(dat$BS>1,"Top5","Top1")))
+dat$BS<-ifelse(dat$eclip==0,"Null",dat$BS)
+rownames(dat)<-dat[,1]
+dat<-dat[,-(1:2)]
+dat$eclip<-ifelse(dat$eclip==1,"eclip","without eclip")
+
+dat_defalut<-as.data.frame(table(dat$defalut))
+dat_defalut$Var1<-as.character(dat_defalut$Var1)
+# dat_defalut[1,2]<-(235-nrow(dat))+dat_defalut[1,2]
+colnames(dat_defalut)<-c("Result_Type","Number")
+dat_defalut$Result_Type<-factor(dat_defalut$Result_Type,levels = c("Top1","Top5","Top10","Not"))
+rownames(dat_defalut)<-dat_defalut[,1]
+dat_defalut$percent<-round(dat_defalut$Number/nrow(dat),3)*100
+
+# dat_defalut["Top5",2]<-dat_defalut["Top5",2]+dat_defalut["Top1",2]
+# dat_defalut["Top10",2]<-dat_defalut["Top10",2]+dat_defalut["Top5",2]
+mylabel<-paste0(dat_defalut[,1]," (",dat_defalut[,3],"%)")  #数值后加百分号，赋值给一个向量
+dat_defalut$label<-mylabel
+
+
+mylabel<-factor(mylabel,levels = c("Top1 (76.8%)","Top5 (7.5%)","Top10 (3.5%)","Not (12.3%)"))
+mylabel<-mylabel[c(2,4,3,1)]
+
+p1<-ggplot(dat_defalut)+
+  geom_bar(aes(x=Result_Type,y=Number,fill=factor(label,levels = mylabel)),
+           stat="identity", alpha=0.8)+
+  theme_classic()+
+  theme(legend.position="right",
+        legend.title = element_text(size=8),
+        legend.text = element_text(size=8))+
+  guides(fill="none")+
+  xlab("Result Type")+
+  ylab("Number")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=8),
+        axis.text.y=element_text(size=10),
+        axis.title.x=element_text(vjust=1,size=8),  # X axis title
+        axis.title.y=element_text(size=8))+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2)])
+p1
+
+
+p2<-ggplot(dat_defalut)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "")+
+  # theme_classic()+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2)])
+p2
+library(patchwork)
+layout1 <- c(
+  area(t = 2, l = 1.5, b = 5, r = 5),
+  area(t = 1, l = 3, b = 3, r = 5)
+)
+p1+p2+ plot_layout(design = layout1)+plot_annotation(title = "The Result of 228 RBPs without eclip data")
+
+
+dat_eclip<-dat[which(dat$eclip=="eclip"),]
+
+dat_BS_d<-as.data.frame(table(dat_eclip$defalut))
+dat_BS_d$Var1<-as.character(dat_BS_d$Var1)
+# dat_BS_d[5,1]<-"Del"
+# dat_BS_d[5,2]<-(111-nrow(dat_eclip))
+dat_BS_d<-cbind(dat_BS_d,Type="defalut")
+
+dat_BS_e<-as.data.frame(table(dat_eclip$BS))
+dat_BS_e$Var1<-as.character(dat_BS_e$Var1)
+# dat_BS_e[5,1]<-"Del"
+# dat_BS_e[5,2]<-(111-nrow(dat_eclip))
+dat_BS_e<-cbind(dat_BS_e,Type="eclip")
+
+dat_eclip_mat<-rbind(dat_BS_d,dat_BS_e)
+colnames(dat_eclip_mat)<-c("Result_Type","Number","Type")
+
+dat_eclip_mat$Result_Type<-factor(dat_eclip_mat$Result_Type,levels = c("Top1","Top5","Top10","Not","Del"))
+dat_eclip_mat$percent<-round(dat_eclip_mat$Number/nrow(dat_eclip),3)*100
+
+p3<-ggplot(dat_eclip_mat)+
+  geom_bar(aes(x=Result_Type,y=Number,fill=Type), stat="identity", alpha=0.8,
+           position = position_dodge2(padding = 0,preserve = "single"))+
+  theme_classic()+
+  theme(legend.position="right",
+        legend.title = element_text(size=15),
+        legend.text = element_text(size=15))+
+  # guides(fill="none")+
+  theme(legend.position = 'top')+
+  xlab("Result Type")+
+  ylab("Number")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=8),
+        axis.text.y=element_text(size=8),
+        axis.title.x=element_text(vjust=1,size=8),  # X axis title
+        axis.title.y=element_text(size=8))+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(12,13)])
+
+p3
+
+dat_eclip_mat1<-dat_eclip_mat[which(dat_eclip_mat$Type=="defalut"),]
+dat_eclip_mat2<-dat_eclip_mat[which(dat_eclip_mat$Type=="eclip"),]
+mylabel1<-paste0(dat_eclip_mat1[,1]," (",dat_eclip_mat1[,4],"%)")  #数值后加百分号，赋值给一个向量
+dat_eclip_mat1$label<-mylabel1
+
+
+#rev()
+# mylabel1<-factor(mylabel1,levels = c("Top1 (74.5%)","Top5 (7.2%)","Top10 (3.4%)","Not (11.9%)","Del (3%)"    ))
+mylabel1<-mylabel1[c(2,4,3,1)]
+p4<-ggplot(dat_eclip_mat1)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel1)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "defalut")+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2)])
+
+p4
+mylabel2<-paste0(dat_eclip_mat2[,1]," (",dat_eclip_mat2[,4],"%)")  #数值后加百分号，赋值给一个向量
+dat_eclip_mat2$label<-mylabel2
+
+
+#rev()
+# mylabel1<-factor(mylabel1,levels = c("Top1 (74.5%)","Top5 (7.2%)","Top10 (3.4%)","Not (11.9%)","Del (3%)"    ))
+mylabel2<-mylabel2[c(2,4,3,1)]
+p5<-ggplot(dat_eclip_mat2)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel2)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "eclip")+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2)])
+
+p5
+
+library(patchwork)
+layout2 <- c(
+  area(t = 2, l = 1.5, b = 5, r = 5),
+  area(t = 3, l = 3, b = 3, r = 3),
+  area(t = 3, l = 5, b = 3, r = 5)
+)
+p3+p4+p5+plot_layout(design = layout2)+plot_annotation(title = "The Result of 109 RBPs with eclip data")
+# ,guides = 'collect')
+################################
+library(circlize)
+library(ComplexHeatmap)
+library(paletteer)
+lwd_pt <- .pt*72.27/96
+theme_set(theme_bw(base_size = 8, base_line_size = 0.25/lwd_pt, base_rect_size = 0.25/lwd_pt))
+
+dat<-read.delim("D:/project/SMRA/v2/encode_test/part1/default/result_all_tab.txt",header = T)
+dat<-dat[which(dat$low==0),]
+dat<-dat[,c(1,2,5,8)]
+
+
+# colnames(dat)<-c("RBP","low","ENCODE","eclip","defalut","BS")
+# dat<-dat[order(dat$defalut),]
+# dat[is.na(dat)]<-0
+# dat$defalut<-ifelse((dat$defalut>10)|(dat$defalut<1),"Not",ifelse(dat$defalut>5,"Top10",ifelse(dat$defalut>1,"Top5","Top1")))
+# dat$BS<-ifelse((dat$BS>10)|(dat$BS<1),"Not",ifelse(dat$BS>5,"Top10",ifelse(dat$BS>1,"Top5","Top1")))
+# dat$BS<-ifelse(dat$eclip==0,"Null",dat$BS)
+# rownames(dat)<-dat[,1]
+# dat<-dat[,-(1:2)]
+# dat$eclip<-ifelse(dat$eclip==1,"eclip","without eclip")
+
+dat_defalut<-as.data.frame(table(dat$default_0.5))
+dat_defalut$Var1<-as.character(dat_defalut$Var1)
+# dat_defalut[1,2]<-(235-nrow(dat))+dat_defalut[1,2]
+colnames(dat_defalut)<-c("Result_Type","Number")
+dat_defalut$Result_Type<-factor(dat_defalut$Result_Type,levels = c("Top1","Top3","Top5","Top10","Not"))
+rownames(dat_defalut)<-dat_defalut[,1]
+dat_defalut$percent<-round(dat_defalut$Number/nrow(dat),3)*100
+
+# dat_defalut["Top5",2]<-dat_defalut["Top5",2]+dat_defalut["Top1",2]
+# dat_defalut["Top10",2]<-dat_defalut["Top10",2]+dat_defalut["Top5",2]
+mylabel<-paste0(dat_defalut[,1]," (",dat_defalut[,3],"%)")  #数值后加百分号，赋值给一个向量
+dat_defalut$label<-mylabel
+
+
+mylabel<-factor(mylabel,levels = c(mylabel[2],mylabel[4],mylabel[5],mylabel[3],mylabel[1]))
+mylabel<-mylabel[c(2,4,5,3,1)]
+
+p1<-ggplot(dat_defalut)+
+  geom_bar(aes(x=Result_Type,y=Number,fill=factor(label,levels = mylabel)),
+           stat="identity", alpha=0.8)+
+  theme_classic()+
+  theme(legend.position="right",
+        legend.title = element_text(size=8),
+        legend.text = element_text(size=8))+
+  guides(fill="none")+
+  xlab("Result Type")+
+  ylab("Number")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=8),
+        axis.text.y=element_text(size=10),
+        axis.title.x=element_text(vjust=1,size=8),  # X axis title
+        axis.title.y=element_text(size=8))+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2,5)])
+p1
+
+
+p2<-ggplot(dat_defalut)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "")+
+  # theme_classic()+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2,5)])
+p2
+library(patchwork)
+layout1 <- c(
+  area(t = 2, l = 1.5, b = 5, r = 5),
+  area(t = 1, l = 3, b = 3, r = 5)
+)
+p1+p2+ plot_layout(design = layout1)+plot_annotation(title = "The Result of 228 RBPs without eclip data")
+
+
+dat_eclip<-dat[which(dat$eclip=="eclip"),]
+
+dat_BS_d<-as.data.frame(table(dat_eclip$default_0.5))
+dat_BS_d$Var1<-as.character(dat_BS_d$Var1)
+# dat_BS_d[5,1]<-"Del"
+# dat_BS_d[5,2]<-(111-nrow(dat_eclip))
+dat_BS_d<-cbind(dat_BS_d,Type="defalut")
+
+dat_BS_e<-as.data.frame(table(dat_eclip$BS_0.5))
+dat_BS_e$Var1<-as.character(dat_BS_e$Var1)
+# dat_BS_e[5,1]<-"Del"
+# dat_BS_e[5,2]<-(111-nrow(dat_eclip))
+dat_BS_e<-cbind(dat_BS_e,Type="eclip")
+
+dat_eclip_mat<-rbind(dat_BS_d,dat_BS_e)
+colnames(dat_eclip_mat)<-c("Result_Type","Number","Type")
+
+dat_eclip_mat$Result_Type<-factor(dat_eclip_mat$Result_Type,levels = c("Top1","Top3","Top5","Top10","Not","Del"))
+dat_eclip_mat$percent<-round(dat_eclip_mat$Number/nrow(dat_eclip),3)*100
+
+p3<-ggplot(dat_eclip_mat)+
+  geom_bar(aes(x=Result_Type,y=Number,fill=Type), stat="identity", alpha=0.8,
+           position = position_dodge2(padding = 0,preserve = "single"))+
+  theme_classic()+
+  theme(legend.position="right",
+        legend.title = element_text(size=15),
+        legend.text = element_text(size=15))+
+  # guides(fill="none")+
+  theme(legend.position = 'top')+
+  xlab("Result Type")+
+  ylab("Number")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=8),
+        axis.text.y=element_text(size=8),
+        axis.title.x=element_text(vjust=1,size=8),  # X axis title
+        axis.title.y=element_text(size=8))+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(12,13)])
+
+p3
+
+dat_eclip_mat1<-dat_eclip_mat[which(dat_eclip_mat$Type=="defalut"),]
+dat_eclip_mat2<-dat_eclip_mat[which(dat_eclip_mat$Type=="eclip"),]
+mylabel1<-paste0(dat_eclip_mat1[,1]," (",dat_eclip_mat1[,4],"%)")  #数值后加百分号，赋值给一个向量
+dat_eclip_mat1$label<-mylabel1
+
+
+#rev()
+# mylabel1<-factor(mylabel1,levels = c("Top1 (74.5%)","Top5 (7.2%)","Top10 (3.4%)","Not (11.9%)","Del (3%)"    ))
+mylabel1<-mylabel1[c(2,4,5,3,1)]
+p4<-ggplot(dat_eclip_mat1)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel1)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "defalut")+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2,5)])
+
+p4
+mylabel2<-paste0(dat_eclip_mat2[,1]," (",dat_eclip_mat2[,4],"%)")  #数值后加百分号，赋值给一个向量
+dat_eclip_mat2$label<-mylabel2
+
+
+#rev()
+# mylabel1<-factor(mylabel1,levels = c("Top1 (74.5%)","Top5 (7.2%)","Top10 (3.4%)","Not (11.9%)","Del (3%)"    ))
+mylabel2<-mylabel2[c(2,4,5,3,1)]
+p5<-ggplot(dat_eclip_mat2)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel2)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "eclip")+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2,5)])
+
+p5
+
+library(patchwork)
+layout2 <- c(
+  area(t = 2, l = 1.5, b = 5, r = 5),
+  area(t = 3, l = 3, b = 3, r = 3),
+  area(t = 3, l = 5, b = 3, r = 5)
+)
+p3+p4+p5+plot_layout(design = layout2)+plot_annotation(title = "The Result of 109 RBPs with eclip data")
+
+
+
+
+theme(legend.position="right",
+        legend.title = element_text(size=15),
+        legend.text = element_text(size=15))+
+  # guides(size=FALSE)+
+  xlab("Result Type")+
+  ylab("Number")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=10),
+        axis.text.y=element_text(size=10),
+        axis.title.x=element_text(vjust=1,size=15),  # X axis title
+        axis.title.y=element_text(size=15))
+
+
+
+
+
+rownames(result_all_tab)<-result_all_tab[,1]
+col=paletteer_d("ggsci::springfield_simpsons")
+dat_score<-result_all_tab[,2:7]
+
+col_score = c("Top1"=col[3],"Top3"=col[1],"Top5"=col[4],"Top10"=col[5],
+              "Not"=col[2],"n.s."=col[7],"Null"="white")
+col_type = c("eclip"=col[12],"without eclip"=col[13])
+# col_score = colorRamp2()
+circos.par(gap.degree=c(10),start.degree=c(-10))
+circos.heatmap(dat_score,col =col_score,split = result_all_tab$eclip,rownames.cex = 0.4,
+               rownames.side = "outside",bg.border = "white",cell.border = "white")
+circos.track(track.index = 2, ##将列名添加在第二个轨道（就是热图所在的环形轨道）
+             panel.fun = function(x, y) {
+              if(CELL_META$sector.numeric.index == 2) { # the last sector
+                cn = c("default_0.5","default_0.7","default_0.9","BS_0.5","BS_0.7","BS_0.9")##取得列名
+                 n = length(cn)
+                 circos.text(rep(CELL_META$cell.xlim[2], n) + convert_x(1, "mm"), ##x轴坐标
+                             n - 1:n , ##y轴坐标
+                            cn, ##输入要展示的列名
+                            cex = 1, ##列名的大小
+                            adj = c(0, 0.5),
+                            facing = "inside")
+               }
+             }, bg.border = NA)
+
+circos.heatmap(result_all_tab$eclip,col =col_type,split = result_all_tab$eclip,
+               rownames.side = "inside",bg.border = "black",track.height=0.02)
+
+lgd_score = Legend(title = "score", at = names(col_score),
+             legend_gp = gpar(fill = col_score),border = "black")
+lgd_type = Legend(title = "Data type", at = names(col_type),
+                   legend_gp = gpar(fill = col_type),border = "black")
+
+lgd_list = packLegend(lgd_score, lgd_type, max_height = unit(0.9*dev.size()[2], "inch"))
+draw(lgd_list,  just = "right")
+circos.clear()
+
+
+load("D:/project/SMRA/v3/encode/data.RData")
+load("D:/project/SMRA/v2/data/KD_event.RData")
+library(dplyr)
+library(foreach)
+colnames(rbp_event_deal_all)<-c("Event","score","RBP")
+
+qq<-1
+result_ds<-foreach(i = target, .packages = "dplyr",.combine = "rbind") %do% {
+  cat(qq,"\n")
+  qq<-qq+1
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  rbp_expr<-expr[,c(rbp_sample,ctrl_sample)]
+
+  n1<-length(rbp_sample)
+  n2<-length(ctrl_sample)
+
+  rbp_psi<-PSI[,c(rbp_sample,ctrl_sample)]
+  filter_rmats<-function(rmats_matrix,n){
+    results<-matrix(TRUE,nrow = nrow(rmats_matrix),ncol = 1)
+    results<-apply(rmats_matrix,1,function(x){
+      length0<-length(which(as.numeric(x)==0))
+      length1<-length(which(as.numeric(x)==1))
+      result<-ifelse((length0+length1)>=n,FALSE,TRUE)
+      return(result)
+    })
+    return(results)
+  }
+  f1<-filter_rmats(rbp_psi,ncol(rbp_psi))
+
+  rbp_psi<-rbp_psi[f1,]
+  rbp_psi<-rbp_psi[which(abs((rbp_psi[,1]+rbp_psi[,2]-rbp_psi[,3]-rbp_psi[,4])/2)>0),]
+
+  rbp_psi[,2]<-rbp_psi[,2]+0.0001
+
+  Events_DS<-matrix(NA,nrow = nrow(rbp_psi),ncol = 5)
+  Events_DS<-t(apply(rbp_psi,1,function(x){
+    a<-DS(x,n1,n2)
+    bb<-c(rownames(x),a[["pvalue"]],a[["FDR"]],a[["dPSI"]],a[["abs_dPSI"]])
+    return(bb)
+  }))
+
+  Events_DS<-Events_DS[complete.cases(Events_DS),]
+  Events_DS<-cbind(rownames(Events_DS),Events_DS)
+  colnames(Events_DS)<-c("Events","pvalue","FDR","dPSI","abs_dPSI")
+
+  Event_DS_sig<-Events_DS[which((as.numeric(Events_DS[,2])<0.05)&(as.numeric(Events_DS[,5])>0.1)),]
+  Event_DS_sig<-cbind(RBP=i,Event_DS_sig)
+  return(Event_DS_sig[,c(1:2,5)])
+
+}
+
+
+colnames(result_ds)<-c("RBP","Event","label")
+scale_color_gradientn(colors = paletteer_c("ggthemes::Orange-Gold", 30),name='Jaccard')+
+rbp_event_dpsi<-inner_join(as.data.frame(rbp_event_deal_all),as.data.frame(result_ds),by=c("RBP","Event"))
+# rbp_event_dpsi_0.1<-rbp_event_dpsi[which(as.numeric(rbp_event_dpsi$label)>0.1),]
+as.data.frame(rbp_event_dpsi) %>% group_by(RBP) %>%
+  summarise(num=n(),mean_dpsi=mean(abs(as.numeric(label)))) ->rbp_event_dpsi_summary
+write.table(rbp_event_dpsi_summary,file = "D:/project/SMRA/v3/encode/rbp_event_dpsi_summary.txt",
+            row.names = F,quote = F,sep = "\t")
+library(foreach)
+library(doParallel)
+library(data.table)
+
+result<-foreach(i = target, .packages = "dplyr",.combine = "rbind") %do% {
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  rbp_expr<-expr[,c(rbp_sample,ctrl_sample)]
+
+  n1<-length(rbp_sample)
+  n2<-length(ctrl_sample)
+
+  rbp_expr$logFC<-apply(rbp_expr,1,function(x){
+    return((log2(sum(as.numeric(x[1:n1]))/sum(as.numeric(x[(n1+1):(n1+n2)])))))
+  })
+  rbp_expr<-as.data.frame(rbp_expr)
+  rbp_expr$logFC[is.infinite(rbp_expr$logFC)]<-0
+  rbp_expr$logFC[is.nan(rbp_expr$logFC)]<-0
+  rbp_expr$RBP<-i
+  return(rbp_expr[i,6:5])
+}
+rbp_event_dpsi_summary<-merge(result,rbp_event_dpsi_summary,all.x = T)
+rbp_event_dpsi_summary$logFC<-abs(rbp_event_dpsi_summary$logFC)
+
+library(ggplot2)
+dat_result<-read.delim("D:/project/SMRA/v3/encode/reslut1131_summary.txt",header = F)
+colnames(dat_result)<-c("RBP","low","ENCODE","eclip","defalut","BS")
+RBP_tab<-as.data.frame(table(rbp_event_deal_all$RBP))
+colnames(RBP_tab)<-c("RBP","num1")
+RBP_tab_ds<-as.data.frame(table(result_ds[,1]))
+colnames(RBP_tab_ds)<-c("RBP","num2")
+RBP_tab_use<-merge(RBP_tab,RBP_tab_ds)
+
+dat<-rbp_event_dpsi_summary
+dat[is.na(dat)]<-0
+dat$num_psi<-log2(dat$num)*dat$mean_dpsi
+dat<-merge(dat,RBP_tab_use)
+dat$jaccard<-dat$num/(dat$num1+dat$num2-dat$num)
+dat_highlight<-dat[unique(c(order(dat$num_psi,decreasing = T)[1:10],order(dat$logFC,decreasing = T)[1:5])),]
+
+encode_fun<-read.delim("D:/project/SMRA/plot/encode/ENCODE_fun.txt")
+SF<-read.table("D:/project/SMRA/RBP_deal_SF.txt",header = F)
+
+rownames(encode_fun)<-encode_fun[,1]
+encode_fun_use<-encode_fun[dat$RBP,]
+dat<-cbind(dat,encode_fun_use)
+dat$SF<-ifelse(dat$RBP %in% SF[,1],1,0)
+ggplot(data = dat)+
+  geom_point(aes(x=logFC,y=num_psi,size=mean_dpsi*log2(num),
+                 color=jaccard))+
+  ggrepel::geom_text_repel(aes(x=logFC,y=num_psi,size=mean_dpsi*log2(num),label=RBP),dat_highlight)+
+  theme_classic()+scale_color_gradientn(colors = paletteer_c("ggthemes::Orange-Gold", 30),name='Jaccard')+
+  theme(legend.position="right",
+        legend.title = element_text(size=15),
+        legend.text = element_text(size=15))+
+  guides(size=FALSE)+
+  xlab("abs|logFC|")+
+  ylab("Number of target genes")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=10),
+        axis.text.y=element_text(size=10),
+        axis.title.x=element_text(vjust=1,size=15),  # X axis title
+        axis.title.y=element_text(size=15))
+col_RBP = c("1"="red","0"="white")
+dat<-dat[order(dat$jaccard,decreasing = T),]
+row_ann<-rowAnnotation(jaccard=dat$jaccard,logFC=dat$logFC,meanpsi=dat$mean_dpsi,
+                       num=dat$num,num_dpsi=dat$num_psi,num1=dat$num1,num2=dat$num2)
+Heatmap(dat[,11:31],cluster_rows = F,cluster_columns = F,col=col_RBP,left_annotation = row_ann)
+
+############designed+ORA#####
+dat<-read.table("D:/project/SMRA/v2/encode_test/part2/designed_ORA.txt")
+dat<-dat[,1:2]
+colnames(dat)<-c("RBP","rank")
+dat$type<-change(dat$rank)
+dat$low<-ifelse(dat$RBP %in% low,1,0)
+dat<-dat[which(dat$low==0),]
+
+dat_defalut<-as.data.frame(table(dat$type))
+dat_defalut$Var1<-as.character(dat_defalut$Var1)
+# dat_defalut[1,2]<-(235-nrow(dat))+dat_defalut[1,2]
+colnames(dat_defalut)<-c("Result_Type","Number")
+dat_defalut$Result_Type<-factor(dat_defalut$Result_Type,levels = c("Top1","Top3","Top5","Top10","Not"))
+rownames(dat_defalut)<-dat_defalut[,1]
+dat_defalut$percent<-round(dat_defalut$Number/nrow(dat),3)*100
+
+# dat_defalut["Top5",2]<-dat_defalut["Top5",2]+dat_defalut["Top1",2]
+# dat_defalut["Top10",2]<-dat_defalut["Top10",2]+dat_defalut["Top5",2]
+mylabel<-paste0(dat_defalut[,1]," (",dat_defalut[,3],"%)")  #数值后加百分号，赋值给一个向量
+dat_defalut$label<-mylabel
+
+
+mylabel<-factor(mylabel,levels = c(mylabel[2],mylabel[4],mylabel[5],mylabel[3],mylabel[1]))
+mylabel<-mylabel[c(2,4,5,3,1)]
+
+p1<-ggplot(dat_defalut)+
+  geom_bar(aes(x=Result_Type,y=Number,fill=factor(label,levels = mylabel)),
+           stat="identity", alpha=0.8)+
+  theme_classic()+
+  theme(legend.position="right",
+        legend.title = element_text(size=8),
+        legend.text = element_text(size=8))+
+  guides(fill="none")+
+  xlab("Result Type")+
+  ylab("Number")+
+  # scale_fill_manual(values = c("#6DB6FFFF","#DB6D00FF"))+
+  theme(axis.text.x=element_text(vjust=0.8,angle = 0, size=8),
+        axis.text.y=element_text(size=10),
+        axis.title.x=element_text(vjust=1,size=8),  # X axis title
+        axis.title.y=element_text(size=8))+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2,5)])
+p1
+
+
+p2<-ggplot(dat_defalut)+
+  geom_bar(aes(x="",y=percent,fill=factor(label,levels = mylabel)), stat="identity",
+           alpha=0.8,color="white")+
+  labs(x = "", y = "", title = "")+
+  # theme_classic()+
+  theme_void()+
+  coord_polar(theta = "y") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  theme(legend.title = element_blank())+
+  theme(axis.text   = element_text(size = rel(1)),
+        strip.text  = element_text(size = rel(1)),
+        legend.text = element_text(size = rel(1)),
+        plot.title  = element_text(size = rel(1)),
+        panel.grid.minor = element_blank())+
+  # scale_fill_discrete(breaks = dat_defalut$label, labels = mylabel)+
+  scale_fill_manual(values=paletteer_d("ggsci::springfield_simpsons")[c(3,1,4,2,5)])
+p2
+library(patchwork)
+layout1 <- c(
+  area(t = 2, l = 1.5, b = 5, r = 5),
+  area(t = 1, l = 3, b = 3, r = 5)
+)
+p1+p2+ plot_layout(design = layout1)+plot_annotation(title = "The Result of 228 RBPs without eclip data")

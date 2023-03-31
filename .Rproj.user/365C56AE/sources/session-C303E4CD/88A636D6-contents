@@ -1,0 +1,663 @@
+# devtools::install_github("PhanstielLab/bedtoolsr",force = TRUE)
+# library(bedtoolsr)
+{
+  encode_path="D:/Project/SMRA/03_data/ENCODE/"
+  setwd(encode_path)
+  
+  library(data.table)
+  
+  batch_matrix<-read.delim("D:/Project/SMRA/03_data/ENCODE/Summary/batch.txt",header = T)
+  
+  #----------------------------tpm
+  fea<-fread("D:/Project/SMRA/03_data/ENCODE/featurecounts/gencode_v19_count.txt",header = T,stringsAsFactors = F)
+  library(preprocessCore)
+  ENSG_ID<-fea[,1]
+  fea_countdata=fea[,-c(1:6)]
+  fea_countdata=as.data.frame(fea_countdata)
+  fea_countdata=as.matrix(fea_countdata)
+  fea_kb=fea$Length/1000
+  fea_rpk=fea_countdata/fea_kb
+  fea_tpm <- t(t(fea_rpk)/colSums(fea_rpk) * 10^6)
+  fea_tpm_norm= fea_tpm
+  # for (i in unique(batch_matrix$LEVEL)) {
+  #   fea_tpm_norm[,which(batch_matrix$LEVEL==i)]= normalize.quantiles(fea_tpm[,which(batch_matrix$LEVEL==i)])
+  # 
+  # }
+  # fea_tpm_norm= normalize.quantiles(fea_tpm)
+  rownames(fea_tpm_norm)=rownames(fea_tpm)
+  colnames(fea_tpm_norm)=colnames(fea_tpm)
+  # fea_expres = log2(fea_tpm_norm + 1)
+  fea_expres = fea_tpm_norm
+  expres=fea_expres
+  
+  rownames(expres)<-as.character(unlist(ENSG_ID[,1]))
+  # #=====FPKM======
+  # library(preprocessCore)
+  # ENSG_ID<-fea[,1]
+  # fea_countdata=fea[,-c(1:5)]
+  # fea_countdata=as.data.frame(fea_countdata)
+  # fea_countdata=as.matrix(fea_countdata)
+  # fea_kb=fea$Length/1000
+  # fea_rpk=fea_countdata/fea_kb
+  # fea_fpkm <- t(t(fea_rpk)/colSums(fea_countdata) * 10^6)
+  # #====normalize & log2=====
+  # fea_fpkm_norm =fea_fpkm
+  # # for (i in unique(batch_matrix$LEVEL)) {
+  # #   fea_fpkm_norm[,which(batch_matrix$LEVEL==i)]= normalize.quantiles(fea_fpkm[,which(batch_matrix$LEVEL==i)])
+  # # 
+  # # }
+  # 
+  # # fea_fpkm_norm= normalize.quantiles(fea_fpkm)
+  # 
+  # rownames(fea_fpkm_norm)=rownames(fea_fpkm)
+  # colnames(fea_fpkm_norm)=colnames(fea_fpkm)
+  # # fea_expres = log2(fea_fpkm_norm + 1)
+  # #=========
+  # fea_expres = fea_fpkm_norm
+  # fea_expres=fea_expres[,-1]
+  # 
+  # expres=fea_expres
+  # 
+  # rownames(expres)<-ENSG_ID
+  
+  #-------------------------------------
+  
+  
+  # write(ENSG_ID_str,file = "ENSG.txt")
+  
+  # library(data.table)
+  # annotation<-fread("D:/project/annotation/hg19/gencode.v19.annotation.gtf")
+  # gene_annotation<-annotation[which(annotation$V3=="gene"),]
+  # gene_annotation<-t(apply(gene_annotation,1,function(x){
+  #   a1<-strsplit(as.character(x[9]),split = ";")[[1]]
+  #   gene_id<-grep("gene_id",a1)
+  #   gene_name<-grep("gene_name",a1)
+  #   x[6]<-strsplit(a1[gene_id],split = "\"")[[1]][2]
+  #   x[7]<-strsplit(a1[gene_name],split = "\"")[[1]][2]
+  #   return(x)
+  # }))
+  load("D:/project/annotation/hg19/gencode.v19.gene_id_name.RData")
+  
+  # ENSG_ID_str<-substr(ENSG_ID,1,15)
+  for (i in 1:nrow(gene_annotation)) {
+    if(gene_annotation[i,6] != ENSG_ID[i]){
+      cat(i,"\t")
+    }
+  }
+  rownames(expres)<-gene_annotation[,7]
+  colnames(expres)<-gsub(".bam","",colnames(expres))
+  
+  #expres_f<-t(apply(expres_f, 1, scale))
+  
+  # filter_expr<-function(expr_matrix,n){
+  #   results<-matrix(TRUE,nrow = nrow(expr_matrix),ncol = 1)
+  #   for (i in 1:nrow(expr_matrix)) {
+  #     length0<-length(which(as.numeric(expr_matrix[i,])==0))
+  #     results[i,1]<-ifelse((length0)>n,FALSE,TRUE)
+  #     cat(round(i/nrow(expr_matrix),2),"\t")
+  #   }
+  #   return(results[,1])
+  # }
+  # 
+  # f1<-filter_expr(expres,422)
+  # expres_f1<-expres[f1,]
+  # library(sva)
+  # mod<-model.matrix(~batch_matrix$type)
+  # ad1<-ComBat(expres_f1,batch = batch_matrix$LEVEL,mod = mod)
+  # expres_f2<-normalize.quantiles(ad1)
+  # colnames(expres_f2)<-colnames(expres_f1)
+  # rownames(expres_f2)<-rownames(expres_f1)
+
+  # expres_f2["GAPDH",]
+  
+  # RBP_list_paper<-read.csv("D:/Project/SMRA/03_data/RBP.csv")
+  # inter<-intersect(union(RBP_list_paper$symbol,unique(batch_matrix$File_target)),rownames(expres))
+  inter<-unique(batch_matrix$File_target[which(batch_matrix$type=="KD")])
+  expres_f2<-expres[inter,]
+  
+  
+  # write.table(expres_f2,file = "D:/project/SMRA/03_data/ENCODE/RBP_expr.txt",row.names = T,col.names = T,quote = F,sep = "\t")
+  write.table(expres_f2,file = "D:/project/SMRA/v2/data/encode_expr/RBP_expr.txt",row.names = T,col.names = T,quote = F,sep = "\t")
+  
+  SE<-read.delim("rmats/SE.MATS.JCEC.txt",header = T)
+  RI<-read.delim("rmats/RI.MATS.JCEC.txt",header = T)
+  A3SS<-read.delim("rmats/A3SS.MATS.JCEC.txt",header = T)
+  A5SS<-read.delim("rmats/A5SS.MATS.JCEC.txt",header = T)
+  
+  SE<-SE[,c(1:11,17,18,13,14,21)]
+  RI<-RI[,c(1:11,17,18,13,14,21)]
+  A3SS<-A3SS[,c(1:11,17,18,13,14,21)]
+  A5SS<-A5SS[,c(1:11,17,18,13,14,21)]
+  
+  SE[,1]<-paste0(SE[,2],"_",SE[,3],"_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
+  RI[,1]<-paste0(RI[,2],"_",RI[,3],"_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
+  A3SS[,1]<-paste0(A3SS[,2],"_",A3SS[,3],"_",A3SS[,4],"_",A3SS[,5],"_",A3SS[,6],"_",A3SS[,7],"_",A3SS[,8],"_",A3SS[,9],"_",A3SS[,10],"_",A3SS[,11])
+  A5SS[,1]<-paste0(A5SS[,2],"_",A5SS[,3],"_",A5SS[,4],"_",A5SS[,5],"_",A5SS[,6],"_",A5SS[,7],"_",A5SS[,8],"_",A5SS[,9],"_",A5SS[,10],"_",A5SS[,11])
+  
+  write.table(SE[,c(1,12:16)],file = "pair/PSI.txt",row.names = F,col.names = F,sep = ",",quote = F)
+  write.table(RI[,c(1,12:16)],file = "pair/PSI.txt",row.names = F,col.names = F,sep = ",",quote = F,append = T)
+  write.table(A3SS[,c(1,12:16)],file = "pair/PSI.txt",row.names = F,col.names = F,sep = ",",quote = F,append = T)
+  write.table(A5SS[,c(1,12:16)],file = "pair/PSI.txt",row.names = F,col.names = F,sep = ",",quote = F,append = T)
+  
+  library(data.table)
+  data<-fread("pair/PSI.txt",sep = ",",header = F)
+  data[is.na(data)]<-0
+  
+  filter_rmats<-function(rmats_matrix,n){
+    results<-matrix(TRUE,nrow = nrow(rmats_matrix),ncol = 1)
+    results<-apply(rmats_matrix,1,function(x){
+      length0<-length(which(as.numeric(x)==0))
+      length1<-length(which(as.numeric(x)==1))
+      result<-ifelse((length0+length1)>n,FALSE,TRUE)
+      return(result)
+    })
+    return(results)
+  }
+  filter_ramts_reads<-function(reads_matrix,n){
+    results<-matrix(TRUE,nrow = nrow(reads_matrix),ncol = 1)
+    results<-apply(reads_matrix,1,function(x){
+      length10<-length(which(as.numeric(x)<10))
+      result<-ifelse((length10)>n,FALSE,TRUE)
+      return(result)
+    })
+    return(results)
+  }
+  
+  
+  pc1<-data[,4:531]
+  pc2<-data[,532:1059]
+  pc3<-data[,1060:1587]
+  
+  #10reads 比1/2少
+  f1<-filter_ramts_reads(pc1,264)
+  f2<-filter_ramts_reads(pc2,264)
+  
+  #0的数目90%
+  f3<-filter_rmats(pc3,475)
+  psi_pair<-data[f1&f2&f3,c(1,1060:1587)]
+  psi_pair<-as.data.frame(psi_pair)
+  rownames(psi_pair)<-psi_pair[,1]
+  psi_pair<-psi_pair[,-1]
+  
+  # filter_rmats<-function(rmats_matrix,n){
+  #   results<-matrix(TRUE,nrow = nrow(rmats_matrix),ncol = 1)
+  #   results<-apply(rmats_matrix,1,function(x){
+  #     length0<-length(which(as.numeric(x)==0))
+  #     length1<-length(which(as.numeric(x)==1))
+  #     result<-ifelse((length0+length1)>n,FALSE,TRUE)
+  #     return(result)
+  #   })
+  #   return(results)
+  # }
+  # 
+  # pc3<-data[,1060:1587]
+  # 
+  # f3<-filter_rmats(pc3,422)
+  # psi_pair<-data[,c(1,1060:1587)]
+  # psi_pair<-data[f3,c(1,1060:1587)]
+  # psi_pair<-as.data.frame(psi_pair)
+  # rownames(psi_pair)<-psi_pair[,1]
+  # psi_pair<-psi_pair[,-1]
+  
+  colname<-read.table("rmats/bam_path.txt")
+  colname<-t(apply(colname, 1, function(x){
+    return(gsub(".bam","",strsplit(x[1],split = "/")[[1]][9]))
+  }))
+  colnames(psi_pair)<-colname
+  
+  psi_pair<-psi_pair[,colnames(expres_f2)]
+  write.table(psi_pair,file = "D:/project/SMRA/v2/data/encode_psi/PSI_2.txt",row.names = T,col.names = T,quote = F,sep = "\t")
+  save.image("D:/project/SMRA/v2/data/filter.RData")
+}
+
+library(dplyr)
+library(tidyr)
+library(foreach)
+library(doParallel)
+library(data.table)
+
+expr<-fread("D:/project/SMRA/v2/data/encode_expr/RBP_expr.txt")
+expr<-as.data.frame(expr)
+rownames(expr)<-expr[,1]
+expr<-expr[,-1]
+expr<-as.data.frame(expr)
+
+PSI<-fread("D:/project/SMRA/v2/data/encode_psi/PSI_2.txt")
+PSI<-as.data.frame(PSI)
+rownames(PSI)<-PSI[,1]
+PSI<-PSI[,-1]
+PSI<-as.data.frame(PSI)
+
+
+
+
+
+
+batch_matrix<-read.delim("D:/Project/SMRA/03_data/ENCODE/batch.txt",header = T)
+rownames(batch_matrix)<-batch_matrix$sample_name
+batch_matrix<-batch_matrix[colnames(expr),]
+target<-unique(batch_matrix$File_target)[which(unique(batch_matrix$File_target) !="control")]
+name_list<-read.delim("D:/project/SMRA/v2/data/name.txt")
+rep<-name_list[which(name_list$label!="total"),]
+
+
+# clip提取位置
+Events_bed<-t(apply(as.data.frame(rownames(PSI)),1,function(x){
+  ss<-strsplit(x,"_")[[1]]
+  a1_num<-grep("chr",ss)
+  a1<-ss[a1_num]
+  a2<-min(as.numeric(ss[(a1_num+2):(a1_num+7)]))-400
+  a3<-max(as.numeric(ss[(a1_num+2):(a1_num+7)]))+400
+  return(c(a1,a2,a3))
+}))
+Events_bed<-as.data.frame(Events_bed)
+Events_bed<-cbind(Events_bed,rownames(PSI))
+colnames(Events_bed)<-c("chr","start","stop","ID")
+write.table(Events_bed,file = "D:/project/SMRA/v2/data/encode_psi/Events.bed",
+            col.names = F,row.names = F,sep = "\t",quote = F)
+Event_eclip<-as.data.frame(rownames(PSI))
+rownames(Event_eclip)<-Event_eclip[,1]
+colnames(Event_eclip)<-"ID"
+Events_bed$start<-as.numeric(Events_bed$start)
+Events_bed$stop<-as.numeric(Events_bed$stop)
+
+#汇总结合强度
+for (i in unique(rep$File.target)) {
+  file<-fread(paste("D:/project/SMRA/v2/data/encode_psi/merge/",i,"_deal.bed",sep = ""))
+  colnames(file)<-c("chr","start","stop","ID","score")
+  a<-left_join(Events_bed,file)
+  a<-a[,c(4:5)]
+  a[is.na(a)]<-0
+  as.data.frame(a) %>% group_by(ID) %>% summarize(tj(score)) ->b
+  b$score<-apply(b,1,function(x){
+    z<-as.numeric(strsplit(x[2],",")[[1]])
+    up<-which(z>0)
+    down<-which(z<=0)
+    if (length(up)*length(down) ==0){
+      if (length(up) ==0){
+        return(mean(z[down]))
+      }else{
+        return(mean(z[up]))
+      }
+    }else{
+      return(0)
+    }
+  })
+  b<-b[,c("ID","score")]
+  colnames(b)<-c("ID",i)
+  Event_eclip<-left_join(Event_eclip,b)
+  cat(i,"\t")
+}
+rownames(Event_eclip)<-Event_eclip[,1]
+save(Event_eclip,file = "D:/project/SMRA/v2/data/encode_eclip/bindingstie_all.RData")
+
+
+#KD后是否发生剪接变化
+cl=makeCluster(8)
+registerDoParallel(cl)
+rbp_event_0.1<-foreach(i = target, .packages = "dplyr", .errorhandling = "pass",.combine = "rbind") %dopar% {
+  #down expr-->up psi
+  # for (i in target) {
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  rbp_expr<-expr[,c(rbp_sample,ctrl_sample)]
+  rbp_psi<-PSI[,c(rbp_sample,ctrl_sample)]
+  rbp_psi$dd<-abs((rbp_psi[,1]+rbp_psi[,2]-rbp_psi[,3]-rbp_psi[,4])/2)
+  #   apply(rbp_psi,1,function(x){
+  #   return(max(abs(max(x[1:2])-min(x[3:4])),abs(min(x[1:2])-max(x[3:4]))))
+  # })
+  # rbp_psi$uu<-ifelse(rbp_psi$dd>0.1,1,0)
+  matt<-cbind(i,rownames(rbp_psi),rbp_psi$dd)
+  colnames(matt)<-c("RBP","Event","label")
+  return(matt)
+  # cat(i,as.numeric(rbp_expr[i,]),"\n")
+}
+stopCluster(cl)
+save(rbp_event_0.1,file = "D:/project/SMRA/v2/data/KD_event.RData")
+
+
+
+
+#
+cl=makeCluster(4)
+registerDoParallel(cl)
+eclip_list<-read.delim("D:/project/SMRA/v2/data/name.txt")
+
+foreach(i = unique(eclip_list$File.target), .packages = "dplyr", .errorhandling = "pass") %dopar% {
+  rbp_eclip<-read.table(paste("D:/project/SMRA/v2/data/encode_eclip/merge/",i,".bed",sep=""))
+  rbp_eclip_bed<-rbp_eclip[,c(2:4)]
+  write.table(rbp_eclip_bed,file = paste("D:/project/SMRA/v2/data/encode_psi/eclip/",i,".bed",sep=""),
+              col.names = F,row.names = F,sep = "\t",quote = F)
+  
+}
+write.table(unique(eclip_list$File.target),file = "D:/project/SMRA/v2/data/encode_psi/rbp_eclip.txt",
+            col.names = F,row.names = F,sep = "\t",quote = F)
+stopCluster(cl)
+
+#bedtools
+
+# cd /xtdisk/liuzq_group/zhoulei/rbp/v2/encode_psi/
+# path=/xtdisk/liuzq_group/zhoulei/rbp/v2/encode_psi
+# 
+# cat rbp_eclip.txt | while read line
+# do
+# echo $line
+# bedtools intersect -a ${path}/Events.bed -b ${path}/eclip/${line}.bed -wa >${path}/merge/${line}.bed
+# done
+
+#FC 值
+expr<-expr[target,]
+expr_use<-expr
+fc_mat<-matrix(NA,1,1)
+for (i in target) {
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  
+  rbp_expr<-expr[,c(rbp_sample,ctrl_sample)]
+  rbp_expr$aver<-(as.numeric(rbp_expr[,3])+as.numeric(rbp_expr[,4]))/2
+  
+  expr_use[,c(rbp_sample,ctrl_sample)]<-expr[,c(rbp_sample,ctrl_sample)]/rbp_expr$aver
+  rbp_expr<-rbp_expr/rbp_expr$aver
+  rbp_expr$fc<-log2((as.numeric(rbp_expr[,1])+as.numeric(rbp_expr[,2]))/2)
+  if (is.na(fc_mat[1,1])){
+    fc_mat<-as.data.frame(rbp_expr$fc)
+    colnames(fc_mat)<-i
+  }else{
+    fc_mat<-cbind(fc_mat,rbp_expr$fc)
+    colnames(fc_mat)[ncol(fc_mat)]<-i
+    }
+  cat(i,"\t")
+}
+rownames(fc_mat)<-target
+fc_mat<-as.matrix(fc_mat)
+fc_mat[is.nan(fc_mat)]<-0
+fc_mat[is.na(fc_mat)]<-0
+fc_mat[is.infinite(fc_mat)]<-0
+
+dpsi_mat<-matrix(NA,1,1)
+for (i in target) {
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  
+  rbp_psi<-PSI[,c(rbp_sample,ctrl_sample)]
+  rbp_psi$dpsi<-(rbp_psi[,1]+rbp_psi[,2]-rbp_psi[,3]-rbp_psi[,4])/2
+  
+  if (is.na(dpsi_mat[1,1])){
+    dpsi_mat<-as.data.frame(rbp_psi$dpsi)
+    colnames(dpsi_mat)<-i
+  }else{
+    dpsi_mat<-cbind(dpsi_mat,rbp_psi$dpsi)
+    colnames(dpsi_mat)[ncol(dpsi_mat)]<-i
+  }
+  cat(i,"\t")
+}
+rownames(dpsi_mat)<-rownames(PSI)
+dpsi_mat<-as.matrix(dpsi_mat)
+dpsi_mat[is.nan(dpsi_mat)]<-0
+dpsi_mat[is.na(dpsi_mat)]<-0
+dpsi_mat[is.infinite(dpsi_mat)]<-0
+filter_rmats<-function(rmats_matrix,n){
+  results<-matrix(TRUE,nrow = nrow(rmats_matrix),ncol = 1)
+  results<-apply(rmats_matrix,1,function(x){
+    length0<-length(which(as.numeric(x)==0))
+    length1<-length(which(as.numeric(x)==1))
+    result<-ifelse((length0+length1)>=n,FALSE,TRUE)
+    return(result)
+  })
+  return(results)
+}
+ff<-filter_rmats(dpsi_mat,ncol(dpsi_mat))
+dpsi_mat<-dpsi_mat[ff,]
+
+# for (i in target) {
+#   target_use<-rownames(fc_mat)[order(fc_mat[i,])[1:10]]
+#   
+#   rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+#   ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+#   
+#   fc_use<-matrix(fc_mat[i,target_use],nrow = 1)
+#   rownames(fc_use)<-i
+#   dpsi_use<-dpsi_mat[,target_use]
+#   mean_fc<-as.data.frame(mean(fc_use))
+#   mean_fc<-cbind(i,mean_fc)
+#   write.table(mean_fc,file = "D:/project/SMRA/v2/data/mean_fc.txt",
+#               append = T,col.names = F,row.names = F,sep = "\t",quote = F)
+#   f1<-filter_rmats(dpsi_use,5)
+#   
+#   dpsi_use<-dpsi_use[f1,]
+#   mean_dpsi<-as.data.frame(unlist(apply(dpsi_use, 1, mean)))
+#   mean_dpsi<-cbind(RBP=i,Event=rownames(mean_dpsi),label=mean_dpsi)
+#   write.table(mean_dpsi,file = "D:/project/SMRA/v2/data/mean_dpsi.txt",
+#               append = T,col.names = F,row.names = F,sep = "\t",quote = F)
+#   cat(i,"\t")
+# }
+
+
+cl=makeCluster(4)
+registerDoParallel(cl)
+
+rbp_FC<-foreach(i = target, .packages = "dplyr", .errorhandling = "pass", .combine="rbind") %dopar% {
+  target_use<-rownames(fc_mat)[order(fc_mat[i,])[1:10]]
+  
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  
+  fc_use<-matrix(fc_mat[i,target_use],nrow = 1)
+  rownames(fc_use)<-i
+  dpsi_use<-dpsi_mat[,target_use]
+  
+  f1<-filter_rmats(dpsi_use,5)
+  
+  dpsi_use<-dpsi_use[f1,]
+  a<-cor_spearman(fc_use,dpsi_use,method = "pearson")
+  return(a)
+}
+stopCluster(cl)
+save(rbp_FC,file = "D:/project/SMRA/v2/data/FC_corr.RData")
+
+################################################################
+
+
+load("D:/project/SMRA/v2/data/FC_corr.RData")
+load("D:/project/SMRA/v2/data/encode_eclip/bindingstie_all.RData")
+# load("D:/project/SMRA/v2/data/KD_event.RData")
+mean_dpsi<-fread("D:/project/SMRA/v2/data/mean_dpsi.txt")
+colnames(mean_dpsi)<-c("RBP","Event","label")
+mean_dpsi<-as.data.frame(mean_dpsi)
+
+mean_fc<-fread("D:/project/SMRA/v2/data/mean_fc.txt")
+colnames(mean_fc)<-c("RBP","value")
+mean_fc<-as.data.frame(mean_fc)
+cl=makeCluster(4)
+registerDoParallel(cl)
+
+foreach(i = intersect(unique(rep$File.target),unique(batch_matrix$File_target)), .packages = "dplyr", .errorhandling = "pass") %dopar% {
+  #down expr-->up psi
+  # rbp_corr<-cor_spearman(rbp_expr[i,],rbp_psi[,1:4])
+  # rbp_corr_event<-rbp_corr[which(rbp_corr$p<0.05),c(2,3)]
+  # 
+  fc<-abs(mean_fc[which(mean_fc[,1]==i),2])
+  rbp_bindsite<-Event_eclip[,c("ID",i)]
+  colnames(rbp_bindsite)<-c("ID","value")
+  rbp_event_real<-mean_dpsi[which(mean_dpsi[,1]==i),]
+  rbp_FC_part<-rbp_FC[which(rbp_FC[,1]==i),]
+  rbp_event_real<-rbp_event_real[which(rbp_event_real[,2] %in% unique(rbp_FC_part[,2])),]
+  rbp_use<-merge(rbp_event_real,rbp_FC_part,by.x=c("RBP","Event"),by.y=c("row","col"))
+  rbp_use<-merge(rbp_use,rbp_bindsite,by.x = "Event",by.y = "ID")
+  rbp_use$label<-as.numeric(rbp_use$label)
+  rbp_use$label<-ifelse(rbp_use$label==1,0,rbp_use$label)
+  # rbp_use$cor<-ifelse(rbp_use$p>0.05,0,rbp_use$cor)
+  rbp_use$cor<-abs(rbp_use$cor)
+  rbp_use$logp<-(-log10(rbp_use$p))
+  rbp_use$if_cor<-ifelse(rbp_use$p<0.05,1,0)
+  rbp_use$if_real<-ifelse((rbp_use$label>0.1)&(rbp_use$label<1)&(rbp_use$value>0),1,0)
+  
+  rbp_use$value<-(abs(rbp_use$value))
+  rbp_use$use<-fc*rbp_use$logp*rbp_use$label
+
+  # a<-glm(if_real ~ label+value+logp,family = binomial(link = "logit") ,data =rbp_use)
+  # a
+  a<-glm(if_real ~ use+value,family = binomial(link = "logit") ,data =rbp_use)
+  a
+  # a<-glm(label ~ use,family = binomial(link = "logit") ,data =rbp_use)
+  # a
+  bb<-tj(c(i,a$coefficients[1],a$coefficients[2],a$coefficients[3]))
+  write.table(bb,file = "D:/project/SMRA/v2/data/bb2.txt",append = T,col.names = F,row.names = F,sep = "\t",quote = F)
+  # rbp_use$score<-exp(a$coefficients[1]+a$coefficients[2]*rbp_use$label+a$coefficients[3]*rbp_use$value+a$coefficients[4]*rbp_use$logp)/(1+exp(a$coefficients[1]+a$coefficients[2]*rbp_use$label+a$coefficients[3]*rbp_use$value+a$coefficients[4]*rbp_use$logp))
+  rbp_use$score<-exp(a$coefficients[1]+a$coefficients[2]*rbp_use$use+a$coefficients[3]*rbp_use$value)/(1+exp(a$coefficients[1]+a$coefficients[2]*rbp_use$use+a$coefficients[3]*rbp_use$value))
+  
+  rbp_event<-cbind(rbp_use[,1],rbp_use$score,i)
+  colnames(rbp_event)<-c("ID","score","RBP")
+  rbp_event<-as.matrix(rbp_event)
+  
+  write.table(rbp_event,file = "D:/project/SMRA/v2/data/rbp_event.txt",append = T,
+              col.names = F,row.names = F,sep = "\t",quote = F)
+  # rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  # ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  # rbp_expr<-expr[,c(rbp_sample,ctrl_sample)]
+  # rbp_psi<-PSI[,c(rbp_sample,ctrl_sample)]
+  # filter_rmats<-function(rmats_matrix,n){
+  #   results<-matrix(TRUE,nrow = nrow(rmats_matrix),ncol = 1)
+  #   results<-apply(rmats_matrix,1,function(x){
+  #     length0<-length(which(as.numeric(x)==0))
+  #     length1<-length(which(as.numeric(x)==1))
+  #     result<-ifelse((length0+length1)>=n,FALSE,TRUE)
+  #     return(result)
+  #   })
+  #   return(results)
+  # }
+  # f1<-filter_rmats(rbp_psi,ncol(rbp_psi))
+  # 
+  # rbp_psi<-rbp_psi[f1,]
+  # rbp_psi$dpsi<-abs((rbp_psi[,1]+rbp_psi[,2]-rbp_psi[,3]-rbp_psi[,4])/2)
+  # rbp_psi<-rbp_psi[which(rbp_psi$dpsi>0),]
+  # f2<-(rbp_psi$dpsi>0.1)
+  # rbp_psi$DS<-f2
+  # rbp_bindsite<-Event_eclip[,c("ID",i)]
+  # rbp_psi<-cbind(rbp_psi,binding=rbp_bindsite[rownames(rbp_psi),2])
+  # rbp_FC<-(rbp_expr[i,3]+rbp_expr[i,4])/(rbp_expr[i,1]+rbp_expr[i,2])
+  # rbp_corr<-cor_spearman(rbp_expr[i,],rbp_psi[,1:4])
+  # rbp_corr_event<-rbp_corr[which(rbp_corr$p<0.05),c(2,3)]
+  # rbp_psi<-rbp_psi[rbp_corr_event$col,]
+  # rbp_psi$corr<-rbp_corr_event$cor
+  # rbp_psi$R2<-abs(rbp_psi$corr)
+  # rbp_psi$DS<-ifelse(rbp_psi$DS==T,1,0)
+  # # rbp_psi$binding<-ifelse(rbp_psi$binding<0,0,rbp_psi$binding)
+  # rbp_psi$binding<-abs(rbp_psi$binding)+rbp_psi$dpsi
+  # rbp_psi$value<-sqrt(rbp_FC*rbp_psi$binding*rbp_psi$R2)
+  # a<-glm(DS ~ value,family = binomial(link = "logit") ,data =rbp_psi)
+  # bb<-c(i,a$coefficients[2])
+  # write.table(bb,file = "D:/project/SMRA/v2/data/bb.txt",append = T,col.names = F,row.names = F,sep = "\t",quote = F)
+  # rbp_psi$score<-exp(a$coefficients[1]+a$coefficients[2]*rbp_psi$value)/(1+exp(a$coefficients[1]+a$coefficients[2]*rbp_psi$value))
+  # rbp_event<-cbind(rownames(rbp_psi),rbp_psi$score,i)
+  # colnames(rbp_event)<-c("ID","score","RBP")
+  # 
+  # cat(i)
+  # return(rbp_event)
+  # 
+}
+stopCluster(cl)
+rbp_event_all<-as.matrix(rbp_event_all)
+rbp_event_all_deal<-rbp_event_all[which(rbp_event_all[,2]>0.5),]
+as.data.frame(rbp_event_all_deal) %>% spread(key = RBP,value = score,fill = 0) ->a
+rownames(a)<-a[,1]
+a<-a[,-1]
+b<-t(apply(a, 2, function(x){
+  return(as.numeric(x))
+}))
+colnames(b)<-rownames(a)
+# pheatmap::pheatmap(b,show_colnames = F)
+
+
+rbp_event_all_deal<-rbp_event_all[which(rbp_event_all[,2]>0.5),]
+as.data.frame(rbp_event_all_deal) %>% group_by(ID) %>% 
+  summarise(count=n(),name=tj(RBP)) -> rbp_event_all_deal_unique_1
+group_string<-read.table("D:/project/SMRA/v2/data/string_interactions_short.tsv",header = T)
+group_string_use<-group_string[which((group_string$coexpression>0)&(group_string$experimentally_determined_interaction>0)),]
+cl=makeCluster(8)
+registerDoParallel(cl)
+group<-foreach(rr = 1:nrow(group_string_use), .packages = "dplyr", .errorhandling = "pass",.combine = "rbind") %dopar% {
+  rbp<-unlist(group_string_use[rr,1:2])
+  rbp_event_part<-rbp_event_all_deal[which(rbp_event_all_deal[,3] %in% rbp),]
+  as.data.frame(rbp_event_part) %>% group_by(ID) %>% 
+    summarise(count=n(),name=tj(RBP)) %>% 
+    filter(count==length(rbp)) %>% group_by(name) %>% 
+    summarise(ID=tj(ID," "),event_count=n()) ->a
+  return(a)
+}
+stopCluster(cl)
+group<-unique(group)
+
+group_use<-group[which(group$event_count>10),]
+rbp_event_all_deal<-as.data.frame(rbp_event_all_deal)
+rbp_event_all_deal$ifgroup<-0
+for (qq in 1:nrow(group_use)) {
+  rbp<-unlist(strsplit(as.character(group_use[qq,1]),",")[[1]])
+  ev<-unlist(strsplit(as.character(group_use[qq,2])," ")[[1]])
+  loc<-which((rbp_event_all_deal$RBP %in% rbp)&(rbp_event_all_deal$ID %in% ev))
+  rbp_event_all_deal$ifgroup[loc]<-rbp_event_all_deal$ifgroup[loc]+1
+}
+uni_use<-rbp_event_all_deal[which(rbp_event_all_deal$ifgroup==0),1:3]
+event<-as.data.frame(unique(rbp_event_all[,1]))
+# eclip_list<-read.delim("D:/project/SMRA/v2/data/name.txt")
+
+
+
+cl=makeCluster(8)
+registerDoParallel(cl)
+final<-foreach(i = intersect(unique(rep$File.target),unique(batch_matrix$File_target)), .packages = "dplyr", .errorhandling = "pass",.combine = "rbind") %dopar% {
+  rbp_sample<-batch_matrix$sample_name[which(batch_matrix$File_target==i)]
+  ctrl_sample<-batch_matrix$sample_name[which((batch_matrix$type=="ctrl")&(batch_matrix$LEVEL==unique(batch_matrix$LEVEL[which(batch_matrix$File_target==i)])))]
+  rbp_expr<-expr[,c(rbp_sample,ctrl_sample)]
+  
+  n1<-length(rbp_sample)
+  n2<-length(ctrl_sample)
+  
+  rbp_expr$logFC<-apply(rbp_expr,1,function(x){
+    return(abs(log2(sum(as.numeric(x[1:n1]))/sum(as.numeric(x[(n1+1):(n1+n2)])))))
+  })
+  rbp_expr<-as.data.frame(rbp_expr)
+  rbp_expr$logFC[is.infinite(rbp_expr$logFC)]<-0
+  rbp_expr$logFC[is.nan(rbp_expr$logFC)]<-0
+  
+  rbp_psi<-PSI[,c(rbp_sample,ctrl_sample)]
+  filter_rmats<-function(rmats_matrix,n){
+    results<-matrix(TRUE,nrow = nrow(rmats_matrix),ncol = 1)
+    results<-apply(rmats_matrix,1,function(x){
+      length0<-length(which(as.numeric(x)==0))
+      length1<-length(which(as.numeric(x)==1))
+      result<-ifelse((length0+length1)>=n,FALSE,TRUE)
+      return(result)
+    })
+    return(results)
+  }
+  f1<-filter_rmats(rbp_psi,ncol(rbp_psi))
+  
+  rbp_psi<-rbp_psi[f1,]
+  rbp_psi<-rbp_psi[which(abs((rbp_psi[,1]+rbp_psi[,2]-rbp_psi[,3]-rbp_psi[,4])/2)>0),]
+  
+  rbp_psi[,2]<-rbp_psi[,2]+0.0001
+  
+  Events_DS<-matrix(NA,nrow = nrow(rbp_psi),ncol = 5)
+  Events_DS<-t(apply(rbp_psi,1,function(x){
+    a<-DS(x,n1,n2)
+    bb<-c(rownames(x),a[["pvalue"]],a[["FDR"]],a[["dPSI"]],a[["abs_dPSI"]])
+    return(bb)
+  }))
+  
+  Events_DS<-Events_DS[complete.cases(Events_DS),]
+  Events_DS<-cbind(rownames(Events_DS),Events_DS)
+  colnames(Events_DS)<-c("Events","pvalue","FDR","dPSI","abs_dPSI")
+  
+  Event_DS_sig<-Events_DS[which((as.numeric(Events_DS[,2])<0.05)&(as.numeric(Events_DS[,5])>0.1)),]
+  # ff<-length(setdiff(Event_DS_sig[,1],rbp_event_all_deal[,1]))/length(Event_DS_sig[,1])
+  # write.table(ff,file = "D:/project/SMRA/v2/data/ff.txt",append = T,col.names = F,row.names = F,sep = "\t",quote = F)
+  
+  a<-score_matrix(i,Event_DS_sig,rbp_expr,uni_use,group_use)
+  return(a)
+}
+stopCluster(cl)
+write.table(final,file = "D:/project/SMRA/v2/final_3.txt",col.names = F,row.names = F,quote = F,sep = "\t")
+
+
+

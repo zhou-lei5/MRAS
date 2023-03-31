@@ -1,0 +1,26 @@
+{
+    "id": "44888500",
+    "path": "D:/project/SMRA/v2/program/rbp_event_all.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1680160620543.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "4,0",
+        "scrollLine": "0"
+    },
+    "folds": "6|26|52|0|\n",
+    "lastKnownWriteTime": 1672454011,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1680160623147,
+    "read_only": false,
+    "read_only_alternatives": []
+}

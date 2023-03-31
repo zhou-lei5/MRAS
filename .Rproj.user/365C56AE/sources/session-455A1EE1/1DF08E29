@@ -1,0 +1,27 @@
+{
+    "id": "1DF08E29",
+    "path": "C:/Users/DELL/Desktop/MRAS/R/get_rbp_event_deal_all.R",
+    "project_path": "R/get_rbp_event_deal_all.R",
+    "type": "r_source",
+    "hash": "3369081806",
+    "contents": "",
+    "dirty": false,
+    "created": 1680079228087.0,
+    "source_on_save": false,
+    "relative_order": 15,
+    "properties": {
+        "tempName": "Untitled2",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "0,109",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1680228458,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1680228458652,
+    "read_only": false,
+    "read_only_alternatives": []
+}

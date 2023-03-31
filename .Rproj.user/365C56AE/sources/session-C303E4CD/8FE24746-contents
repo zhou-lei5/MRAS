@@ -1,0 +1,35 @@
+library(dplyr)
+library(tidyr)
+library(foreach)
+library(doParallel)
+library(data.table)
+
+expr<-fread("D:/project/SMRA/v2/data/encode_expr/RBP_expr.txt")
+expr<-as.data.frame(expr)
+rownames(expr)<-expr[,1]
+expr<-expr[,-1]
+expr<-as.data.frame(expr)
+
+PSI<-fread("D:/project/SMRA/v2/data/encode_psi/PSI_2.txt")
+PSI<-as.data.frame(PSI)
+rownames(PSI)<-PSI[,1]
+PSI<-PSI[,-1]
+PSI<-as.data.frame(PSI)
+
+batch_matrix<-read.delim("D:/Project/SMRA/03_data/ENCODE/batch.txt",header = T)
+rownames(batch_matrix)<-batch_matrix$sample_name
+batch_matrix<-batch_matrix[colnames(expr),]
+target<-unique(batch_matrix$File_target)[which(unique(batch_matrix$File_target) !="control")]
+name_list<-read.delim("D:/project/SMRA/v2/data/name.txt")
+rep<-name_list[which(name_list$label!="total"),]
+eclip_target<-intersect(unique(rep$File.target),unique(batch_matrix$File_target))
+
+load("D:/project/SMRA/v2/data/FC_corr.RData")
+load("D:/project/SMRA/v2/data/KD_event.RData")
+save.image("D:/project/SMRA/v2/data/function_and_data1030_without_eclip.RData")
+
+load("D:/project/SMRA/v2/data/encode_eclip/bindingstie_all.RData")
+
+save.image("D:/project/SMRA/v2/data/function_and_data1030.RData")
+
+

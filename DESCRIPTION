@@ -1,0 +1,34 @@
+Package: MRAS
+Type: Package
+Title: Master Regulator analysis of Alternative Splicing
+Version: 0.0.0.9000
+Author: c(
+    person("Lei"","ZHou",email="zhoulei@big.ac.cn",role=c("sut","cre","cph"))
+    ) 
+Maintainer: Lei Zhou <zhoulei@big.ac.cn>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Import:
+    fgsea,stats
+Imports:
+    dplyr,
+    tidyr,
+    foreach,
+    checkmate,
+    doParallel,
+    utils,
+    BiocParallel,
+    parallel,
+    fastmatch
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Depends: 
+    R (>= 4.1),
+    data.table,
+    fgsea

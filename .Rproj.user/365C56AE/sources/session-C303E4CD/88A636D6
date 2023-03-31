@@ -1,0 +1,24 @@
+{
+    "id": "88A636D6",
+    "path": "D:/project/SMRA/v2/program/encode_result.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "1474662150",
+    "contents": "",
+    "dirty": false,
+    "created": 1680160570619.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "2|1|210|0|\n244|63|251|0|\n264|36|289|0|\n297|109|313|0|\n351|19|369|0|\n",
+    "lastKnownWriteTime": 1672452592,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1680160589598,
+    "read_only": false,
+    "read_only_alternatives": []
+}

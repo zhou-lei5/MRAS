@@ -1,0 +1,22 @@
+#' Title
+#'
+#' @param x a numeric vector about your events splicing level.And x should be ordered by conditions
+#' @param m number of the first condition.
+#' @param n number of the second condition.
+#'
+#' @return The result include p-value, FDR, dPSI and abs_dPSI.
+#' @export
+#' @import stats
+#'
+#'
+#' @examples
+#' a<-abs(rnorm(10))
+#' DS(a,5,5)
+#'
+#'
+DS<-function(x,m,n){
+  a<-stats::t.test(x[1:m],x[(m+1):(m+n)])
+  dPSI<-mean(as.numeric(x[(m+1):(m+n)]))-mean(as.numeric(x[1:m]))
+  FDR<-stats::p.adjust(a$p.value,method = "BH")
+  return(list(pvalue=a$p.value,FDR=FDR,dPSI=dPSI,abs_dPSI=abs(dPSI)))
+}
