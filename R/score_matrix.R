@@ -464,9 +464,9 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
     score_matrix_all[1,(2*q+2)]<-rbp_uni_mat_3[q,ncol(rbp_uni_mat_3)]
   }
   colnames(score_matrix_all)<-c("rbp_interested","rank",paste0(c("RBP","rank"),rep(1:10,each=2)))
-  data.table::fwrite(score_matrix_all,file = paste0(path_use,"/result_top10.txt"),
+  data.table::fwrite(as.data.frame(score_matrix_all),file = paste0(path_use,"/result_top10.txt"),
                      row.names = F,col.names = T,quote = F,sep = "\t")
-  data.table::fwrite(rbp_uni_mat_3,file = paste0(path_use,"/result_tab_simple.txt"),
+  data.table::fwrite(as.data.frame(rbp_uni_mat_3),file = paste0(path_use,"/result_tab_simple.txt"),
          row.names = F,col.names = T,quote = F,sep = "\t")
   save(rbp_uni_mat_2,file = paste0(path_use,"/result_tab_all.RData"))
   if (result_type == "Top10"){

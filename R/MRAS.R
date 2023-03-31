@@ -51,5 +51,6 @@ MRAS<-function(expr,psi,rbp_interested = NULL,m = 0,n = 0,DS_pvalue = 0.05,DS_dP
                        RBP_use = RBP_use,result_type = result_type,threads = threads,
                        rbp_event_deal_all_total = rbp_event_deal_all_total,
                        rbp_event_deal_all = rbp_event_deal_all,path_use = path_use)
+  cat("Finish!\n")
   return(result)
 }

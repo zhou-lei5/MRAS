@@ -1,0 +1,81 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# MRAS
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+MRAS is designed to identify crucial RNA-binding proteins (RBPs) responsible for splicing variations in diverse scenarios, including cancer vs. normal, primary vs. recurrence, and more, not just in bulk data but also in single-cell data.
+
+## Installation
+
+You can install the development version of MRAS from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("zhou-lei5/MRAS")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(MRAS)
+## basic example code
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+
+```{r data_expr}
+## "expr" is RBP expression matrix.
+data("expr")
+head(expr)
+```
+```{r data_psi}
+## "psi" is events psi matrix."expr" and "psi" should have same column names.
+data("psi")
+head(psi)
+```
+```{r MRAS}
+## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
+a<-MRAS(
+  expr,
+  psi,
+  rbp_interested = "ESRP1",
+  m = 22,
+  n = 22,
+  DS_pvalue = 0.05,
+  DS_dPSI = 0.1,
+  method =  "spearman",
+  num1 = 0.2,
+  num2 = 10,
+  dpsi_network_threshold = 0.1,
+  Regulate_threshold = 0.5,
+  threads = 6,
+  path_use="./tests/",
+  result_type = "Top10"
+)
+```
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+
+You can also embed plots, for example:
+
+```{r pressure, echo = FALSE}
+plot(pressure)
+```
+
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
