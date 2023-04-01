@@ -23,7 +23,7 @@ devtools::install_github("zhou-lei5/MRAS")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to use MRAS:
 
 ``` r
 library(MRAS)
@@ -32,8 +32,8 @@ library(MRAS)
 ## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+Test data is included in MRAS and you can import it using data(), which
+contains the RBP expression matrix as well as the event PSI matrix.
 
 ``` r
 ## "expr" is RBP expression matrix.
@@ -83,6 +83,9 @@ psi[1:5,1:5]
 #> ENSG00000123562.18_MORF4L2_chrX_-_103684680_103684729_103678498_103678651_103685170_103685260      0.242
 ```
 
+The easiest way to use it: directly use the function MRAS (). The
+specific parameters are detailed in `??MRAS` or `help(MRAS)`.
+
 ``` r
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
 a<-MRAS(
@@ -109,15 +112,7 @@ a<-MRAS(
 #> Finish!
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-# `{r pressure, echo = FALSE} # plot(pressure) #`
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+Of course, you can also distribute the MRAS analysis, which will help
+you better understand the principles of MRAS. Finally, if you have any
+more questions, you can submit them in Github and we will do our best to
+answer them.

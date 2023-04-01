@@ -3,9 +3,9 @@
     "path": "D:/project/SMRA/v2/program/point.R",
     "project_path": null,
     "type": "r_source",
-    "hash": "0",
+    "hash": "1134563750",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1680160417599.0,
     "source_on_save": false,
     "relative_order": 2,
@@ -17,11 +17,11 @@
         "scrollLine": "151"
     },
     "folds": "23|77|66|0|\n74|74|90|0|\n",
-    "lastKnownWriteTime": 1680167310,
+    "lastKnownWriteTime": 1680333378,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1680226370870,
+    "last_content_update": 1680333378903,
     "read_only": false,
     "read_only_alternatives": []
 }
