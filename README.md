@@ -83,12 +83,12 @@ psi[1:5,1:5]
 #> ENSG00000123562.18_MORF4L2_chrX_-_103684680_103684729_103678498_103678651_103685170_103685260      0.242
 ```
 
-The easiest way to use it: directly use the function MRAS (). The
+The easiest way to use it: directly use the function `MRAS()`. The
 specific parameters are detailed in `??MRAS` or `help(MRAS)`.
 
 ``` r
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
-a<-MRAS(
+result<-MRAS(
   expr,
   psi,
   rbp_interested = "ESRP1",
@@ -112,7 +112,19 @@ a<-MRAS(
 #> Finish!
 ```
 
+After running `MRAS()`, there are three ways to display the results. In
+addition to setting the form directly in the parameters, users can also
+obtain other result display forms through the functions `get_Top10()`,
+`get_tab_all()`, and `get_tab_simple()`. This allows users to access
+additional result display formats without having to rerun `MRAS()`.
+
+``` r
+result_Top10<-get_Top10(path_use = "./tests/")
+result_tab_simple<-get_tab_simple(path_use = "./tests/")
+result_tab_all<-get_tab_all(path_use = "./tests/")
+```
+
 Of course, you can also distribute the MRAS analysis, which will help
 you better understand the principles of MRAS. Finally, if you have any
 more questions, you can submit them in Github and we will do our best to
-answer them.
+answer them.(<https://github.com/zhou-lei5/MRAS>)

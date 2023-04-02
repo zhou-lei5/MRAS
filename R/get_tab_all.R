@@ -6,6 +6,7 @@
 #' @export
 #'
 get_tab_all<-function(path_use){
+  rbp_uni_mat_2=NULL
   load(paste0(path_use,"/result_tab_all.RData"))
   return(rbp_uni_mat_2)
 }

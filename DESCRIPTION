@@ -6,7 +6,9 @@ Author: c(
     person("Lei"","ZHou",email="zhoulei@big.ac.cn",role=c("sut","cre","cph"))
     ) 
 Maintainer: Lei Zhou <zhoulei@big.ac.cn>
-Description: MRAS is designed to identify crucial RNA-binding proteins (RBPs) responsible for splicing variations in diverse scenarios, including cancer vs. normal, primary vs. recurrence, and more, not just in bulk data but also in single-cell data.
+Description: MRAS is designed to identify crucial RNA-binding proteins (RBPs) responsible for splicing variations in diverse scenarios, 
+             including cancer vs. normal, primary vs. recurrence, and more, not just in bulk data but also in single-cell data.
+             If you have any questions,you cna get help here.(https://github.com/zhou-lei5/MRAS)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
