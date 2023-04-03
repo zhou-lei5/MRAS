@@ -2,7 +2,7 @@
 % Please edit documentation in R/cor_matrix.R
 \name{cor_matrix}
 \alias{cor_matrix}
-\title{This This function provides methods for finding correlations and constructing them into conforming matrices.}
+\title{This function provides methods for finding correlations and constructing them into conforming matrices.}
 \usage{
 cor_matrix(RBP_matrix, Events_matrix, method = "pearson")
 }
@@ -17,7 +17,7 @@ cor_matrix(RBP_matrix, Events_matrix, method = "pearson")
 The result include correlation coefficient and significance level matrix.
 }
 \description{
-This This function provides methods for finding correlations and constructing them into conforming matrices.
+This function provides methods for finding correlations and constructing them into conforming matrices.
 }
 \examples{
 a<-matrix(rnorm(25),nrow=5,ncol=5)

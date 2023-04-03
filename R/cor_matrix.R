@@ -1,4 +1,4 @@
-#' This This function provides methods for finding correlations and constructing them into conforming matrices.
+#' This function provides methods for finding correlations and constructing them into conforming matrices.
 #'
 #' @param RBP_matrix RBP expression matrix
 #' @param Events_matrix Events splicing matrix

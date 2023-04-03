@@ -2,7 +2,8 @@
 % Please edit documentation in R/MRAS.R
 \name{MRAS}
 \alias{MRAS}
-\title{Master Regulator analysis of Alternative Splicing}
+\title{Master Regulator analysis of Alternative Splicing
+If you have any questions,you cna get help here.(https://github.com/zhou-lei5/MRAS)}
 \usage{
 MRAS(
   expr,
@@ -61,4 +62,5 @@ MRAS result.
 }
 \description{
 Master Regulator analysis of Alternative Splicing
+If you have any questions,you cna get help here.(https://github.com/zhou-lei5/MRAS)
 }

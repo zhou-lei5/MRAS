@@ -1,4 +1,5 @@
 #' Master Regulator analysis of Alternative Splicing
+#' If you have any questions,you cna get help here.(https://github.com/zhou-lei5/MRAS)
 #'
 #' @param expr RBP expression matrix.
 #' @param psi Events splicing matrix.
