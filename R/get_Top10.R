@@ -6,6 +6,6 @@
 #' @export
 #'
 get_Top10<-function(path_use){
-  dat<-read.table(paste0(path_use,"/result_top10.txt"))
+  dat<-read.table(paste0(path_use,"/result_top10.txt"),header = T)
   return(dat)
 }
