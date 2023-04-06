@@ -4,7 +4,7 @@
 #'
 #' @return Get DS_mat file.
 #'
-#'
+#' @export
 
 get_DS_mat<-function(path_use){
   DS_mat<-read.table(paste0(path_use,"DS_mat.txt"),header = T)
