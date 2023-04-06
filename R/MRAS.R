@@ -33,6 +33,8 @@ MRAS<-function(expr,psi,rbp_interested = NULL,m = 0,n = 0,DS_pvalue = 0.05,DS_dP
   cat("Step1:Performing differential splicing analysis...\n")
   Events_DS<-DS_matrix(psi,m = m,n = n)
   Event_DS_sig<-get_Event_DS_sig(Events_DS,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI)
+  data.table::fwrite(as.data.frame(Event_DS_sig),file = paste0(path_use,"DS_mat.txt"),
+                     row.names = F,col.names = T,quote = F,sep = "\t")
 
   cat("Step2:Constructing RBP-Event regulatory relationship network...\n")
   rbp_corr<-cor_spearman_percent(expr,psi,method = method,num1 = num1,threads = threads)

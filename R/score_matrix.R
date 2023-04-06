@@ -63,16 +63,16 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
 
 
   #weight matrix 2
-  if (file.exists(paste0(path_use,"/w2.txt"))) file.remove(paste0(path_use,"/w2.txt"))
+  if (file.exists(paste0(path_use,"w2.txt"))) file.remove(paste0(path_use,"w2.txt"))
 
   for (rr in unique(rbp_event_deal_all_total$RBP)) {
     w2_part<-rbp_event_deal_all_total[which(rbp_event_deal_all_total$RBP==rr),]
     w2_part$weight<-1+sqrt((w2_part$dPSI-min(w2_part$dPSI))/(max(w2_part$dPSI)-min(w2_part$dPSI)))
-    data.table::fwrite(as.data.frame(w2_part),file = paste0(path_use,"/w2.txt"),col.names = F,row.names = F,
+    data.table::fwrite(as.data.frame(w2_part),file = paste0(path_use,"w2.txt"),col.names = F,row.names = F,
            quote = F,sep = "\t",append = T)
     # cat(rr,"\t")
   }
-  w2<-data.table::fread(paste0(path_use,"/w2.txt"))
+  w2<-data.table::fread(paste0(path_use,"w2.txt"))
   colnames(w2)<-c("ID","score","RBP","label","weight2")
 
   # cat("weight all","\t")
@@ -450,7 +450,7 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
 
   rbp_uni_mat_3<-(rbp_uni_mat_2[,-3])
 
-  if (file.exists(paste0(path_use,"/w2.txt"))) file.remove(paste0(path_use,"/w2.txt"))
+  if (file.exists(paste0(path_use,"w2.txt"))) file.remove(paste0(path_use,"w2.txt"))
   score_matrix_all<-matrix(NA,nrow = 1,ncol = 22)
   if (is.null(rbp_interested)){
     score_matrix_all[1,1]<-NA
@@ -464,11 +464,11 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
     score_matrix_all[1,(2*q+2)]<-rbp_uni_mat_3[q,ncol(rbp_uni_mat_3)]
   }
   colnames(score_matrix_all)<-c("rbp_interested","rank",paste0(c("RBP","rank"),rep(1:10,each=2)))
-  data.table::fwrite(as.data.frame(score_matrix_all),file = paste0(path_use,"/result_top10.txt"),
+  data.table::fwrite(as.data.frame(score_matrix_all),file = paste0(path_use,"result_top10.txt"),
                      row.names = F,col.names = T,quote = F,sep = "\t")
-  data.table::fwrite(as.data.frame(rbp_uni_mat_3),file = paste0(path_use,"/result_tab_simple.txt"),
+  data.table::fwrite(as.data.frame(rbp_uni_mat_3),file = paste0(path_use,"result_tab_simple.txt"),
          row.names = F,col.names = T,quote = F,sep = "\t")
-  save(rbp_uni_mat_2,file = paste0(path_use,"/result_tab_all.RData"))
+  save(rbp_uni_mat_2,file = paste0(path_use,"result_tab_all.RData"))
   if (result_type == "Top10"){
     return(score_matrix_all)
   }else {
