@@ -80,6 +80,7 @@ After running `MRAS()`, there are three ways to display the results. In addition
 result_Top10<-get_Top10(path_use = "./tests/")
 result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
+head(result_tab_simple[1:5,])
 ```
 
 

@@ -2,7 +2,7 @@
 #'
 #' @param expr RBP expression matrix.
 #' @param psi Events splicing matrix.
-#' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
+#' @param num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
 #' @param rbp_corr The correlation matrix of RBP and events has 4 columns,
@@ -21,18 +21,18 @@
 #' @import parallel
 #'
 
-MRAS_network<-function(expr,psi,num1 = 0.5,num2 = 0.5,rbp_corr = rbp_corr,
+MRAS_network<-function(expr,psi,num2 = 0.5,rbp_corr = rbp_corr,
                        dpsi_network_threshold = 0.1,
                        Regulate_threshold = 0.5,threads = 2,path_use = path_use ){
   expres_f2<-as.matrix(expr)
-  if (num1<1) num1<-ceiling(ncol(expr)*num1)
+  # if (num1<1) num1<-ceiling(ncol(expr)*num1)
   if (num2<1) num2<-ceiling(ncol(expr)*num2)
 
   cll<-parallel::makeCluster(threads)
   doParallel::registerDoParallel(cll)
   rbp_event_0.1<-foreach::foreach(i = rownames(expres_f2), .packages = "dplyr", .errorhandling = "pass",.combine = "rbind") %dopar% {
-    sample_use<-colnames(expres_f2)[c(order(expres_f2[i,],decreasing=TRUE)[1:num1],
-                                      order(expres_f2[i,],decreasing=FALSE)[1:num1])]
+    sample_use<-colnames(expres_f2)[c(order(expres_f2[i,],decreasing=TRUE)[1:num2],
+                                      order(expres_f2[i,],decreasing=FALSE)[1:num2])]
     rbp_expr<-expres_f2[,sample_use]
     rbp_psi<-psi[,sample_use]
     rbp_psi<-as.data.frame(rbp_psi)

@@ -7,7 +7,6 @@
 MRAS_network(
   expr,
   psi,
-  num1 = 0.5,
   num2 = 0.5,
   rbp_corr = rbp_corr,
   dpsi_network_threshold = 0.1,
@@ -21,7 +20,7 @@ MRAS_network(
 
 \item{psi}{Events splicing matrix.}
 
-\item{num1, num2}{Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
+\item{num2}{Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 When choosing the input sample proportion, it is required to be no greater than 0.5.}
 

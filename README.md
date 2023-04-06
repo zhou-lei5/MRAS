@@ -122,6 +122,25 @@ additional result display formats without having to rerun `MRAS()`.
 result_Top10<-get_Top10(path_use = "./tests/")
 result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
+head(result_tab_simple[1:5,])
+#>     RBP     logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
+#> 1 ESRP1 1.6128311 32.14689 106  0.8416978       193 0.8403875 1.726525
+#> 2 RBM11 1.7321882 29.95712  80  0.7843613       148 0.8169598 1.676204
+#> 3 RBMS3 1.6080483 32.37771  99  0.8477417       187 0.8369700 1.710362
+#> 4 RBMS1 0.6918446 12.59383  89  0.3297241       133 0.8669439 1.761774
+#> 5 FKBP4 1.1147372 19.50317  88  0.5106369       143 0.8463503 1.738259
+#>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
+#> 1 0.000999001       146 0.9149168 1.636088 0.000999001     106       1857
+#> 2 0.000999001       146 0.8429471 2.799824 0.000999001      80       1857
+#> 3 0.000999001       146 0.9027223 1.685116 0.000999001      99       1857
+#> 4 0.000999001       146 0.9045543 2.384146 0.000999001      89       1857
+#> 5 0.000999001       146 0.9023890 1.984417 0.000999001      88       1857
+#>         OR         pval    score3
+#> 1 49.20177 3.606096e-84 116.98127
+#> 2 29.12594 4.097512e-58 107.21450
+#> 3 38.62165 1.166684e-74  94.36527
+#> 4 58.80437 2.355515e-78  81.44105
+#> 5 45.34175 2.331438e-72  79.86525
 ```
 
 Of course, you can also distribute the MRAS analysis, which will help

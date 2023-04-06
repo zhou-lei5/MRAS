@@ -39,7 +39,7 @@ MRAS<-function(expr,psi,rbp_interested = NULL,m = 0,n = 0,DS_pvalue = 0.05,DS_dP
   cat("Step2:Constructing RBP-Event regulatory relationship network...\n")
   rbp_corr<-cor_spearman_percent(expr,psi,method = method,num1 = num1,threads = threads)
 
-  MRAS_network(expr,psi,num1 = num1,num2 = num2,rbp_corr = rbp_corr,
+  MRAS_network(expr,psi,num2 = num2,rbp_corr = rbp_corr,
                dpsi_network_threshold = dpsi_network_threshold,
                Regulate_threshold = Regulate_threshold,threads = threads,path_use = path_use)
   rbp_event_deal_all<-get_rbp_event_deal_all(path_use = path_use)
