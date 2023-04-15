@@ -75,8 +75,8 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
         return(x)
       })))
 
-      SE[,1]<-paste0(SE[,3],"_","SE","_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
-      RI[,1]<-paste0(RI[,3],"_","RI","_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
+      SE[,1]<-paste0(SE[,3],"_","ES","_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
+      RI[,1]<-paste0(RI[,3],"_","IR","_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
       A3SS[,1]<-paste0(A3SS[,3],"_","A3SS","_",A3SS[,4],"_",A3SS[,5],"_",A3SS[,6],"_",A3SS[,7],"_",A3SS[,8],"_",A3SS[,9],"_",A3SS[,10],"_",A3SS[,11])
       A5SS[,1]<-paste0(A5SS[,3],"_","A5SS","_",A5SS[,4],"_",A5SS[,5],"_",A5SS[,6],"_",A5SS[,7],"_",A5SS[,8],"_",A5SS[,9],"_",A5SS[,10],"_",A5SS[,11])
 
@@ -129,11 +129,11 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
           return(x)
         })))
 
-        SE[,1]<-paste0(SE[,3],"_","SE","_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
-        RI[,1]<-paste0(RI[,3],"_","RI","_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
+        SE[,1]<-paste0(SE[,3],"_","ES","_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
+        RI[,1]<-paste0(RI[,3],"_","IR","_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
         A3SS[,1]<-paste0(A3SS[,3],"_","A3SS","_",A3SS[,4],"_",A3SS[,5],"_",A3SS[,6],"_",A3SS[,7],"_",A3SS[,8],"_",A3SS[,9],"_",A3SS[,10],"_",A3SS[,11])
         A5SS[,1]<-paste0(A5SS[,3],"_","A5SS","_",A5SS[,4],"_",A5SS[,5],"_",A5SS[,6],"_",A5SS[,7],"_",A5SS[,8],"_",A5SS[,9],"_",A5SS[,10],"_",A5SS[,11])
-        MXE[,1]<-paste0(MXE[,3],"_","MXE","_",MXE[,4],"_",MXE[,5],"_",MXE[,10],"_",MXE[,11],"_",MXE[,6],"_",MXE[,7],"_",MXE[,8],"_",MXE[,9],"_",MXE[,12],"_",MXE[,13])
+        MXE[,1]<-paste0(MXE[,3],"_","MEX","_",MXE[,4],"_",MXE[,5],"_",MXE[,10],"_",MXE[,11],"_",MXE[,6],"_",MXE[,7],"_",MXE[,8],"_",MXE[,9],"_",MXE[,12],"_",MXE[,13])
 
         write.table(SE[,c(1,12:16)],file = paste0(path_rmats,"/PSI.txt"),row.names = F,col.names = F,sep = ",",quote = F)
         write.table(RI[,c(1,12:16)],file = paste0(path_rmats,"/PSI.txt"),row.names = F,col.names = F,sep = ",",quote = F,append = T)
@@ -152,7 +152,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
         return(x)
       })))
 
-      SE[,1]<-paste0(SE[,3],"_","SE","_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
+      SE[,1]<-paste0(SE[,3],"_","ES","_",SE[,4],"_",SE[,5],"_",SE[,6],"_",SE[,7],"_",SE[,8],"_",SE[,9],"_",SE[,10],"_",SE[,11])
       write.table(SE[,c(1,12:16)],file = paste0(path_rmats,"/PSI.txt"),
                   row.names = F,col.names = F,
                   sep = ",",quote = F,append = T)
@@ -167,7 +167,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
           return(x)
         })))
 
-        RI[,1]<-paste0(RI[,3],"_","RI","_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
+        RI[,1]<-paste0(RI[,3],"_","IR","_",RI[,4],"_",RI[,5],"_",RI[,6],"_",RI[,7],"_",RI[,8],"_",RI[,9],"_",RI[,10],"_",RI[,11])
         write.table(RI[,c(1,12:16)],file = paste0(path_rmats,"/PSI.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
@@ -213,7 +213,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
               return(x)
             })))
 
-            MXE[,1]<-paste0(MXE[,3],"_","MXE","_",MXE[,4],"_",MXE[,5],"_",MXE[,10],"_",MXE[,11],"_",MXE[,6],"_",MXE[,7],"_",MXE[,8],"_",MXE[,9],"_",MXE[,12],"_",MXE[,13])
+            MXE[,1]<-paste0(MXE[,3],"_","MEX","_",MXE[,4],"_",MXE[,5],"_",MXE[,10],"_",MXE[,11],"_",MXE[,6],"_",MXE[,7],"_",MXE[,8],"_",MXE[,9],"_",MXE[,12],"_",MXE[,13])
             write.table(MXE[,c(1,14:18)],file = paste0(path_rmats,"/PSI.txt"),
                         row.names = F,col.names = F,
                         sep = ",",quote = F,append = T)
