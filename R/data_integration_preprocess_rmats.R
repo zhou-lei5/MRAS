@@ -39,7 +39,7 @@ data_integration_preprocess_rmats<-function(path_rmats,type="default",design=NUL
 data_integration_rmats<-function(path_rmats,type="default",design=NULL){
   if (is.null(design)){
     type<-match.arg(type,choices = c("default","all"))
-    if (type == "defalt"){
+    if (type == "default"){
       SE<-read.delim(paste0(path_rmats,"/SE.MATS.JCEC.txt"),header = T)
       RI<-read.delim(paste0(path_rmats,"/RI.MATS.JCEC.txt"),header = T)
       A3SS<-read.delim(paste0(path_rmats,"/A3SS.MATS.JCEC.txt"),header = T)
