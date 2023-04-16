@@ -38,7 +38,7 @@ cor_spearman_percent<-function(x,y,method = "spearman",num1 = num1,threads = 2){
   doParallel::registerDoParallel(cll)
   # clusterEvalQ(cll, .libPaths("D:/R"))
   re<-foreach::foreach (ii = 1:nrow(x), .combine = "rbind") %dopar% {
-    t1<-matrix(unlist(x[ii,use_mat[ii,]]),nrow = 1)
+    t1<-matrix(as.numeric(unlist(x[ii,use_mat[ii,]])),nrow = 1)
     t2<-y[,use_mat[ii,]]
     rr<-cor(t(t1),t(t2),method = method)
     df<-ncol(t1)-2

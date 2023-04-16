@@ -250,6 +250,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
 data_preprocess_rmats<-function(data,sample_num,psi_cutoff,
                                 reads_cutoff = NULL,reads_num = 10,colname_ann = FALSE,
                                 gsub_pattern_up = NULL, gsub_pattern_down = NULL){
+
   pc1<-data[,4:(sample_num+3)]
   pc2<-data[,(sample_num+4):(2*sample_num+3)]
   pc3<-data[,(2*sample_num+4):(3*sample_num+3)]
