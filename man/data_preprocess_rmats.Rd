@@ -11,6 +11,7 @@ data_preprocess_rmats(
   reads_cutoff = NULL,
   reads_num = 10,
   colname_ann = FALSE,
+  path_rmats = NULL,
   gsub_pattern_up = NULL,
   gsub_pattern_down = NULL
 )
@@ -27,6 +28,8 @@ data_preprocess_rmats(
 \item{reads_num}{reads_num}
 
 \item{colname_ann}{colname_ann}
+
+\item{path_rmats}{path_rmats}
 
 \item{gsub_pattern_up}{gsub_pattern_up}
 

@@ -20,7 +20,7 @@ data_integration_preprocess_rmats<-function(path_rmats,type="default",design=NUL
                                             gsub_pattern_up = NULL, gsub_pattern_down = NULL){
   data<-data_integration_rmats(path_rmats = path_rmats,type = type,design = design)
   psi_pair<-data_preprocess_rmats(data = data,sample_num = sample_num,psi_cutoff = psi_cutoff,
-                                  reads_cutoff = reads_cutoff,reads_num = reads_num,colname_ann = colname_ann,
+                                  reads_cutoff = reads_cutoff,reads_num = reads_num,colname_ann = colname_ann,path_rmats = path_rmats,
                                   gsub_pattern_up = gsub_pattern_up,gsub_pattern_down = gsub_pattern_down)
   return(psi_pair)
 }
@@ -240,6 +240,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
 #' @param reads_cutoff reads_cutoff
 #' @param reads_num reads_num
 #' @param colname_ann colname_ann
+#' @param path_rmats path_rmats
 #' @param gsub_pattern_up gsub_pattern_up
 #' @param gsub_pattern_down gsub_pattern_down
 #'
@@ -248,7 +249,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
 #'
 
 data_preprocess_rmats<-function(data,sample_num,psi_cutoff,
-                                reads_cutoff = NULL,reads_num = 10,colname_ann = FALSE,
+                                reads_cutoff = NULL,reads_num = 10,colname_ann = FALSE,path_rmats = NULL,
                                 gsub_pattern_up = NULL, gsub_pattern_down = NULL){
 
   pc1<-data[,4:(sample_num+3)]
