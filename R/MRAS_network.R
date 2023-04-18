@@ -68,7 +68,7 @@ MRAS_network<-function(expr,psi,num2 = 0.5,rbp_corr = rbp_corr,
     rbp_use$cor<-abs(rbp_use$cor)
     rbp_use<-rbp_use[which(rbp_use$p>0),]
     rbp_use$logp<-(-log10(rbp_use$p))
-    rbp_use$if_cor<-ifelse(rbp_use$p<0.05,1,0)
+    rbp_use$if_cor<-ifelse((rbp_use$cor>0.3)&(rbp_use$p<0.05),1,0)
     rbp_use$if_real<-ifelse((rbp_use$label>dpsi_network_threshold)&(rbp_use$label<1),1,0)
 
     rbp_use$use<-rbp_use$cor*rbp_use$if_cor*sqrt(rbp_use$label)

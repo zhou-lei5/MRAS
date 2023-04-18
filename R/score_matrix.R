@@ -424,11 +424,22 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
         tableR<-matrix(c(n1,n2,n3,n4),nrow = 2,ncol = 2)
         fish<-fisher.test(tableR,alternative = "greater")
         if ((is.na(fish$estimate))|(is.infinite(as.numeric(fish$estimate)))){
-          nes[,OR:=0]
-          nes[,pval:=0]
+          if (is.na(fish$estimate)){
+            nes[,OR:=0]
+            nes[,pval:=0]
+          }else{
+            nes[,OR:=100]
+            nes[,pval:=0]
+          }
+
         }else{
-          nes[,OR:=fish$estimate]
-          nes[,pval:=fish$p.value]
+          if (fish$estimate<100){
+            nes[,OR:=fish$estimate]
+            nes[,pval:=fish$p.value]
+          }else{
+            nes[,OR:=100]
+            nes[,pval:=fish$p.value]
+          }
         }
         nes[,score3:=as.numeric(nes[,nes1_nes])*as.numeric(nes[,nes2_nes])* as.numeric(nes[,OR])]
         nes<-as.matrix(nes)
