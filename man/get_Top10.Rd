@@ -4,10 +4,10 @@
 \alias{get_Top10}
 \title{This function provides a way to get the results in the form of "Top10".}
 \usage{
-get_Top10(path_use)
+get_Top10(path_useful)
 }
 \arguments{
-\item{path_use}{The path to the file used to store the output.}
+\item{path_useful}{The path to the file used to store the output.}
 }
 \value{
 Return results in "top10" format

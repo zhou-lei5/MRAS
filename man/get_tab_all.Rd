@@ -4,10 +4,10 @@
 \alias{get_tab_all}
 \title{This function provides a way to get the results in the form of "tab_all".}
 \usage{
-get_tab_all(path_use)
+get_tab_all(path_useful)
 }
 \arguments{
-\item{path_use}{The path to the file used to store the output.}
+\item{path_useful}{The path to the file used to store the output.}
 }
 \value{
 Return results in "tab_all" format

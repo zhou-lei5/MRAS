@@ -4,10 +4,10 @@
 \alias{get_rbp_event_deal_all}
 \title{This function provides a way to obtain the matrix of all RBP-Events regulatory relationships with P > 0.5.}
 \usage{
-get_rbp_event_deal_all(path_use)
+get_rbp_event_deal_all(path_useful)
 }
 \arguments{
-\item{path_use}{The path to the file used to store the output.}
+\item{path_useful}{The path to the file used to store the output.}
 }
 \value{
 Get rbp_event_deal_all file and save RData.

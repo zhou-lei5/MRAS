@@ -42,8 +42,8 @@ MRAS<-function(expr,psi,rbp_interested = NULL,m = 0,n = 0,DS_pvalue = 0.05,DS_dP
   MRAS_network(expr,psi,num2 = num2,rbp_corr = rbp_corr,
                dpsi_network_threshold = dpsi_network_threshold,
                Regulate_threshold = Regulate_threshold,threads = threads,path_use = path_use)
-  rbp_event_deal_all<-get_rbp_event_deal_all(path_use = path_use)
-  rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_use = path_use)
+  rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal"))
+  rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal"))
 
   cat("Step3:Preparing for enrichment analysis...\n")
   RBP_use<-get_RBP_use(expr,m = m,n = n)

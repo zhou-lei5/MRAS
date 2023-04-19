@@ -4,10 +4,10 @@
 \alias{get_DS_mat}
 \title{This function provides a way to differential splicing matrix.}
 \usage{
-get_DS_mat(path_use)
+get_DS_mat(path_useful)
 }
 \arguments{
-\item{path_use}{The path to the file used to store the output.}
+\item{path_useful}{The path to the file used to store the output.}
 }
 \value{
 Get DS_mat file.
