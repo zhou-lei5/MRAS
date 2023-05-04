@@ -263,13 +263,15 @@ data_preprocess_rmats<-function(data,sample_num,psi_cutoff,
 
   f3<-filter_rmats_psi(pc3,psi_cutoff)
   if (is.null(reads_cutoff) | is.null(reads_num)){
-    psi_pair<-data[f3,c(1,(2*sample_num+4):(3*sample_num+3))]
+    psi_pair<-data[f1,]
     psi_pair<-as.data.frame(psi_pair)
+    psi_pair<-psi_pair[,c(1,(2*sample_num+4):(3*sample_num+3))]
   }else{
     f1<-filter_ramts_reads(pc1,reads_cutoff,reads_num)
     f2<-filter_ramts_reads(pc2,reads_cutoff,reads_num)
-    psi_pair<-data[f1 & f2 & f3,c(1,(2*sample_num+4):(3*sample_num+3))]
+    psi_pair<-data[f1 & f2 & f3,]
     psi_pair<-as.data.frame(psi_pair)
+    psi_pair<-psi_pair[,c(1,(2*sample_num+4):(3*sample_num+3))]
   }
   if (colname_ann){
     colname<-read.table(paste0(path_rmats,"/bam_path.txt"))
