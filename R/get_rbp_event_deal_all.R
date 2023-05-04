@@ -9,7 +9,7 @@
 
 get_rbp_event_deal_all<-function(path_useful){
   if (file.exists(paste0(path_useful,"/rbp_event_deal_all.txt"))){
-      rbp_event_deal_all<-read.table(paste0(path_useful,"/rbp_event_deal_all.txt"))
+      rbp_event_deal_all<-read.delim(paste0(path_useful,"/rbp_event_deal_all.txt"),header = F)
       colnames(rbp_event_deal_all)<-c("ID","score","RBP")
       save(rbp_event_deal_all,file = paste0(path_useful,"/rbp_event_deal_all.RData"))
       return(rbp_event_deal_all)
