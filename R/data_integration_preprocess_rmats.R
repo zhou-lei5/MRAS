@@ -286,7 +286,7 @@ data_preprocess_rmats<-function(data,sample_num,psi_cutoff,
       }
       return(b)
     }))
-    colnames(psi_pair)<-colname
+    colnames(psi_pair)<-c("ID",colname)
     }
   write.table(psi_pair,file = paste0(path_rmats,"/PSI_final.txt"),
                 row.names = T,col.names = T,
