@@ -441,7 +441,7 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
             nes[,pval:=fish$p.value]
           }
         }
-        nes[,score3:=as.numeric(nes[,nes1_nes])*as.numeric(nes[,nes2_nes])* log2(as.numeric(nes[,OR]))]
+        nes[,score3:=as.numeric(nes[,nes1_nes])*as.numeric(nes[,nes2_nes])*sqrt(as.numeric(nes[,OR]))]
         nes<-as.matrix(nes)
         # nes<-do.call(cbind,nes)
         return(nes)
