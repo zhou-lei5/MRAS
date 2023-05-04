@@ -226,6 +226,11 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
 
   }
   data<-fread(paste0(path_rmats,"/PSI.txt"),sep = ",",header = F)
+  data[,2]<-0
+  write.table(data,file = paste0(path_rmats,"/PSI.txt"),
+              row.names = F,col.names = F,
+              sep = ",",quote = F)
+  data<-fread(paste0(path_rmats,"/PSI.txt"),sep = ",",header = F)
   data[is.na(data)]<-0
   return(data)
 }
