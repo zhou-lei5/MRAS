@@ -428,16 +428,16 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
             nes[,OR:=0]
             nes[,pval:=0]
           }else{
-            nes[,OR:=100]
+            nes[,OR:=1000]
             nes[,pval:=0]
           }
 
         }else{
-          if (fish$estimate<100){
+          if (fish$estimate<1000){
             nes[,OR:=fish$estimate]
             nes[,pval:=fish$p.value]
           }else{
-            nes[,OR:=100]
+            nes[,OR:=1000]
             nes[,pval:=fish$p.value]
           }
         }
