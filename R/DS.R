@@ -6,7 +6,7 @@
 #'
 #' @return The result include p-value, FDR, dPSI and abs_dPSI.
 #' @export
-#' @importFrom  stats t.test
+#' @importFrom  stats t.test var
 #'
 #'
 #' @examples
@@ -15,8 +15,15 @@
 #'
 #'
 DS<-function(x,m,n){
-  a<-t.test(x[1:m],x[(m+1):(m+n)])
-  dPSI<-mean(as.numeric(x[(m+1):(m+n)]))-mean(as.numeric(x[1:m]))
+  x1<-as.numeric(x[1:m])
+  x2<-as.numeric(x[(m+1):(m+n)])
+  va1<-var(x1)
+  va2<-var(x2)
+  if (va1==0) x1[1]<-x1[1]+0.001
+  if (va2==0) x2[1]<-x2[1]+0.001
+
+  a<-t.test(x1,x2)
+  dPSI<-mean(as.numeric(x2))-mean(as.numeric(x1))
   FDR<-stats::p.adjust(a$p.value,method = "BH")
   return(list(pvalue=a$p.value,FDR=FDR,dPSI=dPSI,abs_dPSI=abs(dPSI)))
 }
