@@ -2,8 +2,7 @@
 % Please edit documentation in R/MRAS.R
 \name{MRAS}
 \alias{MRAS}
-\title{Master Regulator analysis of Alternative Splicing
-If you have any questions,you cna get help here.(https://github.com/zhou-lei5/MRAS)}
+\title{Master Regulator analysis of Alternative Splicing}
 \usage{
 MRAS(
   expr,
@@ -16,10 +15,14 @@ MRAS(
   method = c("pearson", "spearman"),
   num1 = 0.5,
   num2 = 0.5,
+  BS = NULL,
+  net_type = "1",
   dpsi_network_threshold = 0.1,
   Regulate_threshold = 0.5,
   threads = 1,
   path_use,
+  group = T,
+  sc = F,
   result_type = c("Top10", "tab_simple", "tab_all")
 )
 }
@@ -44,6 +47,10 @@ MRAS(
 Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 When choosing the input sample proportion, it is required to be no greater than 0.5.}
 
+\item{BS}{RBP binding matrix.}
+
+\item{net_type}{network building type. There are three types. When choose "1", building network by themselves; when choose "2", smooth; when choose "3", use well-established network.}
+
 \item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 
 \item{Regulate_threshold}{A threshold value to measure whether the RBP regulates a splicing event, greater than which the RBP is considered to regulate the splicing event, with a default threshold value of 0.5.}
@@ -52,15 +59,18 @@ When choosing the input sample proportion, it is required to be no greater than 
 
 \item{path_use}{The path to the file used to store the output.}
 
+\item{group}{TRUE or FALSE.If consider the synergy between RBPs.}
+
+\item{sc}{TRUE or FALSE. If single cell data.}
+
 \item{result_type}{The types of return values are "top10", "tab_simple", and "tab_all".
 "top10" returns the top 10 MRAS results;
 "tab_simple" returns a simplified version of the MRAS scoring matrix (without the events corresponding to the RBP);
 "tab_all" returns the full version of the MRAS scoring matrix. matrix (including the events corresponding to the RBP).}
 }
 \value{
-MRAS result.
+MRAS result. If you have any questions,you can get help here (https://github.com/zhou-lei5/MRAS).
 }
 \description{
 Master Regulator analysis of Alternative Splicing
-If you have any questions,you cna get help here.(https://github.com/zhou-lei5/MRAS)
 }

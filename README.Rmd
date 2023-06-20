@@ -40,37 +40,39 @@ library(MRAS)
 
 Test data is included in MRAS and you can import it using data(), which contains the RBP expression matrix as well as the event PSI matrix.
 
-```{r data_expr}
-## "expr" is RBP expression matrix.
-data("expr")
-expr[1:5,1:5]
+```{r self-built network: hcc_expr }
+## "hcc_expr" is RBP expression matrix.
+data("hcc_expr")
+hcc_expr[1:5,1:5]
 ```
-```{r data_psi}
-## "psi" is events psi matrix."expr" and "psi" should have same column names.
-data("psi")
-psi[1:5,1:5]
+```{r self-built network: hcc_psi}
+## "hcc_psi" is events psi matrix."hcc_expr" and "hcc_psi" should have same column names.
+data("hcc_psi")
+hcc_psi[1:5,1:3]
 ```
 The easiest way to use it: directly use the function `MRAS()`. The specific parameters are detailed in `??MRAS` or `help(MRAS)`.
 
-```{r MRAS}
+```{r MRAS_BULK}
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
-result<-MRAS(
-  expr,
-  psi,
-  rbp_interested = "ESRP1",
-  m = 22,
-  n = 22,
+result1<-MRAS(
+  expr = hcc_expr,
+  psi = hcc_psi,
+  rbp_interested = "SF3B4",
+  m = 50,
+  n = 50,
   DS_pvalue = 0.05,
   DS_dPSI = 0.1,
   method =  "spearman",
-  num1 = 0.2,
-  num2 = 10,
+  num1 = 0.15, num2 = 0.15,
+  BS = NULL, net_type = "1",
   dpsi_network_threshold = 0.1,
   Regulate_threshold = 0.5,
   threads = 6,
   path_use="./tests/",
+  group=T,
   result_type = "Top10"
 )
+result1
 ```
 
 
@@ -84,5 +86,33 @@ head(result_tab_simple[1:5,])
 ```
 
 
+
+If using sc-RNA seq data, some methods should change.
+
+```{r MRAS_sc}
+data("sc_brca_expr")
+data("sc_brca_psi")
+result2<-MRAS(
+  expr = sc_brca_expr,
+  psi = sc_brca_psi,
+  rbp_interested = "ESRP1",
+  m = 198,
+  n = 317,
+  DS_pvalue = 0.05,
+  DS_dPSI = 0.1,
+  method =  "spearman",
+  num1 = 0.1, num2 = 0.1,
+  BS = NULL, net_type = "1",
+  dpsi_network_threshold = 0.1,
+  Regulate_threshold = 0.5,
+  threads = 6,
+  path_use="./tests/",
+  group=T,
+  sc=T,
+  result_type = "Top10"
+)
+result2
+```
+
 Of course, you can also distribute the MRAS analysis, which will help you better understand the principles of MRAS.
-Finally, if you have any more questions, you can submit them in Github and we will do our best to answer them.(https://github.com/zhou-lei5/MRAS)
+Finally, if you have any more questions, you can submit them in Github and we will do our best to answer them (https://github.com/zhou-lei5/MRAS).
