@@ -470,7 +470,9 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
   string_net_use<-string_net[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
   string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
   #+1
-  expr_rbp_log<-log2(expr_rbp+1)
+  expr_rbp_log<-as.data.frame(apply(expr_rbp,2,function(x){
+    return(log2(as.numeric(x)+1))
+  }))
 
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
   if ((num2>0.5)&(num2<1)) stop("Wrong input : num!")
@@ -1088,7 +1090,9 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
   string_net_use<-string_net[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
   string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
   #+1
-  expr_rbp_log<-log2(expr_rbp+1)
+  expr_rbp_log<-as.data.frame(apply(expr_rbp,2,function(x){
+    return(log2(as.numeric(x)+1))
+  }))
 
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
   if ((num2>0.5)&(num2<1)) stop("Wrong input : num!")
