@@ -24,6 +24,7 @@
 #' @import BiocParallel
 #' @import parallel
 #' @import fastmatch
+#' @import magrittr
 #' @importFrom dplyr group_by summarise left_join n
 #' @importFrom stats p.adjust na.omit fisher.test binomial
 #'
