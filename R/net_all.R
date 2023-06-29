@@ -1722,7 +1722,7 @@ get_MRAS_net_smooth<-function(MRAS_net_group_re,
   return(network_work)
 }
 
-#' Title
+#' get_MRAS_net_fc
 #'
 #' @param rbp_net_mat first net.
 #' @param rbp_corr_work second net.
@@ -1735,7 +1735,7 @@ get_MRAS_net_smooth<-function(MRAS_net_group_re,
 #' @import parallel
 #' @import foreach
 #' @return network
-#'
+#' @export
 #'
 
 get_MRAS_net_fc<-function(rbp_net_mat,rbp_corr_work,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/net_all.R
 \name{get_MRAS_net_fc}
 \alias{get_MRAS_net_fc}
-\title{Title}
+\title{get_MRAS_net_fc}
 \usage{
 get_MRAS_net_fc(
   rbp_net_mat,
@@ -30,5 +30,5 @@ get_MRAS_net_fc(
 network
 }
 \description{
-Title
+get_MRAS_net_fc
 }

@@ -24,7 +24,7 @@
 #' @import BiocParallel
 #' @import parallel
 #' @import fastmatch
-#' @import magrittr
+#' @importFrom magrittr %>%
 #' @importFrom dplyr group_by summarise left_join n
 #' @importFrom stats p.adjust na.omit fisher.test binomial
 #'
@@ -372,7 +372,7 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
     # cat(which(target==rr),"\n")
     # library(data.table)
     w3_part<-w3[which(w3$RBP == rr),]
-    w3_part<-w3_part[which(w3_part$ID %in% Events_DS),]
+    w3_part<-w3_part[which(w3_part$ID %in% Events_DS[,1]),]
 
     Events_DS_RBP<-as.data.frame(Events_DS[w3_part$ID,])
     Events_DS_RBP$w1<-w3_part$weight1
