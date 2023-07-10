@@ -13,7 +13,7 @@ data but also in single-cell data.
 
 ## The Overview of MRAS
 
-![The Overview of MRAS](pdf/Fig1_0707.png)
+![The Overview of MRAS](png/Fig1_0707.png)
 
 ## Installation and Library
 
@@ -120,12 +120,10 @@ result_bulk<-MRAS(input_type = "3",
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_bulk
-#>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3      rank3              RBP4  
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6233325189212" "PKM" "22.85742" "IGF2BP2" "22.2332797298981" "RRP9"
-#>      rank4              RBP5   rank5              RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "20.9108756506376" "BOP1" "20.7784617568904" "XPO5" "18.8619353712253" "NELFE" "18.2104827193506" "RBM42"
-#>      rank8              RBP9    rank9              RBP10  rank10            
-#> [1,] "18.0691394691654" "SNRPA" "17.9663073721831" "RALY" "17.3304943863498"
+#>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3      rank3              RBP4   rank4              RBP5   rank5             
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.5881327311959" "PKM" "22.85806" "IGF2BP2" "22.1202766727241" "RRP9" "20.9291942547527" "BOP1" "20.8196029992724"
+#>      RBP6   rank6              RBP7    rank7              RBP8    rank8              RBP9    rank9              RBP10  rank10            
+#> [1,] "XPO5" "18.8506759119093" "NELFE" "18.2229054321537" "RBM42" "18.0243788545557" "SNRPA" "18.0233379218326" "RALY" "17.3571125343658"
 ```
 
 After running `MRAS()`, there are three ways to display the results. In
@@ -139,18 +137,18 @@ result_Top10<-get_Top10(path_use = "./tests/")
 result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
-#>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes      nes1_p nes2_size   nes2_es nes2_nes
-#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.807061 0.000999001       632 0.9271163 1.363712
-#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.760904 0.000999001       632 0.9080232 1.319372
-#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.776900 0.000999001       632 0.9253928 1.263607
-#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.793890 0.000999001       632 0.9269796 1.326551
-#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.787324 0.000999001       632 0.9222807 1.344227
-#>        nes2_p overlap total_size        OR          pval   score3
-#> 1 0.000999001     447       4259 200.00000  0.000000e+00 24.62333
-#> 2 0.000999001     417       4259  96.79408  0.000000e+00 22.85742
-#> 3 0.000999001     284       4259 200.00000 3.645079e-243 22.23328
-#> 4 0.000999001     451       4259 181.69070  0.000000e+00 20.91088
-#> 5 0.000999001     434       4259 121.47310  0.000000e+00 20.77846
+#>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes      nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
+#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.805372 0.000999001       632 0.9271163 1.363037 0.000999001     447       4259
+#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.757929 0.000999001       632 0.9080232 1.321641 0.000999001     417       4259
+#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.770123 0.000999001       632 0.9253928 1.261998 0.000999001     284       4259
+#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.797235 0.000999001       632 0.9269796 1.325242 0.000999001     451       4259
+#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.788022 0.000999001       632 0.9222807 1.346362 0.000999001     434       4259
+#>          OR          pval   score3
+#> 1 200.00000  0.000000e+00 24.58813
+#> 2  96.79408  0.000000e+00 22.85806
+#> 3 200.00000 3.645079e-243 22.12028
+#> 4 181.69070  0.000000e+00 20.92919
+#> 5 121.47310  0.000000e+00 20.81960
 ```
 
 Use MRAS in bulk rna-seq data:
@@ -179,13 +177,41 @@ result_sc<-MRAS(input_type = "3",
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_sc
-#>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3       rank3              RBP4   
-#> [1,] "ESRP1"        "1"  "ESRP1" "16.78545" "RBM47" "3.74547098412109" "APOBEC3C" "1.76936722172278" "MBNL1"
-#>      rank4              RBP5      rank5              RBP6    rank6               RBP7    rank7             
-#> [1,] "1.39738997629821" "HNRNPH2" "1.28286222308382" "RBM28" "0.773293055111086" "DDX24" "0.76686705888516"
-#>      RBP8     rank8              RBP9   rank9               RBP10   rank10             
-#> [1,] "PABPC1" "0.53654800611607" "SND1" "0.438984635521491" "CELF2" "0.437337715471888"
+#>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3       rank3              RBP4    rank4              RBP5     
+#> [1,] "ESRP1"        "1"  "ESRP1" "16.77792" "RBM47" "3.75697446315106" "APOBEC3C" "1.76619522545679" "MBNL1" "1.40326721805147" "HNRNPH2"
+#>      rank5             RBP6    rank6               RBP7    rank7               RBP8     rank8               RBP9    rank9               RBP10 
+#> [1,] "1.2784763653524" "RBM28" "0.772465197792791" "DDX24" "0.767209576036761" "PABPC1" "0.537306963183719" "CELF2" "0.439600147225192" "SND1"
+#>      rank10             
+#> [1,] "0.439486330104258"
 ```
+
+## Tools: AS Events ID converter
+
+MRAS provides an ID converter specifically designed for splice events.
+This converter facilitates the matching of splice event coordinates
+obtained from different software, allowing seamless integration with the
+pre-constructed regulatory network generated by MRAS. This functionality
+simplifies the process of mapping splice events to the existing
+regulatory network, increasing the usability and versatility of MRAS.
+![AS Events ID format](png/ID_format.png) MRAS provides the following
+features for ID conversion of splice events: 1. “id_find: This function
+allows the user to input the output path of commonly used splicing event
+identification software such as rMATS, SUPPA, and JUM. MRAS will
+directly return the PSI matrix or canonical splice event ID associated
+with the input data. This allows for seamless integration into the MRAS
+pre-built regulatory network. 2.”id_normalization”: This function guides
+the user step-by-step through the input of the corresponding column
+coordinates, allowing for the standardized output of splicing event IDs.
+The process ensures consistency and compatibility in the representation
+of splicing events. 3. “id_change: This function converts splicing event
+IDs recognized by two different splicing event identification software.
+By default, a mismatch coordinate difference of 2 is used to account for
+potential differences in coordinate systems between the software. This
+allows users to bridge the gap between different software outputs and
+harmonize the representation of splicing events. You can get help by
+`??MRAS::FUN` or `help("FUN")`.
+
+## Help
 
 Of course, you can also distribute the MRAS analysis, which will help
 you better understand the principles of MRAS. Finally, if you have any

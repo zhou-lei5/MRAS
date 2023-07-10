@@ -209,16 +209,17 @@ id_find<-function(file_path,software,subtype = NULL){
         A5SS[,5]<-apply(A5SS,1,function(x){
           return(strsplit(x[2],"_")[[1]][3])
         })
+        A5SS[,5]<-A5SS[,5]
         A5SS[,6]<-apply(A5SS,1,function(x){
           return(strsplit(x[2],"_")[[1]][4])
         })
-        A5SS[,6]<-ifelse(A3SS[,4] == "-",as.numeric(A3SS[,6])+2,A3SS[,6])
+        A5SS[,6]<-ifelse(A5SS[,4] == "-",as.numeric(A5SS[,6])+2,A5SS[,6])
         A5SS[,7]<-apply(A5SS,1,function(x){
           return(strsplit(x[2],"_")[[1]][5])
         })
-        A5SS[,7]<-as.numeric(A5SS[,7])+2
-        A5SS[,2]<-ifelse(A3SS[,4] == "-",paste0(A5SS[,1],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_","x","_",A5SS[,6],"_","x","_",A5SS[,5],"_",A5SS[,7],"_","x"),
-                         paste0(A5SS[,1],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_",A5SS[,6],"_","x","_",A5SS[,7],"_","x","_","x","_",A5SS[,5])                         )
+        A5SS[,7]<-ifelse(A5SS[,4] == "-",as.numeric(A5SS[,7])+2,A5SS[,7])
+        A5SS[,2]<-ifelse(A5SS[,4] == "+",paste0(A5SS[,1],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_","x","_",A5SS[,6],"_","x","_",A5SS[,5],"_",A5SS[,7],"_","x"),
+                         paste0(A5SS[,1],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_",A5SS[,6],"_","x","_",A5SS[,7],"_","x","_","x","_",A5SS[,5]))
         write.table(A5SS[,2],file = paste0(path_jum,"/PSI_simplified.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
@@ -494,16 +495,17 @@ id_find<-function(file_path,software,subtype = NULL){
         A5SS[,5]<-apply(A5SS,1,function(x){
           return(strsplit(x[1],"_")[[1]][4])
         })
+        A5SS[,5]<-as.numeric(A5SS[,5])
         A5SS[,6]<-apply(A5SS,1,function(x){
           return(strsplit(x[1],"_")[[1]][5])
         })
-        A5SS[,6]<-ifelse(A3SS[,4] == "-",as.numeric(A3SS[,6])+2,A3SS[,6])
+        A5SS[,6]<-ifelse(A5SS[,4] == "-",as.numeric(A5SS[,6])+2,A5SS[,6])
         A5SS[,7]<-apply(A5SS,1,function(x){
           return(strsplit(x[1],"_")[[1]][6])
         })
-        A5SS[,7]<-as.numeric(A5SS[,7])+2
-        A5SS[,8]<-ifelse(A3SS[,4] == "-",paste0(A5SS[,2],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_","x","_",A5SS[,6],"_","x","_",A5SS[,5],"_",A5SS[,7],"_","x"),
-                                         paste0(A5SS[,2],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_",A5SS[,6],"_","x","_",A5SS[,7],"_","x","_","x","_",A5SS[,5])
+        A5SS[,7]<-ifelse(A5SS[,4] == "-",as.numeric(A5SS[,7])+2,A5SS[,7])
+        A5SS[,8]<-ifelse(A5SS[,4] == "+",paste0(A5SS[,2],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_","x","_",A5SS[,6],"_","x","_",A5SS[,5],"_",A5SS[,7],"_","x"),
+                                         paste0(A5SS[,2],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_",A5SS[,6],"_","x","_",A5SS[,7],"_","x","_","x","_",A5SS[,5]))
         sample_num<-(ncol(A5SS_pre_deal)-17)/2
         for (id in 1:nrow(A5SS)) {
           event<-A5SS[id,1]
@@ -651,7 +653,7 @@ id_find<-function(file_path,software,subtype = NULL){
       if (x[6] == "+"){
         return(paste0(a2,"_","x","_",a4,"_","x","_","x","_",a1))
       }else{
-        return(paste0(a1,"_","x","_",a3,"_","x","_","x","_",a2))
+        return(paste0("x","_",a1,"_","x","_",a3,"_",a2,"_","x"))
       }
 
     })
@@ -666,7 +668,7 @@ id_find<-function(file_path,software,subtype = NULL){
       a3<-strsplit(s3,"-")[[1]][1]
       a4<-strsplit(s3,"-")[[1]][2]
       if (x[6] == "+"){
-        return(paste0(a1,"_","x","_",a3,"_","x","_","x","_",a2))
+        return(paste0("x","_",a1,"_","x","_",a3,"_",a2,"_","x"))
       }else{
         return(paste0(a2,"_","x","_",a4,"_","x","_","x","_",a1))
       }
