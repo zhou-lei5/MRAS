@@ -9,8 +9,11 @@
 MRAS is designed to identify crucial RNA-binding proteins (RBPs)
 responsible for splicing variations in diverse scenarios, including
 cancer vs. normal, primary vs. recurrence, and more, not just in bulk
-data but also in single-cell data. \## The Overview of MRAS ![The
-Overview of MRAS](pdf/Fig1_0707.pdf)
+data but also in single-cell data.
+
+## The Overview of MRAS
+
+![The Overview of MRAS](pdf/Fig1_0707.png)
 
 ## Installation and Library
 
@@ -118,11 +121,11 @@ result_bulk<-MRAS(input_type = "3",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3      rank3              RBP4  
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6327789493083" "PKM" "22.86405" "IGF2BP2" "22.2003779785095" "RRP9"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6233325189212" "PKM" "22.85742" "IGF2BP2" "22.2332797298981" "RRP9"
 #>      rank4              RBP5   rank5              RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "20.9232618954129" "BOP1" "20.7756211828407" "XPO5" "18.9169552093606" "NELFE" "18.2084545213419" "RBM42"
-#>      rank8              RBP9    rank9             RBP10  rank10            
-#> [1,] "18.0192797620896" "SNRPA" "17.985635462751" "RALY" "17.3324688605903"
+#> [1,] "20.9108756506376" "BOP1" "20.7784617568904" "XPO5" "18.8619353712253" "NELFE" "18.2104827193506" "RBM42"
+#>      rank8              RBP9    rank9              RBP10  rank10            
+#> [1,] "18.0691394691654" "SNRPA" "17.9663073721831" "RALY" "17.3304943863498"
 ```
 
 After running `MRAS()`, there are three ways to display the results. In
@@ -137,17 +140,17 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes      nes1_p nes2_size   nes2_es nes2_nes
-#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.808223 0.000999001       632 0.9271163 1.363358
-#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.760154 0.000999001       632 0.9080232 1.320316
-#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.776535 0.000999001       632 0.9253928 1.261996
-#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.794956 0.000999001       632 0.9269796 1.326548
-#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.786240 0.000999001       632 0.9222807 1.344859
+#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.807061 0.000999001       632 0.9271163 1.363712
+#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.760904 0.000999001       632 0.9080232 1.319372
+#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.776900 0.000999001       632 0.9253928 1.263607
+#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.793890 0.000999001       632 0.9269796 1.326551
+#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.787324 0.000999001       632 0.9222807 1.344227
 #>        nes2_p overlap total_size        OR          pval   score3
-#> 1 0.000999001     447       4259 200.00000  0.000000e+00 24.63278
-#> 2 0.000999001     417       4259  96.79408  0.000000e+00 22.86405
-#> 3 0.000999001     284       4259 200.00000 3.645079e-243 22.20038
-#> 4 0.000999001     451       4259 181.69070  0.000000e+00 20.92326
-#> 5 0.000999001     434       4259 121.47310  0.000000e+00 20.77562
+#> 1 0.000999001     447       4259 200.00000  0.000000e+00 24.62333
+#> 2 0.000999001     417       4259  96.79408  0.000000e+00 22.85742
+#> 3 0.000999001     284       4259 200.00000 3.645079e-243 22.23328
+#> 4 0.000999001     451       4259 181.69070  0.000000e+00 20.91088
+#> 5 0.000999001     434       4259 121.47310  0.000000e+00 20.77846
 ```
 
 Use MRAS in bulk rna-seq data:
@@ -177,11 +180,11 @@ result_sc<-MRAS(input_type = "3",
 #> Finish!
 result_sc
 #>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3       rank3              RBP4   
-#> [1,] "ESRP1"        "1"  "ESRP1" "16.77891" "RBM47" "3.75920246714644" "APOBEC3C" "1.77788374237722" "MBNL1"
-#>      rank4              RBP5      rank5              RBP6    rank6               RBP7    rank7              
-#> [1,] "1.39785316014947" "HNRNPH2" "1.27309932704082" "RBM28" "0.774488519159936" "DDX24" "0.768752705940816"
-#>      RBP8     rank8               RBP9   rank9               RBP10   rank10            
-#> [1,] "PABPC1" "0.536067802157354" "SND1" "0.439519067849775" "CELF2" "0.43748802552404"
+#> [1,] "ESRP1"        "1"  "ESRP1" "16.78545" "RBM47" "3.74547098412109" "APOBEC3C" "1.76936722172278" "MBNL1"
+#>      rank4              RBP5      rank5              RBP6    rank6               RBP7    rank7             
+#> [1,] "1.39738997629821" "HNRNPH2" "1.28286222308382" "RBM28" "0.773293055111086" "DDX24" "0.76686705888516"
+#>      RBP8     rank8              RBP9   rank9               RBP10   rank10             
+#> [1,] "PABPC1" "0.53654800611607" "SND1" "0.438984635521491" "CELF2" "0.437337715471888"
 ```
 
 Of course, you can also distribute the MRAS analysis, which will help
