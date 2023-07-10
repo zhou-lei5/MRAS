@@ -1574,7 +1574,7 @@ MRAS_net_single_fc_work<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("
 
 #' get_MRAS_net
 #'
-#' @param MRAS_net_group_re first net.
+#' @param rbp_net_mat_group first net which can get from "MRAS".
 #' @param rbp_corr_group_work second net.
 #' @param Regulate_threshold P cutoff.
 #' @param BS RBP binding matrix.
@@ -1588,10 +1588,9 @@ MRAS_net_single_fc_work<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("
 #' @export
 #'
 
-get_MRAS_net<-function(MRAS_net_group_re,rbp_corr_group_work,
+get_MRAS_net<-function(rbp_net_mat_group,rbp_corr_group_work,
                        Regulate_threshold = 0.5,BS = NULL,
                        threads = 2,path_use){
-  rbp_net_mat_group<-MRAS_net_group_re$rbp_net_mat_group
   rbp_net_mat_group[is.na(rbp_net_mat_group)]<-0
   rbp_corr_group_work$use_new<-as.numeric(rbp_corr_group_work$use_new)
   cll<-parallel::makeCluster(threads)

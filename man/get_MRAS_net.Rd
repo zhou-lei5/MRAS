@@ -5,7 +5,7 @@
 \title{get_MRAS_net}
 \usage{
 get_MRAS_net(
-  MRAS_net_group_re,
+  rbp_net_mat_group,
   rbp_corr_group_work,
   Regulate_threshold = 0.5,
   BS = NULL,
@@ -14,7 +14,7 @@ get_MRAS_net(
 )
 }
 \arguments{
-\item{MRAS_net_group_re}{first net.}
+\item{rbp_net_mat_group}{first net which can get from "MRAS".}
 
 \item{rbp_corr_group_work}{second net.}
 

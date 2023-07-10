@@ -5,6 +5,7 @@
 \title{Master Regulator analysis of Alternative Splicing}
 \usage{
 MRAS(
+  input_type,
   expr,
   psi,
   rbp_interested = NULL,
@@ -12,21 +13,29 @@ MRAS(
   n = 0,
   DS_pvalue = 0.05,
   DS_dPSI = 0.1,
-  method = c("pearson", "spearman"),
-  num1 = 0.5,
-  num2 = 0.5,
+  rbp_event_deal_all_total = NULL,
+  rbp_event_deal_all = NULL,
+  method = "spearman",
   BS = NULL,
-  net_type = "1",
+  group = T,
   dpsi_network_threshold = 0.1,
   Regulate_threshold = 0.5,
+  rbp_net_mat_group = NULL,
+  num1 = 0.5,
+  num2 = 0.5,
+  sc = F,
   threads = 1,
   path_use,
-  group = T,
-  sc = F,
+  smooth = FALSE,
   result_type = c("Top10", "tab_simple", "tab_all")
 )
 }
 \arguments{
+\item{input_type}{input type, different options for user's different needs.
+"1": input differential splicing events and use pre-constructed regulatory network;
+"2": input data and inferred relationships by MRAS.
+"3": input data and construct a network using the user's own data}
+
 \item{expr}{RBP expression matrix.}
 
 \item{psi}{Events splicing matrix.}
@@ -41,27 +50,31 @@ MRAS(
 
 \item{DS_dPSI}{Threshold for differential splicing.}
 
-\item{method}{Method of finding correlation.}
+\item{rbp_event_deal_all_total, rbp_event_deal_all}{the network built by MRAS.}
 
-\item{num1, num2}{Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
-Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
-When choosing the input sample proportion, it is required to be no greater than 0.5.}
+\item{method}{Method of finding correlation.}
 
 \item{BS}{RBP binding matrix.}
 
-\item{net_type}{network building type. There are three types. When choose "1", building network by themselves; when choose "2", smooth; when choose "3", use well-established network.}
+\item{group}{TRUE or FALSE.If consider the synergy between RBPs.}
 
 \item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 
 \item{Regulate_threshold}{A threshold value to measure whether the RBP regulates a splicing event, greater than which the RBP is considered to regulate the splicing event, with a default threshold value of 0.5.}
 
+\item{rbp_net_mat_group}{first net which can get from "MRAS".}
+
+\item{num1, num2}{Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
+Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
+When choosing the input sample proportion, it is required to be no greater than 0.5.}
+
+\item{sc}{TRUE or FALSE. If single cell data.}
+
 \item{threads}{If you want to use multiple threads, you can set threads, where the default parameter is 1.}
 
 \item{path_use}{The path to the file used to store the output.}
 
-\item{group}{TRUE or FALSE.If consider the synergy between RBPs.}
-
-\item{sc}{TRUE or FALSE. If single cell data.}
+\item{smooth}{network building type.User can choose "TRUE" or "FALSE" in the third input type.}
 
 \item{result_type}{The types of return values are "top10", "tab_simple", and "tab_all".
 "top10" returns the top 10 MRAS results;

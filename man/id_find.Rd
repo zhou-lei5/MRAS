@@ -11,7 +11,7 @@ id_find(file_path, software, subtype = NULL)
 
 \item{software}{Commonly used software for detecting differential splicing events (rMTAS, JUM, SUPPA).}
 
-\item{subtype}{if `software` = "rMATS",subtype should be "JCEC";if `software` = "JUM",subtype should be "detailed";}
+\item{subtype}{if `software` = "rMATS",subtype should be "JCEC";if `software` = "JUM",subtype should be "simplified" or "detailed";}
 }
 \value{
 Returns a PSI matrix with canonical splicing event names

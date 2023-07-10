@@ -2,7 +2,7 @@
 #'
 #' @param file_path the input files path.
 #' @param software Commonly used software for detecting differential splicing events (rMTAS, JUM, SUPPA).
-#' @param subtype if `software` = "rMATS",subtype should be "JCEC";if `software` = "JUM",subtype should be "detailed";
+#' @param subtype if `software` = "rMATS",subtype should be "JCEC";if `software` = "JUM",subtype should be "simplified" or "detailed";
 #'
 #' @return Returns a PSI matrix with canonical splicing event names
 #' @export
@@ -114,10 +114,10 @@ id_find<-function(file_path,software,subtype = NULL){
   if (software == "JUM"){
     path_jum<-file_path
     file_list<-list.files(path_jum)
-    if (subtype == "detailed"){
-      if (file.exists(paste0(path_jum,"/PSI_detailed.txt"))) file.remove(paste0(path_jum,"/PSI_detailed.txt"))
-      if ("AS_differential_JUM_output_cassette_exon_events_pvalue_0.05_final_detailed.txt" %in% file_list){
-        SE<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_cassette_exon_events_pvalue_0.05_final_detailed.txt"),header = T)
+    if (subtype == "simplified"){
+      if (file.exists(paste0(path_jum,"/PSI_simplified.txt"))) file.remove(paste0(path_jum,"/PSI_simplified.txt"))
+      if ("AS_differential_JUM_output_cassette_exon_events_pvalue_0.05_final_simplified.txt" %in% file_list){
+        SE<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_cassette_exon_events_pvalue_0.05_final_simplified.txt"),header = T)
         SE<-SE[complete.cases(SE),]
         SE[,3]<-apply(SE,1,function(x){
           return(strsplit(x[2],"_")[[1]][1])
@@ -141,12 +141,12 @@ id_find<-function(file_path,software,subtype = NULL){
         })
         SE[,8]<-as.numeric(SE[,8])+2
         SE[,2]<-paste0(SE[,1],"_","ES","_",SE[,3],"_",SE[,4],"_",SE[,6],"_",SE[,7],"_","x","_",SE[,5],"_",SE[,8],"_","x")
-        write.table(SE[,c(2,((ncol(SE)+17)/2):(ncol(SE)-1))],file = paste0(path_jum,"/PSI_detailed.txt"),
+        write.table(SE[,2],file = paste0(path_jum,"/PSI_simplified.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
       }
-      if ("AS_differential_JUM_output_intron_retention_pvalue_0.05_final_detailed.txt" %in% file_list){
-        RI<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_intron_retention_pvalue_0.05_final_detailed.txt"),header = T)
+      if ("AS_differential_JUM_output_intron_retention_pvalue_0.05_final_simplified.txt" %in% file_list){
+        RI<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_intron_retention_pvalue_0.05_final_simplified.txt"),header = T)
         RI<-RI[complete.cases(RI),]
         RI[,3]<-apply(RI,1,function(x){
           return(strsplit(x[2],"_")[[1]][1])
@@ -164,12 +164,12 @@ id_find<-function(file_path,software,subtype = NULL){
         RI[,6]<-as.numeric(RI[,6])+2
 
         RI[,2]<-paste0(RI[,1],"_","IR","_",RI[,3],"_",RI[,4],"_","x","_","x","_","x","_",RI[,5],"_",RI[,6],"_","x")
-        write.table(RI[,c(2,((ncol(RI)+17)/2):(ncol(RI)-1))],file = paste0(path_jum,"/PSI_detailed.txt"),
+        write.table(RI[,2],file = paste0(path_jum,"/PSI_simplified.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
       }
-      if ("AS_differential_JUM_output_A3SS_events_pvalue_0.05_final_detailed.txt" %in% file_list){
-        A3SS<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_A3SS_events_pvalue_0.05_final_detailed.txt"),header = T)
+      if ("AS_differential_JUM_output_A3SS_events_pvalue_0.05_final_simplified.txt" %in% file_list){
+        A3SS<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_A3SS_events_pvalue_0.05_final_simplified.txt"),header = T)
         A3SS<-A3SS[complete.cases(A3SS),]
         A3SS[,3]<-apply(A3SS,1,function(x){
           return(strsplit(x[2],"_")[[1]][1])
@@ -190,12 +190,12 @@ id_find<-function(file_path,software,subtype = NULL){
         })
         A3SS[,7]<-as.numeric(A3SS[,7])+2
         A3SS[,2]<-paste0(A3SS[,1],"_","A3SS","_",A3SS[,3],"_",A3SS[,4],"_",A3SS[,6],"_","x","_",A3SS[,7],"_","x","_","x","_",A3SS[,5])
-        write.table(A3SS[,c(2,((ncol(A3SS)+17)/2):(ncol(A3SS)-1))],file = paste0(path_jum,"/PSI_detailed.txt"),
+        write.table(A3SS[,2],file = paste0(path_jum,"/PSI_simplified.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
       }
-      if ("AS_differential_JUM_output_A5SS_events_pvalue_0.05_final_detailed.txt" %in% file_list){
-        A5SS<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_A5SS_events_pvalue_0.05_final_detailed.txt"),header = T)
+      if ("AS_differential_JUM_output_A5SS_events_pvalue_0.05_final_simplified.txt" %in% file_list){
+        A5SS<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_A5SS_events_pvalue_0.05_final_simplified.txt"),header = T)
         A5SS<-A5SS[complete.cases(A5SS),]
         A5SS[,3]<-apply(A5SS,1,function(x){
           return(strsplit(x[2],"_")[[1]][1])
@@ -216,12 +216,12 @@ id_find<-function(file_path,software,subtype = NULL){
         })
         A5SS[,7]<-as.numeric(A5SS[,7])+2
         A5SS[,2]<-paste0(A5SS[,1],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_","x","_",A5SS[,6],"_","x","_",A5SS[,5],"_",A5SS[,7],"_","x")
-        write.table(A5SS[,c(2,((ncol(A5SS)+17)/2):(ncol(A5SS)-1))],file = paste0(path_jum,"/PSI_detailed.txt"),
+        write.table(A5SS[,2],file = paste0(path_jum,"/PSI_simplified.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
       }
-      if ("AS_differential_JUM_output_MXE_events_pvalue_0.05_final_detailed.txt" %in% file_list){
-        MEX<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_MXE_events_pvalue_0.05_final_detailed.txt"),header = T)
+      if ("AS_differential_JUM_output_MXE_events_pvalue_0.05_final_simplified.txt" %in% file_list){
+        MEX<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_MXE_events_pvalue_0.05_final_simplified.txt"),header = T)
         MEX<-MEX[complete.cases(MEX),]
         MEX[,3]<-apply(MEX,1,function(x){
           return(strsplit(x[2],"_")[[1]][1])
@@ -259,8 +259,321 @@ id_find<-function(file_path,software,subtype = NULL){
           return(strsplit(x[2],"_")[[1]][6])
         })
         MEX[,10]<-as.numeric(MEX[,10])+2
-        MEX[,2]<-paste0(MEX[,1],"_","MEX","_",MEX[,3],"_",MEX[,4],"_","x","_",MEX[,5],"_",MEX[,6],"_",MEX[,7],"_",MEX[,8],"_",MEX[,9],"_",MEX[,10],"_",MEX[,11],"_","x")
-        write.table(MEX[,c(2,((ncol(MEX)+17)/2):(ncol(MEX)-1))],file = paste0(path_jum,"/PSI_detailed.txt"),
+        MEX[,2]<-paste0(MEX[,1],"_","MEX","_",MEX[,3],"_",MEX[,4],"_","x","_",MEX[,5],"_",MEX[,6],"_",MEX[,7],"_",MEX[,8],"_",MEX[,9],"_",MEX[,10],"_","x")
+        write.table(MEX[,2],file = paste0(path_jum,"/PSI_simplified.txt"),
+                    row.names = F,col.names = F,
+                    sep = ",",quote = F,append = T)
+      }
+      data<-read.delim(paste0(path_jum,"/PSI_simplified.txt"),sep = ",",header = F)
+      data[,1]<-gsub(" ","",data[,1])
+      write.table(data,file = paste0(path_jum,"/PSI_simplified.txt"),
+                  row.names = F,col.names = F,
+                  sep = ",",quote = F)
+      data<-fread(paste0(path_jum,"/PSI_simplified.txt"),sep = ",",header = F)
+      data[is.na(data)]<-0
+      return(data)
+    }
+    if (subtype == "detailed"){
+      if (file.exists(paste0(path_jum,"/PSI_detailed.txt"))) file.remove(paste0(path_jum,"/PSI_detailed.txt"))
+      if ("AS_differential_JUM_output_cassette_exon_events_pvalue_0.05_final_detailed.txt" %in% file_list){
+        SE_pre<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_cassette_exon_events_pvalue_0.05_final_detailed.txt"),header = T)
+        SE_pre<-SE_pre[which(SE_pre$sub_junction_strand %in% c("+","-")),]
+        SE_pre[,1]<-paste0(SE_pre[,1],"_",SE_pre[,2])
+        SE<-matrix(NA,nrow = length(unique(SE_pre[,1])),ncol = ncol(SE_pre))
+        SE[,1]<-unique(SE_pre[,1])
+        SE[,2]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][1])
+        })
+        SE[,3]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][2])
+        })
+        SE[,3]<-paste0("chr",SE[,3])
+        SE[,4]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][3])
+        })
+        SE[,5]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][4])
+        })
+        SE[,6]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][5])
+        })
+        SE[,6]<-as.numeric(SE[,6])+1
+        SE[,7]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][6])
+        })
+        SE[,8]<-apply(SE,1,function(x){
+          return(strsplit(x[1],"_")[[1]][7])
+        })
+        SE[,8]<-as.numeric(SE[,8])+2
+        SE[,9]<-paste0(SE[,2],"_","ES","_",SE[,3],"_",SE[,4],"_",SE[,6],"_",SE[,7],"_","x","_",SE[,5],"_",SE[,8],"_","x")
+
+        sample_num<-(ncol(SE_pre)-17)/2
+        for (id in 1:nrow(SE)) {
+          event<-SE[id,1]
+          event_mat<-SE_pre[which(SE_pre[,1] == event),1:(16+sample_num)]
+          SE_type<-as.data.frame(table(event_mat$sub_junction_size))
+          inclusion<-which(event_mat$sub_junction_size %in% SE_type$Var1[which(SE_type$Freq == 1)])
+          skipping<-which(event_mat$sub_junction_size %in% SE_type$Var1[which(SE_type$Freq == 2)])
+          event_mat_deal<-as.data.frame(event_mat[,17:ncol(event_mat)])
+          event_mat_deal<-apply(event_mat_deal, 2, as.numeric)
+          psi<-colSums(event_mat_deal[inclusion,])/colSums(event_mat_deal)
+          SE[id,10:(9+sample_num)]<-round(psi,2)
+        }
+        write.table(SE[,9:(9+sample_num)],file = paste0(path_jum,"/PSI_detailed.txt"),
+                    row.names = F,col.names = F,
+                    sep = ",",quote = F,append = T)
+      }
+      if ("AS_differential_JUM_output_intron_retention_pvalue_0.05_final_detailed.txt" %in% file_list){
+        RI_pre<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_intron_retention_pvalue_0.05_final_detailed.txt"),header = T)
+        RI_pre[,1]<-paste0(RI_pre[,1],"_",RI_pre[,2])
+        RI_pre<-RI_pre[which(RI_pre$sub_junction_strand %in% c("+","-")),]
+        RI<-matrix(NA,nrow = length(unique(RI_pre[,1])),ncol = ncol(RI_pre))
+        RI[,1]<-unique(RI_pre[,1])
+        RI[,2]<-apply(RI,1,function(x){
+          return(strsplit(x[1],"_")[[1]][1])
+        })
+        RI[,3]<-apply(RI,1,function(x){
+          return(strsplit(x[1],"_")[[1]][2])
+        })
+        RI[,3]<-paste0("chr",RI[,3])
+        RI[,4]<-apply(RI,1,function(x){
+          return(strsplit(x[1],"_")[[1]][3])
+        })
+        RI[,5]<-apply(RI,1,function(x){
+          return(strsplit(x[1],"_")[[1]][4])
+        })
+        RI[,6]<-apply(RI,1,function(x){
+          return(strsplit(x[1],"_")[[1]][5])
+        })
+        RI[,6]<-as.numeric(RI[,6])+2
+
+        RI[,7]<-paste0(RI[,2],"_","IR","_",RI[,3],"_",RI[,4],"_","x","_","x","_","x","_",RI[,5],"_",RI[,6],"_","x")
+        sample_num<-(ncol(RI_pre)-17)/2
+        for (id in 1:nrow(RI)) {
+          event<-RI[id,1]
+          event_mat<-RI_pre[which(RI_pre[,1] == event),1:(16+sample_num)]
+          RI_type<-as.data.frame(table(event_mat$sub_junction_size))
+          inclusion<-which(event_mat$sub_junction_size %in% RI_type$Var1[which(RI_type$Freq == 1)])
+          skipping<-which(event_mat$sub_junction_size %in% RI_type$Var1[which(RI_type$Freq == 2)])
+          event_mat_deal<-as.data.frame(event_mat[,17:ncol(event_mat)])
+          event_mat_deal<-apply(event_mat_deal, 2, as.numeric)
+          psi<-colSums(event_mat_deal[inclusion,])/colSums(event_mat_deal)
+          RI[id,8:(7+sample_num)]<-round(psi,2)
+        }
+        write.table(RI[,7:(7+sample_num)],file = paste0(path_jum,"/PSI_detailed.txt"),
+                    row.names = F,col.names = F,
+                    sep = ",",quote = F,append = T)
+      }
+      if ("AS_differential_JUM_output_A3SS_events_pvalue_0.05_final_detailed.txt" %in% file_list){
+        A3SS_pre<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_A3SS_events_pvalue_0.05_final_detailed.txt"),header = T)
+        id_deal<-unique(A3SS_pre$AS_event_ID[which(A3SS_pre$sub_junction_ID == "J003")])
+        A3SS_pre_deal<-matrix(NA,1,1)
+        for (ii in unique(A3SS_pre$AS_event_ID)) {
+          if (ii %in% id_deal){
+            mat<-as.data.frame((A3SS_pre[which(A3SS_pre$AS_event_ID == ii),]))
+            id_all<-strsplit(ii,"_")[[1]]
+            id_loc<-ifelse(id_all[2] == "+",id_all[3],id_all[length(id_all)])
+            id_change<-setdiff(id_all[3:length(id_all)],id_loc)
+            com_mat<-t(as.data.frame(combn(1:length(unique(mat$sub_junction_ID)), 2)))
+            deal_mat<-matrix(NA,nrow = nrow(com_mat)*2,ncol = ncol(A3SS_pre))
+            for (dd in 1:nrow(com_mat)) {
+              id1<-as.numeric(com_mat[dd,1])
+              id2<-as.numeric(com_mat[dd,2])
+              deal_mat[dd*2-1,]<-unlist(mat[which(mat$sub_junction_ID == mat$sub_junction_ID[id1]),])
+              deal_mat[dd*2,]<-unlist(mat[which(mat$sub_junction_ID == mat$sub_junction_ID[id2]),])
+              deal_mat[c(dd*2-1,dd*2),2]<-ifelse(id_all[2] == "+",
+                                                 tj(c(id_all[1],id_all[2],id_loc,id_change[id1],id_change[id2]),type = "_"),
+                                                 tj(c(id_all[1],id_all[2],id_change[id1],id_change[id2],id_loc),type = "_"))
+            }
+            }else{
+            deal_mat<-as.matrix(A3SS_pre[which(A3SS_pre$AS_event_ID == ii),])
+          }
+          if (is.na(A3SS_pre_deal[1,1])){
+            A3SS_pre_deal<-deal_mat
+          }else{
+            A3SS_pre_deal<-rbind(A3SS_pre_deal,deal_mat)
+          }
+        }
+        # cat(dim(A3SS_pre),"\t")
+        # cat(dim(A3SS_pre_deal),"\t")
+        # cat(dim(A3SS_pre_deal)[1]-dim(A3SS_pre)[1],"\t")
+        A3SS_pre_deal<-as.data.frame(A3SS_pre_deal)
+        A3SS_pre_deal[,1]<-paste0(A3SS_pre_deal[,1],"_",A3SS_pre_deal[,2])
+        A3SS_pre_deal<-A3SS_pre_deal[which(A3SS_pre_deal$sub_junction_strand %in% c("+","-")),]
+        A3SS<-matrix(NA,nrow = length(unique(A3SS_pre_deal[,1])),ncol = ncol(A3SS_pre_deal))
+        A3SS[,1]<-unique(A3SS_pre_deal[,1])
+        A3SS[,2]<-apply(A3SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][1])
+        })
+        A3SS[,3]<-apply(A3SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][2])
+        })
+        A3SS[,3]<-paste0("chr",A3SS[,3])
+        A3SS[,4]<-apply(A3SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][3])
+        })
+        A3SS[,5]<-apply(A3SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][4])
+        })
+        A3SS[,6]<-apply(A3SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][5])
+        })
+        A3SS[,6]<-as.numeric(A3SS[,6])+2
+        A3SS[,7]<-apply(A3SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][6])
+        })
+        A3SS[,7]<-as.numeric(A3SS[,7])+2
+        A3SS[,8]<-paste0(A3SS[,2],"_","A3SS","_",A3SS[,3],"_",A3SS[,4],"_",A3SS[,6],"_","x","_",A3SS[,7],"_","x","_","x","_",A3SS[,5])
+        sample_num<-(ncol(A3SS_pre_deal)-17)/2
+        for (id in 1:nrow(A3SS)) {
+          event<-A3SS[id,1]
+          event_mat<-A3SS_pre_deal[which(A3SS_pre_deal[,1] == event),1:(16+sample_num)]
+          inclusion<-which(event_mat$sub_junction_size %in% min(event_mat$sub_junction_size))
+          skipping<-which(event_mat$sub_junction_size %in% max(event_mat$sub_junction_size))
+          event_mat_deal<-as.data.frame(event_mat[,17:ncol(event_mat)])
+          event_mat_deal<-apply(event_mat_deal, 2, as.numeric)
+          psi<-event_mat_deal[inclusion,]/colSums(event_mat_deal)
+          A3SS[id,9:(8+sample_num)]<-round(psi,2)
+        }
+        write.table(A3SS[,8:(8+sample_num)],file = paste0(path_jum,"/PSI_detailed.txt"),
+                    row.names = F,col.names = F,
+                    sep = ",",quote = F,append = T)
+      }
+      if ("AS_differential_JUM_output_A5SS_events_pvalue_0.05_final_detailed.txt" %in% file_list){
+        A5SS_pre<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_A5SS_events_pvalue_0.05_final_detailed.txt"),header = T)
+        id_deal<-unique(A5SS_pre$AS_event_ID[which(A5SS_pre$sub_junction_ID == "J003")])
+        A5SS_pre_deal<-matrix(NA,1,1)
+        for (ii in unique(A5SS_pre$AS_event_ID)) {
+          if (ii %in% id_deal){
+            mat<-as.data.frame((A5SS_pre[which(A5SS_pre$AS_event_ID == ii),]))
+            id_all<-strsplit(ii,"_")[[1]]
+            id_loc<-ifelse(id_all[2] == "-",id_all[3],id_all[length(id_all)])
+            id_change<-setdiff(id_all[3:length(id_all)],id_loc)
+            com_mat<-t(as.data.frame(combn(1:length(unique(mat$sub_junction_ID)), 2)))
+            deal_mat<-matrix(NA,nrow = nrow(com_mat)*2,ncol = ncol(A5SS_pre))
+            for (dd in 1:nrow(com_mat)) {
+              id1<-as.numeric(com_mat[dd,1])
+              id2<-as.numeric(com_mat[dd,2])
+              deal_mat[dd*2-1,]<-unlist(mat[which(mat$sub_junction_ID == mat$sub_junction_ID[id1]),])
+              deal_mat[dd*2,]<-unlist(mat[which(mat$sub_junction_ID == mat$sub_junction_ID[id2]),])
+              deal_mat[c(dd*2-1,dd*2),2]<-ifelse(id_all[2] == "+",
+                                                 tj(c(id_all[1],id_all[2],id_loc,id_change[id1],id_change[id2]),type = "_"),
+                                                 tj(c(id_all[1],id_all[2],id_change[id1],id_change[id2],id_loc),type = "_"))
+            }
+          }else{
+            deal_mat<-as.matrix(A5SS_pre[which(A5SS_pre$AS_event_ID == ii),])
+          }
+          if (is.na(A5SS_pre_deal[1,1])){
+            A5SS_pre_deal<-deal_mat
+          }else{
+            A5SS_pre_deal<-rbind(A5SS_pre_deal,deal_mat)
+          }
+        }
+        # cat(dim(A5SS_pre),"\t")
+        # cat(dim(A5SS_pre_deal),"\t")
+        # cat(dim(A5SS_pre_deal)[1]-dim(A5SS_pre)[1],"\t")
+        A5SS_pre_deal<-as.data.frame(A5SS_pre_deal)
+        A5SS_pre_deal[,1]<-paste0(A5SS_pre_deal[,1],"_",A5SS_pre_deal[,2])
+        A5SS_pre_deal<-A5SS_pre_deal[which(A5SS_pre_deal$sub_junction_strand %in% c("+","-")),]
+        A5SS<-matrix(NA,nrow = length(unique(A5SS_pre_deal[,1])),ncol = ncol(A5SS_pre_deal))
+        A5SS[,1]<-unique(A5SS_pre_deal[,1])
+        A5SS[,2]<-apply(A5SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][1])
+        })
+        A5SS[,3]<-apply(A5SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][2])
+        })
+        A5SS[,3]<-paste0("chr",A5SS[,3])
+        A5SS[,4]<-apply(A5SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][3])
+        })
+        A5SS[,5]<-apply(A5SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][4])
+        })
+        A5SS[,6]<-apply(A5SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][5])
+        })
+        A5SS[,6]<-as.numeric(A5SS[,6])+2
+        A5SS[,7]<-apply(A5SS,1,function(x){
+          return(strsplit(x[1],"_")[[1]][6])
+        })
+        A5SS[,7]<-as.numeric(A5SS[,7])+2
+        A5SS[,8]<-paste0(A5SS[,2],"_","A5SS","_",A5SS[,3],"_",A5SS[,4],"_",A5SS[,6],"_","x","_",A5SS[,7],"_","x","_","x","_",A5SS[,5])
+        sample_num<-(ncol(A5SS_pre_deal)-17)/2
+        for (id in 1:nrow(A5SS)) {
+          event<-A5SS[id,1]
+          event_mat<-A5SS_pre_deal[which(A5SS_pre_deal[,1] == event),1:(16+sample_num)]
+          inclusion<-which(event_mat$sub_junction_size %in% min(event_mat$sub_junction_size))
+          skipping<-which(event_mat$sub_junction_size %in% max(event_mat$sub_junction_size))
+          event_mat_deal<-as.data.frame(event_mat[,17:ncol(event_mat)])
+          event_mat_deal<-apply(event_mat_deal, 2, as.numeric)
+          psi<-event_mat_deal[inclusion,]/colSums(event_mat_deal)
+          A5SS[id,9:(8+sample_num)]<-round(psi,2)
+        }
+        write.table(A5SS[,8:(8+sample_num)],file = paste0(path_jum,"/PSI_detailed.txt"),
+                    row.names = F,col.names = F,
+                    sep = ",",quote = F,append = T)
+      }
+      if ("AS_differential_JUM_output_MXE_events_pvalue_0.05_final_detailed.txt" %in% file_list){
+        MEX_pre<-read.delim(paste0(path_jum,"/AS_differential_JUM_output_MXE_events_pvalue_0.05_final_detailed.txt"),header = T)
+        MEX_pre<-MEX_pre[which(MEX_pre$sub_junction_strand %in% c("+","-")),]
+        MEX_pre[,1]<-paste0(MEX_pre[,1],"_",MEX_pre[,2])
+        MEX<-matrix(NA,nrow = length(unique(MEX_pre[,1])),ncol = ncol(MEX_pre))
+        MEX[,1]<-unique(MEX_pre[,1])
+        MEX[,2]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][1])
+        })
+        MEX[,3]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][2])
+        })
+        MEX[,3]<-paste0("chr",MEX[,3])
+        MEX[,4]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][3])
+        })
+        MEX[,5]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][4])
+        })
+        MEX[,6]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][5])
+        })
+        MEX[,7]<-apply(MEX,1,function(x){
+          return(strsplit(x[6],"-")[[1]][2])
+        })
+        MEX[,6]<-apply(MEX,1,function(x){
+          return(strsplit(x[6],"-")[[1]][1])
+        })
+        MEX[,6]<-as.numeric(MEX[,6])+1
+        MEX[,7]<-as.numeric(MEX[,7])
+        MEX[,8]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][6])
+        })
+        MEX[,9]<-apply(MEX,1,function(x){
+          return(strsplit(x[8],"-")[[1]][2])
+        })
+        MEX[,8]<-apply(MEX,1,function(x){
+          return(strsplit(x[8],"-")[[1]][1])
+        })
+        MEX[,8]<-as.numeric(MEX[,8])+1
+        MEX[,9]<-as.numeric(MEX[,9])
+        MEX[,10]<-apply(MEX,1,function(x){
+          return(strsplit(x[1],"_")[[1]][7])
+        })
+        MEX[,10]<-as.numeric(MEX[,10])+2
+        MEX[,11]<-paste0(MEX[,2],"_","MEX","_",MEX[,3],"_",MEX[,4],"_","x","_",MEX[,5],"_",MEX[,6],"_",MEX[,7],"_",MEX[,8],"_",MEX[,9],"_",MEX[,10],"_","x")
+        sample_num<-(ncol(MEX_pre)-17)/2
+        for (id in 1:nrow(MEX)) {
+          event<-MEX[id,1]
+          event_mat<-MEX_pre[which(MEX_pre[,1] == event),1:(16+sample_num)]
+          id_pre<-strsplit(tj(strsplit(event,"_")[[1]][c(4,5,7)],"-"),"-")[[1]]
+          id_pre2<-which((event_mat$sub_junction_start_coor %in% id_pre)&(event_mat$sub_junction_end_coor %in% id_pre))
+          inclusion<-which(event_mat$sub_junction_ID == event_mat$sub_junction_ID[id_pre2])
+          event_mat_deal<-as.data.frame(event_mat[,17:ncol(event_mat)])
+          event_mat_deal<-apply(event_mat_deal, 2, as.numeric)
+          psi<-colSums(event_mat_deal[inclusion,])/colSums(event_mat_deal)
+          MEX[id,12:(11+sample_num)]<-round(psi,2)
+        }
+
+        write.table(MEX[,11:(11+sample_num)],file = paste0(path_jum,"/PSI_detailed.txt"),
                     row.names = F,col.names = F,
                     sep = ",",quote = F,append = T)
       }
