@@ -22,10 +22,10 @@ Menu
         RNA-seq</a>
   - <a href="#tools-as-events-id-converter"
     id="toc-tools-as-events-id-converter">Tools: AS Events ID converter</a>
-    - <a href="#id_find" id="toc-id_find">id_find</a>
+    - <a href="#id_find" id="toc-id_find"><code>id_find()</code></a>
     - <a href="#id_normalization"
-      id="toc-id_normalization">id_normalization</a>
-    - <a href="#id_change" id="toc-id_change">id_change</a>
+      id="toc-id_normalization"><code>id_normalization()</code></a>
+    - <a href="#id_change" id="toc-id_change"><code>id_change()</code></a>
   - <a href="#help" id="toc-help">Help</a>
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -168,18 +168,17 @@ result_bulk<-MRAS(input_type = "3",
 #> Step2:Preparing data...
 #> Step3:Constructing RBP-Event regulatory relationship network...
 #> Joining, by = c("rbp", "BS")
-#> 
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_bulk
-#>      rbp_interested rank RBP1    rank1              RBP2  rank2     RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6441824935453" "PKM" "22.8576" "IGF2BP2"
-#>      rank3             RBP4   rank4             RBP5   rank5             
-#> [1,] "22.276285168721" "RRP9" "20.896996537413" "BOP1" "20.7733769724037"
-#>      RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.8892313902743" "NELFE" "18.2470636722506" "SNRPA"
-#>      rank8              RBP9    rank9             RBP10  rank10            
-#> [1,] "18.0704101927985" "RBM42" "18.042105091541" "RALY" "17.3288427821108"
+#>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.5785308621637" "PKM" "22.89013" "IGF2BP2"
+#>      rank3              RBP4   rank4              RBP5   rank5             
+#> [1,] "22.1717683687683" "RRP9" "20.8955753788019" "BOP1" "20.7491536240853"
+#>      RBP6   rank6             RBP7    rank7              RBP8   
+#> [1,] "XPO5" "18.891530815475" "NELFE" "18.1643612297649" "RBM42"
+#>      rank8              RBP9    rank9              RBP10  rank10            
+#> [1,] "18.0886572791793" "SNRPA" "18.0227037981263" "RALY" "17.3452470618072"
 ```
 
 After running `MRAS()`, there are three ways to display the results. In
@@ -194,23 +193,23 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
-#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.807734
-#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.760275
-#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.780514
-#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.795844
-#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.783420
+#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.805192
+#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.762343
+#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.771402
+#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.794865
+#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.782989
 #>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
-#> 1 0.000999001       632 0.9271163 1.364359 0.000999001     447       4259
-#> 2 0.000999001       632 0.9080232 1.319853 0.000999001     417       4259
-#> 3 0.000999001       632 0.9253928 1.263481 0.000999001     284       4259
-#> 4 0.000999001       632 0.9269796 1.324228 0.000999001     451       4259
-#> 5 0.000999001       632 0.9222807 1.346840 0.000999001     434       4259
+#> 1 0.000999001       632 0.9271163 1.362640 0.000999001     447       4259
+#> 2 0.000999001       632 0.9080232 1.320181 0.000999001     417       4259
+#> 3 0.000999001       632 0.9253928 1.264022 0.000999001     284       4259
+#> 4 0.000999001       632 0.9269796 1.324861 0.000999001     451       4259
+#> 5 0.000999001       632 0.9222807 1.345594 0.000999001     434       4259
 #>          OR          pval   score3
-#> 1 200.00000  0.000000e+00 24.64418
-#> 2  96.79408  0.000000e+00 22.85760
-#> 3 200.00000 3.645079e-243 22.27629
-#> 4 181.69070  0.000000e+00 20.89700
-#> 5 121.47310  0.000000e+00 20.77338
+#> 1 200.00000  0.000000e+00 24.57853
+#> 2  96.79408  0.000000e+00 22.89013
+#> 3 200.00000 3.645079e-243 22.17177
+#> 4 181.69070  0.000000e+00 20.89558
+#> 5 121.47310  0.000000e+00 20.74915
 ```
 
 #### Single-cell RNA-seq
@@ -237,20 +236,19 @@ result_sc<-MRAS(input_type = "3",
 #> Step2:Preparing data...
 #> Step3:Constructing RBP-Event regulatory relationship network...
 #> Joining, by = c("rbp", "BS")
-#> 
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_sc
 #>      rbp_interested rank RBP1    rank1      RBP2    rank2             
-#> [1,] "ESRP1"        "1"  "ESRP1" "16.74488" "RBM47" "3.75705442414274"
+#> [1,] "ESRP1"        "1"  "ESRP1" "16.78219" "RBM47" "3.76360395627924"
 #>      RBP3       rank3              RBP4    rank4              RBP5     
-#> [1,] "APOBEC3C" "1.78124861846038" "MBNL1" "1.39983305154996" "HNRNPH2"
+#> [1,] "APOBEC3C" "1.77347906873424" "MBNL1" "1.40155844003465" "HNRNPH2"
 #>      rank5              RBP6    rank6               RBP7    rank7             
-#> [1,] "1.27989449813081" "RBM28" "0.775260380688308" "DDX24" "0.77310375539926"
+#> [1,] "1.27981771653657" "RBM28" "0.770314836617064" "DDX24" "0.76937572661236"
 #>      RBP8     rank8               RBP9   rank9               RBP10  
-#> [1,] "PABPC1" "0.535997242050131" "SND1" "0.439743969341109" "CELF2"
+#> [1,] "PABPC1" "0.538164960138278" "SND1" "0.439858210432235" "CELF2"
 #>      rank10             
-#> [1,] "0.435245000427895"
+#> [1,] "0.437049544921235"
 ```
 
 ## Tools: AS Events ID converter
@@ -267,9 +265,10 @@ AS Events ID Format:
 
 ![AS Events ID format](png/ID_format.png)
 
-MRAS provides the following features for ID conversion of splice events:
+MRAS provides the following functions for ID conversion of splice
+events:
 
-### id_find
+### `id_find()`
 
 This function allows the user to input the output path of commonly used
 splicing event identification software such as rMATS, SUPPA, and JUM.
@@ -277,14 +276,14 @@ MRAS will directly return the PSI matrix or canonical splice event ID
 associated with the input data. This allows for seamless integration
 into the MRAS pre-built regulatory network.
 
-### id_normalization
+### `id_normalization()`
 
 This function guides the user step-by-step through the input of the
 corresponding column coordinates, allowing for the standardized output
 of splicing event IDs. The process ensures consistency and compatibility
 in the representation of splicing events.
 
-### id_change
+### `id_change()`
 
 This function converts splicing event IDs recognized by two different
 splicing event identification software. By default, a mismatch

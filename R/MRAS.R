@@ -96,7 +96,6 @@ MRAS<-function(input_type,
       rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal/single"))
       rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal/single"))
     }
-    cat("\n")
     cat("Step4:Performing enrichment analysis...\n")
     result<-score_matrix(rbp_interested = rbp_interested,
                          Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
@@ -188,7 +187,6 @@ MRAS<-function(input_type,
       rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal/single"))
       rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal/single"))
     }
-    cat("\n")
     cat("Step4:Performing enrichment analysis...\n")
     result<-score_matrix(rbp_interested = rbp_interested,
                          Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
