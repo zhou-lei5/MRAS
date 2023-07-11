@@ -874,7 +874,7 @@ id_change<-function(id1,id2,err_len=2){
     return(strsplit(x[14],"_")[[1]][6])
   }))
 
-  id1_mat<-id1_mat[which(id1_mat$symbol %in% id2_mat$symbol),]
+  # id1_mat<-id1_mat[which(id1_mat$symbol %in% id2_mat$symbol),]
   id_mat<-matrix(NA,1,1)
   event_type<-unique(id1_mat$type)
   if ("ES" %in% event_type){
@@ -1073,5 +1073,8 @@ id_change<-function(id1,id2,err_len=2){
       # cat(chr,"\n")
     }
   }
+  rownames(id_mat)<-id_mat[,1]
+  id_mat<-id_mat[id1_mat[,1],]
+  return(id_mat)
 }
 
