@@ -884,6 +884,7 @@ id_change<-function(id1,id2,err_len=2){
       id1_mat_SE_part<-id1_mat_SE[which(id1_mat_SE$chr == chr),c("id1","n1","n2","n3","n4")]
       id2_mat_SE_part<-id2_mat_SE[which(id2_mat_SE$chr == chr),c("id2","n1","n2","n3","n4")]
       id1_mat_SE_part$trans<-id1_mat_SE_part$id1
+      id1_mat_SE_part$label<-"No"
       if (nrow(id1_mat_SE_part)>0 && (nrow(id2_mat_SE_part)>0)){
         id1_n1<-t(sapply(as.numeric(id1_mat_SE_part[,2]),rep,nrow(id2_mat_SE_part)))
         id1_n2<-t(sapply(as.numeric(id1_mat_SE_part[,3]),rep,nrow(id2_mat_SE_part)))
@@ -908,6 +909,7 @@ id_change<-function(id1,id2,err_len=2){
             return(n13[1])
           }}))
         id1_mat_SE_part$trans[which(!is.na(n_all_loc))]<-id2_mat_SE_part$id2[n_all_loc[which(!is.na(n_all_loc))]]
+        id1_mat_SE_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
         id_mat<-id1_mat_SE_part[,c("id1","trans")]
@@ -925,6 +927,7 @@ id_change<-function(id1,id2,err_len=2){
       id1_mat_IR_part<-id1_mat_IR[which(id1_mat_IR$chr == chr),c("id1","n1","n2")]
       id2_mat_IR_part<-id2_mat_IR[which(id2_mat_IR$chr == chr),c("id2","n1","n2")]
       id1_mat_IR_part$trans<-id1_mat_IR_part$id1
+      id1_mat_IR_part$label<-"No"
       if (nrow(id1_mat_IR_part)>0 && (nrow(id2_mat_IR_part)>0)){
         id1_n1<-t(sapply(as.numeric(id1_mat_IR_part[,2]),rep,nrow(id2_mat_IR_part)))
         id1_n2<-t(sapply(as.numeric(id1_mat_IR_part[,3]),rep,nrow(id2_mat_IR_part)))
@@ -941,6 +944,7 @@ id_change<-function(id1,id2,err_len=2){
             return(n11[1])
           }}))
         id1_mat_IR_part$trans[which(!is.na(n_all_loc))]<-id2_mat_IR_part$id2[n_all_loc[which(!is.na(n_all_loc))]]
+        id1_mat_IR_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
         id_mat<-id1_mat_IR_part[,c("id1","trans")]
@@ -958,6 +962,7 @@ id_change<-function(id1,id2,err_len=2){
       id1_mat_A3SS_part<-id1_mat_A3SS[which(id1_mat_A3SS$chr == chr),c("id1","n1","n2","n3")]
       id2_mat_A3SS_part<-id2_mat_A3SS[which(id2_mat_A3SS$chr == chr),c("id2","n1","n2","n3")]
       id1_mat_A3SS_part$trans<-id1_mat_A3SS_part$id1
+      id1_mat_A3SS_part$label<-"No"
       if (nrow(id1_mat_A3SS_part)>0 && (nrow(id2_mat_A3SS_part)>0)){
         id1_n1<-t(sapply(as.numeric(id1_mat_A3SS_part[,2]),rep,nrow(id2_mat_A3SS_part)))
         id1_n2<-t(sapply(as.numeric(id1_mat_A3SS_part[,3]),rep,nrow(id2_mat_A3SS_part)))
@@ -978,6 +983,7 @@ id_change<-function(id1,id2,err_len=2){
             return(n12[1])
           }}))
         id1_mat_A3SS_part$trans[which(!is.na(n_all_loc))]<-id2_mat_A3SS_part$id2[n_all_loc[which(!is.na(n_all_loc))]]
+        id1_mat_A3SS_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
         id_mat<-id1_mat_A3SS_part[,c("id1","trans")]
@@ -995,6 +1001,7 @@ id_change<-function(id1,id2,err_len=2){
       id1_mat_A5SS_part<-id1_mat_A5SS[which(id1_mat_A5SS$chr == chr),c("id1","n1","n2","n3")]
       id2_mat_A5SS_part<-id2_mat_A5SS[which(id2_mat_A5SS$chr == chr),c("id2","n1","n2","n3")]
       id1_mat_A5SS_part$trans<-id1_mat_A5SS_part$id1
+      id1_mat_A5SS_part$label<-"No"
       if (nrow(id1_mat_A5SS_part)>0 && (nrow(id2_mat_A5SS_part)>0)){
         id1_n1<-t(sapply(as.numeric(id1_mat_A5SS_part[,2]),rep,nrow(id2_mat_A5SS_part)))
         id1_n2<-t(sapply(as.numeric(id1_mat_A5SS_part[,3]),rep,nrow(id2_mat_A5SS_part)))
@@ -1015,6 +1022,7 @@ id_change<-function(id1,id2,err_len=2){
             return(n12[1])
           }}))
         id1_mat_A5SS_part$trans[which(!is.na(n_all_loc))]<-id2_mat_A5SS_part$id2[n_all_loc[which(!is.na(n_all_loc))]]
+        id1_mat_A5SS_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
         id_mat<-id1_mat_A5SS_part[,c("id1","trans")]
@@ -1032,6 +1040,7 @@ id_change<-function(id1,id2,err_len=2){
       id1_mat_MEX_part<-id1_mat_MEX[which(id1_mat_MEX$chr == chr),c("id1","n1","n2","n3","n4","n5","n6")]
       id2_mat_MEX_part<-id2_mat_MEX[which(id2_mat_MEX$chr == chr),c("id2","n1","n2","n3","n4","n5","n6")]
       id1_mat_MEX_part$trans<-id1_mat_MEX_part$id1
+      id1_mat_MEX_part$label<-"No"
       if (nrow(id1_mat_MEX_part)>0 && (nrow(id2_mat_MEX_part)>0)){
         id1_n1<-t(sapply(as.numeric(id1_mat_MEX_part[,2]),rep,nrow(id2_mat_MEX_part)))
         id1_n2<-t(sapply(as.numeric(id1_mat_MEX_part[,3]),rep,nrow(id2_mat_MEX_part)))
@@ -1063,6 +1072,7 @@ id_change<-function(id1,id2,err_len=2){
             return(n14[1])
           }}))
         id1_mat_MEX_part$trans[which(!is.na(n_all_loc))]<-id2_mat_MEX_part$id2[n_all_loc[which(!is.na(n_all_loc))]]
+        id1_mat_MEX_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
         id_mat<-id1_mat_MEX_part[,c("id1","trans")]
