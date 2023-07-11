@@ -1085,6 +1085,14 @@ id_change<-function(id1,id2,err_len=2){
   }
   rownames(id_mat)<-id_mat[,1]
   id_mat<-id_mat[id1_mat[,1],]
+  countOccurrences <- function(x) {
+    tab <- table(x)
+    occurrences <- tab[x]
+    return(occurrences)
+  }
+  # 使用ave()函数将计算结果应用于第四列
+  id_mat$count <- ave(id_mat[, 2], id_mat[, 2], FUN = countOccurrences)
+
   return(id_mat)
 }
 
