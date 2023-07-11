@@ -140,7 +140,7 @@ MRAS. This functionality simplifies the process of mapping splice events
 to the existing regulatory network, increasing the usability and
 versatility of MRAS.
 
-<div style="margin-top: 20px; margin-bottom: 10px;">
+<div style="margin-top: 30px; margin-bottom: 30px;">
 
 <img src="png/ID_format.png" alt="AS Events ID format">
 
