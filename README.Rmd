@@ -21,10 +21,11 @@ knitr::opts_chunk$set(
 MRAS is designed to identify crucial RNA-binding proteins (RBPs) responsible for splicing variations in diverse scenarios, including cancer vs. normal, primary vs. recurrence, and more, not just in bulk data but also in single-cell data.
 
 ## The Overview of MRAS
+<!--html_preserve-->
 <div style="text-align: center;">
   ![The Overview of MRAS](png/Fig1_0707.png)
 </div>
-
+<!--/html_preserve-->
 
 ## Installation and Library
 
