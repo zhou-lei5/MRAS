@@ -912,9 +912,9 @@ id_change<-function(id1,id2,err_len=2){
         id1_mat_SE_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
-        id_mat<-id1_mat_SE_part[,c("id1","trans")]
+        id_mat<-id1_mat_SE_part[,c("id1","trans","label")]
       }else{
-        use<-id1_mat_SE_part[,c("id1","trans")]
+        use<-id1_mat_SE_part[,c("id1","trans","label")]
         id_mat<-rbind(id_mat,use)
       }
       # cat(chr,"\n")
@@ -947,9 +947,9 @@ id_change<-function(id1,id2,err_len=2){
         id1_mat_IR_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
-        id_mat<-id1_mat_IR_part[,c("id1","trans")]
+        id_mat<-id1_mat_IR_part[,c("id1","trans","label")]
       }else{
-        use<-id1_mat_IR_part[,c("id1","trans")]
+        use<-id1_mat_IR_part[,c("id1","trans","label")]
         id_mat<-rbind(id_mat,use)
       }
       # cat(chr,"\n")
@@ -986,9 +986,9 @@ id_change<-function(id1,id2,err_len=2){
         id1_mat_A3SS_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
-        id_mat<-id1_mat_A3SS_part[,c("id1","trans")]
+        id_mat<-id1_mat_A3SS_part[,c("id1","trans","label")]
       }else{
-        use<-id1_mat_A3SS_part[,c("id1","trans")]
+        use<-id1_mat_A3SS_part[,c("id1","trans","label")]
         id_mat<-rbind(id_mat,use)
       }
       # cat(chr,"\n")
@@ -1025,9 +1025,9 @@ id_change<-function(id1,id2,err_len=2){
         id1_mat_A5SS_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
-        id_mat<-id1_mat_A5SS_part[,c("id1","trans")]
+        id_mat<-id1_mat_A5SS_part[,c("id1","trans","label")]
       }else{
-        use<-id1_mat_A5SS_part[,c("id1","trans")]
+        use<-id1_mat_A5SS_part[,c("id1","trans","label")]
         id_mat<-rbind(id_mat,use)
       }
       # cat(chr,"\n")
@@ -1075,9 +1075,9 @@ id_change<-function(id1,id2,err_len=2){
         id1_mat_MEX_part$label[which(!is.na(n_all_loc))]<-"Yes"
       }
       if (is.na(id_mat[1,1])) {
-        id_mat<-id1_mat_MEX_part[,c("id1","trans")]
+        id_mat<-id1_mat_MEX_part[,c("id1","trans","label")]
       }else{
-        use<-id1_mat_MEX_part[,c("id1","trans")]
+        use<-id1_mat_MEX_part[,c("id1","trans","label")]
         id_mat<-rbind(id_mat,use)
       }
       # cat(chr,"\n")
