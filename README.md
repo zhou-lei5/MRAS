@@ -101,104 +101,47 @@ hcc_psi[1:5,1:3]
 The easiest way to use it: directly use the function `MRAS()`. The
 specific parameters are detailed in `??MRAS` or `help(MRAS)`.
 
-``` r
+# `{r MRAS_BULK}`r
+
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
-result_bulk<-MRAS(input_type = "3",
-  expr = hcc_expr,
-  psi = hcc_psi,
-  rbp_interested = "SF3B4",
-  m = 50, n = 50,
-  DS_pvalue = 0.05, DS_dPSI = 0.1,
-  method =  "spearman",
-  num1 = 0.15, num2 = 0.15,
-  BS = NULL, smooth = F,
-  dpsi_network_threshold = 0.1, Regulate_threshold = 0.5,
-  group = T,
-  result_type = "Top10", threads = 6, path_use = "./tests/"
-)
-#> Step1:Performing differential splicing analysis...
-#> Step2:Preparing data...
-#> Step3:Constructing RBP-Event regulatory relationship network...
-#> Joining with `by = join_by(rbp, BS)`
-#> 
-#> Step4:Performing enrichment analysis...
-#> Finish!
-result_bulk
-#>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3      rank3              RBP4   rank4              RBP5   rank5             
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.5751394735431" "PKM" "22.84913" "IGF2BP2" "22.1835384994524" "RRP9" "20.9426822234055" "BOP1" "20.8352026158765"
-#>      RBP6   rank6              RBP7    rank7              RBP8    rank8              RBP9    rank9              RBP10  rank10            
-#> [1,] "XPO5" "18.9039548415593" "NELFE" "18.1845164474762" "RBM42" "18.0218695038714" "SNRPA" "17.9954669166935" "RALY" "17.3358776227225"
-```
 
-After running `MRAS()`, there are three ways to display the results. In
-addition to setting the form directly in the parameters, users can also
-obtain other result display forms through the functions `get_Top10()`,
-`get_tab_all()`, and `get_tab_simple()`. This allows users to access
-additional result display formats without having to rerun `MRAS()`.
+result_bulk\<-MRAS(input_type = “3”, expr = hcc_expr, psi = hcc_psi,
+rbp_interested = “SF3B4”, m = 50, n = 50, DS_pvalue = 0.05, DS_dPSI =
+0.1, method = “spearman”, num1 = 0.15, num2 = 0.15, BS = NULL, smooth =
+F, dpsi_network_threshold = 0.1, Regulate_threshold = 0.5, group = T,
+result_type = “Top10”, threads = 6, path_use = “./tests/” ) result_bulk
 
-``` r
-result_Top10<-get_Top10(path_use = "./tests/")
-result_tab_simple<-get_tab_simple(path_use = "./tests/")
-result_tab_all<-get_tab_all(path_use = "./tests/")
-head(result_tab_simple[1:5,])
-#>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes      nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
-#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.802843 0.000999001       632 0.9271163 1.364227 0.000999001     447       4259
-#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.760393 0.000999001       632 0.9080232 1.319276 0.000999001     417       4259
-#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.775012 0.000999001       632 0.9253928 1.262121 0.000999001     284       4259
-#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.798772 0.000999001       632 0.9269796 1.324963 0.000999001     451       4259
-#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.789960 0.000999001       632 0.9222807 1.345912 0.000999001     434       4259
-#>          OR          pval   score3
-#> 1 200.00000  0.000000e+00 24.57514
-#> 2  96.79408  0.000000e+00 22.84913
-#> 3 200.00000 3.645079e-243 22.18354
-#> 4 181.69070  0.000000e+00 20.94268
-#> 5 121.47310  0.000000e+00 20.83520
-```
+
+
+    After running `MRAS()`, there are three ways to display the results. In addition to setting the form directly in the parameters, users can also obtain other result display forms through the functions `get_Top10()`, `get_tab_all()`, and `get_tab_simple()`. This allows users to access additional result display formats without having to rerun `MRAS()`.
+
+    # ```{r MRAS_result}
+    ```r
+    result_Top10<-get_Top10(path_use = "./tests/")
+    result_tab_simple<-get_tab_simple(path_use = "./tests/")
+    result_tab_all<-get_tab_all(path_use = "./tests/")
+    head(result_tab_simple[1:5,])
 
 Use MRAS in bulk rna-seq data:
 
-``` r
-data("sc_brca_expr")
-data("sc_brca_psi")
-result_sc<-MRAS(input_type = "3",
-  expr = sc_brca_expr,
-  psi = sc_brca_psi,
-  rbp_interested = "ESRP1",
-  m = 198, n = 317,
-  DS_pvalue = 0.05, DS_dPSI = 0.1,
-  method =  "spearman",
-  num1 = 0.1, num2 = 0.1,
-  BS = NULL, smooth = F,
-  dpsi_network_threshold = 0.1, Regulate_threshold = 0.5,
-  group = T, sc = T,
-  result_type = "Top10", threads = 6, path_use = "./tests/"
-)
-#> Step1:Performing differential splicing analysis...
-#> Step2:Preparing data...
-#> Step3:Constructing RBP-Event regulatory relationship network...
-#> Joining with `by = join_by(rbp, BS)`
-#> 
-#> Step4:Performing enrichment analysis...
-#> Finish!
-result_sc
-#>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3       rank3              RBP4    rank4             RBP5     
-#> [1,] "ESRP1"        "1"  "ESRP1" "16.74174" "RBM47" "3.74988337702547" "APOBEC3C" "1.76681068741885" "MBNL1" "1.4045790631636" "HNRNPH2"
-#>      rank5              RBP6    rank6               RBP7    rank7               RBP8     rank8               RBP9   rank9               RBP10  
-#> [1,] "1.27777718750185" "RBM28" "0.768874813259026" "DDX24" "0.767054541957615" "PABPC1" "0.536431180897356" "SND1" "0.439904475232322" "CELF2"
-#>      rank10             
-#> [1,] "0.439034424860822"
-```
+# `{r MRAS_sc}`r
 
-## Tools: AS Events ID converter
-
-MRAS provides an ID converter specifically designed for splice events.
-This converter facilitates the matching of splice event coordinates
-obtained from different software, allowing seamless integration with the
-pre-constructed regulatory network generated by MRAS. This functionality
-simplifies the process of mapping splice events to the existing
-regulatory network, increasing the usability and versatility of MRAS.
+data(“sc_brca_expr”) data(“sc_brca_psi”) result_sc\<-MRAS(input_type =
+“3”, expr = sc_brca_expr, psi = sc_brca_psi, rbp_interested = “ESRP1”, m
+= 198, n = 317, DS_pvalue = 0.05, DS_dPSI = 0.1, method = “spearman”,
+num1 = 0.1, num2 = 0.1, BS = NULL, smooth = F, dpsi_network_threshold =
+0.1, Regulate_threshold = 0.5, group = T, sc = T, result_type = “Top10”,
+threads = 6, path_use = “./tests/” ) result_sc \`\`\` \## Tools: AS
+Events ID converter MRAS provides an ID converter specifically designed
+for splice events. This converter facilitates the matching of splice
+event coordinates obtained from different software, allowing seamless
+integration with the pre-constructed regulatory network generated by
+MRAS. This functionality simplifies the process of mapping splice events
+to the existing regulatory network, increasing the usability and
+versatility of MRAS. <span
+style="display: block; margin-top: 20px; margin-bottom: 10px;">
 <img src="png/ID_format.png" data-margin="10px"
-alt="AS Events ID format" />
+alt="AS Events ID format" /> </span>
 
 MRAS provides the following features for ID conversion of splice
 events: 1. “id_find: This function allows the user to input the output
