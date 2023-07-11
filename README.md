@@ -149,8 +149,6 @@ hcc_psi[1:5,1:3]
 #> SSR4_ES_chrX_+_153061383_153061581_153060131_153060209_153061889_153062007          0.010
 ```
 
-<!-- # ```{r MRAS_BULK} -->
-
 ``` r
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
 result_bulk<-MRAS(input_type = "3",
@@ -166,7 +164,22 @@ result_bulk<-MRAS(input_type = "3",
   group = T,
   result_type = "Top10", threads = 6, path_use = "./tests/"
 )
+#> Step1:Performing differential splicing analysis...
+#> Step2:Preparing data...
+#> Step3:Constructing RBP-Event regulatory relationship network...
+#> Joining, by = c("rbp", "BS")
+#> 
+#> Step4:Performing enrichment analysis...
+#> Finish!
 result_bulk
+#>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6026097213704" "PKM" "22.83049" "IGF2BP2"
+#>      rank3              RBP4   rank4              RBP5   rank5             
+#> [1,] "22.1936982017858" "RRP9" "20.9314433360409" "BOP1" "20.7317963042019"
+#>      RBP6   rank6              RBP7    rank7              RBP8   
+#> [1,] "XPO5" "18.8985063327505" "NELFE" "18.2323992669115" "RBM42"
+#>      rank8              RBP9    rank9              RBP10  rank10           
+#> [1,] "18.0542900850242" "SNRPA" "18.0448829088778" "RALY" "17.334294317907"
 ```
 
 After running `MRAS()`, there are three ways to display the results. In
@@ -175,38 +188,69 @@ obtain other result display forms through the functions `get_Top10()`,
 `get_tab_all()`, and `get_tab_simple()`. This allows users to access
 additional result display formats without having to rerun `MRAS()`.
 
-<!-- ```{r MRAS_result} -->
-
 ``` r
 result_Top10<-get_Top10(path_use = "./tests/")
 result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
+#>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
+#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.804480
+#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.758829
+#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.774513
+#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.796254
+#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.782577
+#>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
+#> 1 0.000999001       632 0.9271163 1.364513 0.000999001     447       4259
+#> 2 0.000999001       632 0.9080232 1.319372 0.000999001     417       4259
+#> 3 0.000999001       632 0.9253928 1.263054 0.000999001     284       4259
+#> 4 0.000999001       632 0.9269796 1.326109 0.000999001     451       4259
+#> 5 0.000999001       632 0.9222807 1.344779 0.000999001     434       4259
+#>          OR          pval   score3
+#> 1 200.00000  0.000000e+00 24.60261
+#> 2  96.79408  0.000000e+00 22.83049
+#> 3 200.00000 3.645079e-243 22.19370
+#> 4 181.69070  0.000000e+00 20.93144
+#> 5 121.47310  0.000000e+00 20.73180
 ```
 
 #### Single-cell RNA-seq
 
 Use MRAS in bulk rna-seq data:
 
-<!-- # ```{r MRAS_sc} -->
-
 ``` r
 data("sc_brca_expr")
 data("sc_brca_psi")
 result_sc<-MRAS(input_type = "3",
-  expr = sc_brca_expr,
-  psi = sc_brca_psi,
-  rbp_interested = "ESRP1",
-  m = 198, n = 317,
-  DS_pvalue = 0.05, DS_dPSI = 0.1,
-  method =  "spearman",
-  num1 = 0.1, num2 = 0.1,
-  BS = NULL, smooth = F,
-  dpsi_network_threshold = 0.1, Regulate_threshold = 0.5,
-  group = T, sc = T,
-  result_type = "Top10", threads = 6, path_use = "./tests/"
+ expr = sc_brca_expr,
+ psi = sc_brca_psi,
+ rbp_interested = "ESRP1",
+ m = 198, n = 317,
+ DS_pvalue = 0.05, DS_dPSI = 0.1,
+ method =  "spearman",
+ num1 = 0.1, num2 = 0.1,
+ BS = NULL, smooth = F,
+ dpsi_network_threshold = 0.1, Regulate_threshold = 0.5,
+ group = T, sc = T,
+ result_type = "Top10", threads = 6, path_use = "./tests/"
 )
+#> Step1:Performing differential splicing analysis...
+#> Step2:Preparing data...
+#> Step3:Constructing RBP-Event regulatory relationship network...
+#> Joining, by = c("rbp", "BS")
+#> 
+#> Step4:Performing enrichment analysis...
+#> Finish!
 result_sc
+#>      rbp_interested rank RBP1    rank1      RBP2    rank2             
+#> [1,] "ESRP1"        "1"  "ESRP1" "16.74408" "RBM47" "3.75109369567223"
+#>      RBP3       rank3              RBP4    rank4              RBP5     
+#> [1,] "APOBEC3C" "1.77489761211687" "MBNL1" "1.39997357228967" "HNRNPH2"
+#>      rank5              RBP6    rank6               RBP7    rank7              
+#> [1,] "1.27333548861098" "RBM28" "0.770130060747209" "DDX24" "0.768581086820645"
+#>      RBP8     rank8               RBP9   rank9               RBP10  
+#> [1,] "PABPC1" "0.537950141228642" "SND1" "0.441250587671233" "CELF2"
+#>      rank10             
+#> [1,] "0.438943707892684"
 ```
 
 ## Tools: AS Events ID converter
