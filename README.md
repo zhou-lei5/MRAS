@@ -1,3 +1,16 @@
+MRAS
+================
+
+- <a href="#mras" id="toc-mras">MRAS</a>
+  - <a href="#the-overview-of-mras" id="toc-the-overview-of-mras">The
+    Overview of MRAS</a>
+  - <a href="#installation-and-library"
+    id="toc-installation-and-library">Installation and Library</a>
+  - <a href="#usage-and-examples" id="toc-usage-and-examples">Usage and
+    Examples</a>
+  - <a href="#tools-as-events-id-converter"
+    id="toc-tools-as-events-id-converter">Tools: AS Events ID converter</a>
+  - <a href="#help" id="toc-help">Help</a>
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -184,7 +197,7 @@ Events ID Format: Gene Symbol_AS Type_Chromosome_Chain_AS Events
 Coordinates ![AS Events ID format](png/ID_format.png)
 
 MRAS provides the following features for ID conversion of splice
-events:. “id_find: This function allows the user to input the output
+events: 1. “id_find: This function allows the user to input the output
 path of commonly used splicing event identification software such as
 rMATS, SUPPA, and JUM. MRAS will directly return the PSI matrix or
 canonical splice event ID associated with the input data. This allows
