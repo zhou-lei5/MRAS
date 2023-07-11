@@ -18,7 +18,7 @@ Menu
       id="toc-the-basic-code-of-input-type-3">The basic code of input type
       3</a>
       - <a href="#bulk-rna-seq" id="toc-bulk-rna-seq">BULK RNA-seq</a>
-      - <a href="#single-cell-rna-seq" id="toc-single-cell-rna-seq">single-cell
+      - <a href="#single-cell-rna-seq" id="toc-single-cell-rna-seq">Single-cell
         RNA-seq</a>
   - <a href="#tools-as-events-id-converter"
     id="toc-tools-as-events-id-converter">Tools: AS Events ID converter</a>
@@ -180,7 +180,7 @@ result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 ```
 
-#### single-cell RNA-seq
+#### Single-cell RNA-seq
 
 Use MRAS in bulk rna-seq data:
 
@@ -215,8 +215,7 @@ simplifies the process of mapping splice events to the existing
 regulatory network, increasing the usability and versatility of MRAS.
 
 AS Events ID Format:
-
-Gene Symbol_AS Type_Chromosome_Chain_AS Events Coordinates
+`Gene Symbol_AS Type_Chromosome_Chain_AS Events Coordinates`
 
 ![AS Events ID format](png/ID_format.png)
 
