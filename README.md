@@ -13,15 +13,11 @@ data but also in single-cell data.
 
 ## The Overview of MRAS
 
-<!--html_preserve-->
-
-<div style="text-align: center;">
+<p align="center">
 
 ![The Overview of MRAS](png/Fig1_0707.png)
 
-</div>
-
-<!--/html_preserve-->
+</p>
 
 ## Installation and Library
 
