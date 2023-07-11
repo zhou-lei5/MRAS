@@ -17,12 +17,15 @@ Menu
     - <a href="#the-basic-code-of-input-type-3"
       id="toc-the-basic-code-of-input-type-3">The basic code of input type
       3</a>
+      - <a href="#bulk-rna-seq" id="toc-bulk-rna-seq">BULK RNA-seq</a>
+      - <a href="#single-cell-rna-seq" id="toc-single-cell-rna-seq">single-cell
+        RNA-seq</a>
   - <a href="#tools-as-events-id-converter"
     id="toc-tools-as-events-id-converter">Tools: AS Events ID converter</a>
-    - <a href="#id_find" id="toc-id_find">“id_find</a>
+    - <a href="#id_find" id="toc-id_find">id_find</a>
     - <a href="#id_normalization"
-      id="toc-id_normalization">“id_normalization”</a>
-    - <a href="#id_change" id="toc-id_change">“id_change</a>
+      id="toc-id_normalization">id_normalization</a>
+    - <a href="#id_change" id="toc-id_change">id_change</a>
   - <a href="#help" id="toc-help">Help</a>
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -98,6 +101,8 @@ have prepared some test data for users to better understand the usage of
 MRAS. Test data is included in MRAS and you can import it using data(),
 which contains the RBP expression matrix as well as the event PSI
 matrix.
+
+#### BULK RNA-seq
 
 Use MRAS in bulk rna-seq data:
 
@@ -175,6 +180,8 @@ result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 ```
 
+#### single-cell RNA-seq
+
 Use MRAS in bulk rna-seq data:
 
 <!-- # ```{r MRAS_sc} -->
@@ -215,7 +222,7 @@ Gene Symbol_AS Type_Chromosome_Chain_AS Events Coordinates
 
 MRAS provides the following features for ID conversion of splice events:
 
-### “id_find
+### id_find
 
 This function allows the user to input the output path of commonly used
 splicing event identification software such as rMATS, SUPPA, and JUM.
@@ -223,14 +230,14 @@ MRAS will directly return the PSI matrix or canonical splice event ID
 associated with the input data. This allows for seamless integration
 into the MRAS pre-built regulatory network.
 
-### “id_normalization”
+### id_normalization
 
 This function guides the user step-by-step through the input of the
 corresponding column coordinates, allowing for the standardized output
 of splicing event IDs. The process ensures consistency and compatibility
 in the representation of splicing events.
 
-### “id_change
+### id_change
 
 This function converts splicing event IDs recognized by two different
 splicing event identification software. By default, a mismatch
