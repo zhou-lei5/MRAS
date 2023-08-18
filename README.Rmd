@@ -157,7 +157,7 @@ result_sc<-MRAS(input_type = "3",
 result_sc
 ```
 
-### get interacting RBPs and splicing events co-regulated by interacting RBPs.
+### Interacting RBPs and co-regulated splicing events.
 
 ```r
 # get interacting RBPs。

@@ -10,9 +10,8 @@ Menu
     - [The basic code of input type 3](#the-basic-code-of-input-type-3)
       - [BULK RNA-seq](#bulk-rna-seq)
       - [Single-cell RNA-seq](#single-cell-rna-seq)
-    - [get interacting RBPs and splicing events co-regulated by
-      interacting
-      RBPs.](#get-interacting-rbps-and-splicing-events-co-regulated-by-interacting-rbps)
+    - [Interacting RBPs and co-regulated splicing
+      events.](#interacting-rbps-and-co-regulated-splicing-events)
   - [Tools: AS Events ID Converter](#tools-as-events-id-converter)
     - [`id_find()`](#id_find)
     - [`id_normalization()`](#id_normalization)
@@ -196,13 +195,13 @@ result_bulk<-MRAS(input_type = "3",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.5677137455424" "PKM" "22.89129" "IGF2BP2"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6479200864209" "PKM" "22.81911" "IGF2BP2"
 #>      rank3              RBP4   rank4              RBP5   rank5             
-#> [1,] "22.1418704163467" "RRP9" "20.9000409459972" "BOP1" "20.7985341005892"
+#> [1,] "22.1726436015676" "RRP9" "20.9443902213692" "BOP1" "20.8121955354523"
 #>      RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.9243704100078" "NELFE" "18.2398382168447" "SNRPA"
+#> [1,] "XPO5" "18.8854584316117" "NELFE" "18.2281560631828" "RBM42"
 #>      rank8              RBP9    rank9              RBP10  rank10            
-#> [1,] "18.0485811183329" "RBM42" "18.0347378216828" "RALY" "17.3920818391539"
+#> [1,] "18.0349675105326" "SNRPA" "18.0156929264295" "RALY" "17.3691146057713"
 ```
 
 After running `MRAS()`, there are three ways to display the results. In
@@ -217,23 +216,23 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>       RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
-#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.802844
-#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.762535
-#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.770914
-#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.792765
-#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.787000
+#> 1   SF3B4 2.407401 163.3349 447  0.7065393       486 0.9013645 1.809732
+#> 2     PKM 3.611442 231.1632 417  1.0000000       488 0.8812575 1.757243
+#> 3 IGF2BP2 3.386165 161.8666 284  0.7001862       297 0.8887830 1.772288
+#> 4    RRP9 2.166866 150.7078 451  0.6519076       500 0.8958257 1.797127
+#> 5    BOP1 2.686065 181.3979 434  0.7846890       498 0.8916058 1.787621
 #>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
-#> 1 0.000999001       632 0.9271163 1.363815 0.000999001     447       4259
-#> 2 0.000999001       632 0.9080232 1.320104 0.000999001     417       4259
-#> 3 0.000999001       632 0.9253928 1.262665 0.000999001     284       4259
-#> 4 0.000999001       632 0.9269796 1.326696 0.000999001     451       4259
-#> 5 0.000999001       632 0.9222807 1.345769 0.000999001     434       4259
+#> 1 0.000999001       632 0.9271163 1.363059 0.000999001     447       4259
+#> 2 0.000999001       632 0.9080232 1.319905 0.000999001     417       4259
+#> 3 0.000999001       632 0.9253928 1.263440 0.000999001     284       4259
+#> 4 0.000999001       632 0.9269796 1.326284 0.000999001     451       4259
+#> 5 0.000999001       632 0.9222807 1.346186 0.000999001     434       4259
 #>          OR          pval   score3
-#> 1 200.00000  0.000000e+00 24.56771
-#> 2  96.79408  0.000000e+00 22.89129
-#> 3 200.00000 3.645079e-243 22.14187
-#> 4 181.69070  0.000000e+00 20.90004
-#> 5 121.47310  0.000000e+00 20.79853
+#> 1 200.00000  0.000000e+00 24.64792
+#> 2  96.79408  0.000000e+00 22.81911
+#> 3 200.00000 3.645079e-243 22.17264
+#> 4 181.69070  0.000000e+00 20.94439
+#> 5 121.47310  0.000000e+00 20.81220
 ```
 
 #### Single-cell RNA-seq
@@ -263,19 +262,19 @@ result_sc<-MRAS(input_type = "3",
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_sc
-#>      rbp_interested rank RBP1    rank1      RBP2    rank2             
-#> [1,] "ESRP1"        "1"  "ESRP1" "16.78948" "RBM47" "3.75311452800735"
-#>      RBP3       rank3              RBP4    rank4              RBP5     
-#> [1,] "APOBEC3C" "1.77622672940245" "MBNL1" "1.40437534627601" "HNRNPH2"
-#>      rank5            RBP6    rank6               RBP7    rank7              
-#> [1,] "1.275748292042" "RBM28" "0.770590823179464" "DDX24" "0.767691263315223"
+#>      rbp_interested rank RBP1    rank1     RBP2    rank2             
+#> [1,] "ESRP1"        "1"  "ESRP1" "16.7696" "RBM47" "3.74900380611702"
+#>      RBP3       rank3            RBP4    rank4              RBP5     
+#> [1,] "APOBEC3C" "1.768942886125" "MBNL1" "1.40071588837117" "HNRNPH2"
+#>      rank5             RBP6    rank6               RBP7    rank7              
+#> [1,] "1.2761112595784" "RBM28" "0.771221517990644" "DDX24" "0.767097807282028"
 #>      RBP8     rank8               RBP9   rank9               RBP10  
-#> [1,] "PABPC1" "0.535617705394307" "SND1" "0.440725249161148" "CELF2"
-#>      rank10           
-#> [1,] "0.4395413780087"
+#> [1,] "PABPC1" "0.537044600478606" "SND1" "0.438997992066971" "CELF2"
+#>      rank10             
+#> [1,] "0.436222107307716"
 ```
 
-### get interacting RBPs and splicing events co-regulated by interacting RBPs.
+### Interacting RBPs and co-regulated splicing events.
 
 ``` r
 # get interacting RBPs。
