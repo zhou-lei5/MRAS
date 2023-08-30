@@ -11,7 +11,7 @@
 get_RBP_use<-function(expr,m,n){
   RBP_use<-as.data.frame(expr)
   RBP_use$logFC<-unlist(apply(expr,1,function(x){
-    return(abs(log2(sum(as.numeric(x[1:m]))/sum(as.numeric(x[(m+1):(m+n)])))))
+    return(abs(log2(mean(as.numeric(x[1:m]))/mean(as.numeric(x[(m+1):(m+n)])))))
   }))
   P<-unlist(apply(expr,1,function(x){
     p<-t.test(as.numeric(x[1:m]),as.numeric(x[(m+1):(m+n)]))

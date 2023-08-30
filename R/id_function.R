@@ -357,8 +357,9 @@ id_find<-function(file_path,software,subtype = NULL){
           event<-RI[id,1]
           event_mat<-RI_pre[which(RI_pre[,1] == event),1:(16+sample_num)]
           RI_type<-as.data.frame(table(event_mat$sub_junction_size))
-          inclusion<-which(event_mat$sub_junction_size %in% RI_type$Var1[which(RI_type$Freq == 1)])
-          skipping<-which(event_mat$sub_junction_size %in% RI_type$Var1[which(RI_type$Freq == 2)])
+          total<-sort(as.numeric(event_mat$sub_junction_size))[(0.5*nrow(event_mat)+1):nrow(event_mat)]
+          inclusion<-which(event_mat$sub_junction_size %in% total)
+          skipping<-which(!(event_mat$sub_junction_size %in% total))
           event_mat_deal<-as.data.frame(event_mat[,17:ncol(event_mat)])
           event_mat_deal<-apply(event_mat_deal, 2, as.numeric)
           psi<-colSums(event_mat_deal[inclusion,])/colSums(event_mat_deal)
