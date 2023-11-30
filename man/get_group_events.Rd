@@ -4,12 +4,14 @@
 \alias{get_group_events}
 \title{Searching for splicing events co-regulated by interacting RBPs.}
 \usage{
-get_group_events(rbp_interested, rbp_event_deal_all)
+get_group_events(rbp_interested, rbp_event_deal_all, DE_events)
 }
 \arguments{
 \item{rbp_interested}{The name of the RBP interested.}
 
-\item{rbp_event_deal_all}{the network built by MRAS.}
+\item{rbp_event_deal_all}{The network built by MRAS.}
+
+\item{DE_events}{The differetial splicing events got by MRAS.}
 }
 \value{
 splicing events co-regulated by interacting RBPs.

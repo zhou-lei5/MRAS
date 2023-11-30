@@ -9,6 +9,8 @@ score_matrix(
   Events_DS,
   Event_DS_sig,
   RBP_use,
+  DS_pvalue,
+  DS_dPSI,
   result_type = c("Top10", "tab_simple", "tab_all"),
   threads = 2,
   rbp_event_deal_all_total,
@@ -24,6 +26,10 @@ score_matrix(
 \item{Event_DS_sig}{Events with significant differences clipped by threshold filtering in Events_DS.}
 
 \item{RBP_use}{RBP expression matrix, the last column is the log2FC value expressed under two conditions}
+
+\item{DS_pvalue}{Significance level of differential splicing analysis.}
+
+\item{DS_dPSI}{Threshold for differential splicing.}
 
 \item{result_type}{The types of return values are "top10", "tab_simple", and "tab_all".
 "top10" returns the top 10 MRAS results;

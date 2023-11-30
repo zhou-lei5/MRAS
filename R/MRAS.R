@@ -56,7 +56,8 @@ MRAS<-function(input_type,
     cat("Step4:Performing enrichment analysis...\n")
     result<-score_matrix(rbp_interested = rbp_interested,
                          Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
-                         RBP_use = RBP_use,result_type = result_type,threads = threads,
+                         RBP_use = RBP_use,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI,
+                         result_type = result_type,threads = threads,
                          rbp_event_deal_all_total = rbp_event_deal_all_total,
                          rbp_event_deal_all = rbp_event_deal_all,path_use = path_use)
     cat("Finish!\n")
@@ -99,7 +100,8 @@ MRAS<-function(input_type,
     cat("Step4:Performing enrichment analysis...\n")
     result<-score_matrix(rbp_interested = rbp_interested,
                          Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
-                         RBP_use = RBP_use,result_type = result_type,threads = threads,
+                         RBP_use = RBP_use,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI,
+                         result_type = result_type,threads = threads,
                          rbp_event_deal_all_total = rbp_event_deal_all_total,
                          rbp_event_deal_all = rbp_event_deal_all,path_use = path_use)
     cat("Finish!\n")
@@ -190,7 +192,8 @@ MRAS<-function(input_type,
     cat("Step4:Performing enrichment analysis...\n")
     result<-score_matrix(rbp_interested = rbp_interested,
                          Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
-                         RBP_use = RBP_use,result_type = result_type,threads = threads,
+                         RBP_use = RBP_use,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI,
+                         result_type = result_type,threads = threads,
                          rbp_event_deal_all_total = rbp_event_deal_all_total,
                          rbp_event_deal_all = rbp_event_deal_all,path_use = path_use)
     cat("Finish!\n")

@@ -3,6 +3,8 @@
 #' @param rbp_interested The name of the RBP interested.
 #' @param Events_DS The difference matrix of the clipping events, obtained by the MRAS function DS_matrix().
 #' @param Event_DS_sig Events with significant differences clipped by threshold filtering in Events_DS.
+#' @param DS_pvalue Significance level of differential splicing analysis.
+#' @param DS_dPSI Threshold for differential splicing.
 #' @param RBP_use RBP expression matrix, the last column is the log2FC value expressed under two conditions
 #' @param result_type The types of return values are "top10", "tab_simple", and "tab_all".
 #'                    "top10" returns the top 10 MRAS results;
@@ -26,11 +28,11 @@
 #' @import fastmatch
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by summarise left_join n
-#' @importFrom stats p.adjust na.omit fisher.test binomial
+#' @importFrom stats p.adjust na.omit fisher.test binomial ave
 #'
 #'
 
-score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
+score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,DS_pvalue,DS_dPSI,
                        result_type = c("Top10","tab_simple","tab_all"),threads = 2,
                        rbp_event_deal_all_total,rbp_event_deal_all,path_use){
   #RBP_use<-rbp_expr
@@ -389,7 +391,7 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,
     names(ranks_nes1)<-Events_DS_RBP$Events
 
     #NES2
-    Events_DS_RBP_2<-Events_DS_RBP[which((as.numeric(Events_DS_RBP$pvalue)<0.05)&(as.numeric(Events_DS_RBP$abs_dPSI)>0.1)),]
+    Events_DS_RBP_2<-Events_DS_RBP[which((as.numeric(Events_DS_RBP$pvalue)<DS_pvalue)&(as.numeric(Events_DS_RBP$abs_dPSI)>DS_dPSI)),]
     gmt_nes2<-list(unlist(Events_DS_RBP_2$Events))
     names(gmt_nes2)[1]<-paste0(rr,"_NES2")
     ranks_nes2<-w3_part$weight_all

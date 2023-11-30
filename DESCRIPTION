@@ -25,12 +25,12 @@ Imports:
     parallel,
     fastmatch,
     reshape2,
-    magrittr
+    magrittr,
+    data.table
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 Depends: 
     R (>= 4.1),
-    data.table,
     fgsea
