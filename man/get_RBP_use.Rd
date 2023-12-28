@@ -4,7 +4,7 @@
 \alias{get_RBP_use}
 \title{This function provides the means of processing the expression matrix.}
 \usage{
-get_RBP_use(expr, m, n)
+get_RBP_use(expr, m, n, RBP_cutoff = 0.05)
 }
 \arguments{
 \item{expr}{RBP expression matrix.}
@@ -12,6 +12,8 @@ get_RBP_use(expr, m, n)
 \item{m}{Number of the first condition.}
 
 \item{n}{Number of the second condition.}
+
+\item{RBP_cutoff}{The cutoff of RBP expression between two conditions.}
 }
 \value{
 Preparing for enrichment analysis.

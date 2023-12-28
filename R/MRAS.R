@@ -9,6 +9,7 @@
 #' @param rbp_interested The name of the RBP interested.
 #' @param m Number of the first condition.
 #' @param n Number of the second condition.
+#' @param RBP_cutoff The cutoff of RBP expression between two conditions.
 #' @param DS_pvalue Significance level of differential splicing analysis.
 #' @param DS_dPSI Threshold for differential splicing.
 #' @param rbp_event_deal_all_total,rbp_event_deal_all the network built by MRAS.
@@ -36,7 +37,8 @@
 #'
 
 MRAS<-function(input_type,
-               expr,psi,rbp_interested = NULL,m = 0,n = 0,DS_pvalue = 0.05,DS_dPSI = 0.1,
+               expr,psi,rbp_interested = NULL,m = 0,n = 0,RBP_cutoff = 0.05,
+               DS_pvalue = 0.05,DS_dPSI = 0.1,
                rbp_event_deal_all_total = NULL,rbp_event_deal_all = NULL,
                method = "spearman",BS = NULL,group = T,
                dpsi_network_threshold = 0.1,Regulate_threshold = 0.5,rbp_net_mat_group = NULL,
@@ -50,7 +52,7 @@ MRAS<-function(input_type,
     data.table::fwrite(as.data.frame(Event_DS_sig),file = paste0(path_use,"DS_mat.txt"),
                        row.names = F,col.names = T,quote = F,sep = "\t")
     cat("Step2:Preparing data...\n")
-    RBP_use<-get_RBP_use(expr,m = m,n = n)
+    RBP_use<-get_RBP_use(expr,m = m,n = n,RBP_cutoff=RBP_cutoff)
 
     cat("Go directly to step4!\n")
     cat("Step4:Performing enrichment analysis...\n")
@@ -71,7 +73,7 @@ MRAS<-function(input_type,
                        row.names = F,col.names = T,quote = F,sep = "\t")
 
     cat("Step2:Preparing data...\n")
-    RBP_use<-get_RBP_use(expr,m = m,n = n)
+    RBP_use<-get_RBP_use(expr,m = m,n = n,RBP_cutoff=RBP_cutoff)
 
 
     cat("Step3:Constructing RBP-Event regulatory relationship network...\n")
@@ -115,7 +117,7 @@ MRAS<-function(input_type,
                        row.names = F,col.names = T,quote = F,sep = "\t")
 
     cat("Step2:Preparing data...\n")
-    RBP_use<-get_RBP_use(expr,m = m,n = n)
+    RBP_use<-get_RBP_use(expr,m = m,n = n,RBP_cutoff=RBP_cutoff)
 
 
     cat("Step3:Constructing RBP-Event regulatory relationship network...\n")

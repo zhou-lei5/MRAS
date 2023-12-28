@@ -11,6 +11,7 @@ MRAS(
   rbp_interested = NULL,
   m = 0,
   n = 0,
+  RBP_cutoff = 0.05,
   DS_pvalue = 0.05,
   DS_dPSI = 0.1,
   rbp_event_deal_all_total = NULL,
@@ -45,6 +46,8 @@ MRAS(
 \item{m}{Number of the first condition.}
 
 \item{n}{Number of the second condition.}
+
+\item{RBP_cutoff}{The cutoff of RBP expression between two conditions.}
 
 \item{DS_pvalue}{Significance level of differential splicing analysis.}
 
