@@ -19,7 +19,7 @@ cor_matrix<-function(RBP_matrix,Events_matrix,method="pearson"){
   RBP_Events<-matrix(NA,nrow = nrow(RBP_matrix)*nrow(Events_matrix),ncol = 5)
   colnames(RBP_Events)<-c("rbp_ID","Events","type","corr","p")
   for (p in 1:nrow(RBP_matrix)) {
-    for (q in 1:ncol(Events_matrix)) {
+    for (q in 1:nrow(Events_matrix)) {
       rank_number<-(p-1)*nrow(RBP_matrix)+q
       cor_result<-cor_method(as.numeric(RBP_matrix[p,]),as.numeric(Events_matrix[q,]),method)
       RBP_Events[rank_number,1]<-as.character(rownames(RBP_matrix)[p])
