@@ -98,7 +98,6 @@ MRAS(input_type = "1",
      expr,psi,
      rbp_interested,
      m,n,
-     DS_pvalue,DS_dPSI,
      rbp_event_deal_all_total,rbp_event_deal_all,
      result_type,threads,path_use)
 ```
@@ -156,7 +155,7 @@ hcc_psi[1:5,1:3]
 
 ``` r
 ## Users can utilize the MRAS function for a streamlined analysis, or execute individual steps separately if they prefer to have more control over specific aspects of the analysis.
-result_bulk<-MRAS(input_type = "3",
+result_bulk<-MRAS(input_type = "2",
   expr = hcc_expr,
   psi = hcc_psi,
   rbp_interested = "SF3B4",
@@ -164,8 +163,21 @@ result_bulk<-MRAS(input_type = "3",
   num1 = 0.15, num2 = 0.15,
   result_type = "Top10", threads = 6, path_use = "./tests/"
 )
+#> Step1:Performing differential splicing analysis...
+#> Step2:Preparing data...
+#> Step3:Constructing RBP-Event regulatory relationship network...
+#> Joining with `by = join_by(rbp, BS)`
+#> Step4:Performing enrichment analysis...
+#> Finish!
 result_bulk
-#> NULL
+#>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6175247659083" "PKM" "22.88256" "IGF2BP2"
+#>      rank3              RBP4   rank4              RBP5   rank5             
+#> [1,] "22.1506577536509" "RRP9" "20.9228316363839" "BOP1" "20.8025987894227"
+#>      RBP6   rank6              RBP7    rank7              RBP8   
+#> [1,] "XPO5" "18.8759992974528" "NELFE" "18.1738217060028" "RBM42"
+#>      rank8              RBP9    rank9              RBP10  rank10            
+#> [1,] "18.0682781359785" "SNRPA" "18.0283652545762" "RALY" "17.3425771752556"
 ```
 
 #### Single-cell RNA-seq
@@ -175,7 +187,7 @@ Use MRAS in single-cell rna-seq data:
 ``` r
 data("sc_brca_expr")
 data("sc_brca_psi")
-result_sc<-MRAS(input_type = "3",
+result_sc<-MRAS(input_type = "2",
   expr = sc_brca_expr,
   psi = sc_brca_psi,
   rbp_interested = "ESRP1",
@@ -183,8 +195,23 @@ result_sc<-MRAS(input_type = "3",
   sc = T,
   result_type = "Top10", threads = 6, path_use = "./tests/"
 )
+#> Step1:Performing differential splicing analysis...
+#> Step2:Preparing data...
+#> Step3:Constructing RBP-Event regulatory relationship network...
+#> Joining with `by = join_by(rbp, BS)`
+#> Step4:Performing enrichment analysis...
+#> Finish!
 result_sc
-#> NULL
+#>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3   
+#> [1,] "ESRP1"        "1"  "ESRP1" "11.25983" "RBM47" "2.51179571845793" "CELF2"
+#>      rank3              RBP4       rank4              RBP5   
+#> [1,] "2.24950602787266" "APOBEC3C" "1.95375166897499" "MBNL1"
+#>      rank5               RBP6      rank6               RBP7   
+#> [1,] "0.991226378026721" "HNRNPH2" "0.642902059016624" "DDX24"
+#>      rank7               RBP8    rank8              RBP9    rank9              
+#> [1,] "0.622807398769675" "RBM28" "0.56052073723487" "RBM38" "0.548345181932454"
+#>      RBP10   rank10             
+#> [1,] "SRSF5" "0.510920740017652"
 ```
 
 ### Type of MRAS result
@@ -201,23 +228,23 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>        RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
-#> 1    ESRP1 4.622624 743.8016 743  1.0000000       986 0.8289931 1.726319
-#> 2    RBM47 1.756513 238.1931 596  0.3187915       792 0.7913975 1.645693
-#> 3    CELF2 4.018223 244.8588 220  0.3277722       272 0.8467071 1.768105
-#> 4 APOBEC3C 3.641784 246.6118 254  0.3301341       329 0.7778915 1.631672
-#> 5    MBNL1 2.199534 156.1656 262  0.2082756       358 0.7242600 1.507972
+#> 1    ESRP1 4.622624 743.8016 743  1.0000000       986 0.8289931 1.723390
+#> 2    RBM47 1.756513 238.1931 596  0.3187915       792 0.7913975 1.646040
+#> 3    CELF2 4.018223 244.8588 220  0.3277722       272 0.8467071 1.755691
+#> 4 APOBEC3C 3.641784 246.6118 254  0.3301341       329 0.7778915 1.630367
+#> 5    MBNL1 2.199534 156.1656 262  0.2082756       358 0.7242600 1.513054
 #>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
-#> 1 0.000999001      1038 0.8385299 1.466083 0.000999001     743       3197
-#> 2 0.000999001      1038 0.8508408 1.302607 0.000999001     596       3197
-#> 3 0.000999001      1038 0.9241963 1.169022 0.000999001     221       3197
-#> 4 0.000999001      1038 0.8770687 1.210923 0.000999001     254       3197
-#> 5 0.000999001      1038 0.8779637 1.167840 0.000999001     262       3197
+#> 1 0.000999001      1038 0.8385299 1.467224 0.000999001     743       3197
+#> 2 0.000999001      1038 0.8508408 1.303274 0.000999001     596       3197
+#> 3 0.000999001      1038 0.9241963 1.169573 0.000999001     221       3197
+#> 4 0.000999001      1038 0.8770687 1.210395 0.000999001     254       3197
+#> 5 0.000999001      1038 0.8779637 1.168162 0.000999001     262       3197
 #>         OR          pval     score3
-#> 1 19.82914 7.028806e-261 11.2701900
-#> 2 13.48972 1.819226e-186  2.5099815
-#> 3 11.17066  1.233928e-67  2.2643423
-#> 4  8.99358  8.460565e-70  1.9561683
-#> 5  7.25027  1.511901e-63  0.9876247
+#> 1 19.82914 7.028806e-261 11.2598300
+#> 2 13.48972 1.819226e-186  2.5117957
+#> 3 11.17066  1.233928e-67  2.2495060
+#> 4  8.99358  8.460565e-70  1.9537517
+#> 5  7.25027  1.511901e-63  0.9912264
 ```
 
 ### Interacting RBPs and co-regulated splicing events
