@@ -10,8 +10,8 @@ Description: MRAS is designed to identify crucial RNA-binding proteins (RBPs) re
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-LazyDataCompression:bzip2
-RoxygenNote: 7.2.3
+LazyDataCompression: bzip2
+RoxygenNote: 7.3.2
 Import:
     fgsea,stats
 Imports:

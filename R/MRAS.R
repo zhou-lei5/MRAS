@@ -2,8 +2,7 @@
 #'
 #' @param input_type input type, different options for user's different needs.
 #'                   "1": input differential splicing events and use pre-constructed regulatory network;
-#'                   "2": input data and inferred relationships by MRAS.
-#'                   "3": input data and construct a network using the user's own data
+#'                   "2": input data and construct a network using the user's own data
 #' @param expr RBP expression matrix.
 #' @param psi Events splicing matrix.
 #' @param rbp_interested The name of the RBP interested.
@@ -65,51 +64,51 @@ MRAS<-function(input_type,
     cat("Finish!\n")
     return(result)
   }
+  # if (input_type == "2"){
+  #   cat("Step1:Performing differential splicing analysis...\n")
+  #   Events_DS<-DS_matrix(psi,m = m,n = n)
+  #   Event_DS_sig<-get_Event_DS_sig(Events_DS,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI)
+  #   data.table::fwrite(as.data.frame(Event_DS_sig),file = paste0(path_use,"DS_mat.txt"),
+  #                      row.names = F,col.names = T,quote = F,sep = "\t")
+  #
+  #   cat("Step2:Preparing data...\n")
+  #   RBP_use<-get_RBP_use(expr,m = m,n = n,RBP_cutoff=RBP_cutoff)
+  #
+  #
+  #   cat("Step3:Constructing RBP-Event regulatory relationship network...\n")
+  #   rbp_corr_work<-MRAS_net_single_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
+  #                                       method=method,BS = BS,
+  #                                       dpsi_network_threshold = dpsi_network_threshold,
+  #                                       threads = threads,path_use = path_use)
+  #
+  #   rbp_corr_group_work<-MRAS_net_group_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
+  #                                            method=method,BS=BS,
+  #                                            rbp_corr_work = rbp_corr_work,
+  #                                            dpsi_network_threshold = dpsi_network_threshold,
+  #                                            string_net = string_net,
+  #                                            threads = threads,path_use = path_use)
+  #   network_work<-get_MRAS_net(rbp_net_mat_group = rbp_net_mat_group,
+  #                              rbp_corr_group_work = rbp_corr_group_work,
+  #                              Regulate_threshold = Regulate_threshold,BS = BS,
+  #                              threads = threads,path_use = path_use)
+  #   if (group){
+  #     rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal/group"))
+  #     rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal/group"))
+  #   }else{
+  #     rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal/single"))
+  #     rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal/single"))
+  #   }
+  #   cat("Step4:Performing enrichment analysis...\n")
+  #   result<-score_matrix(rbp_interested = rbp_interested,
+  #                        Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
+  #                        RBP_use = RBP_use,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI,
+  #                        result_type = result_type,threads = threads,
+  #                        rbp_event_deal_all_total = rbp_event_deal_all_total,
+  #                        rbp_event_deal_all = rbp_event_deal_all,path_use = path_use)
+  #   cat("Finish!\n")
+  #   return(result)
+  # }
   if (input_type == "2"){
-    cat("Step1:Performing differential splicing analysis...\n")
-    Events_DS<-DS_matrix(psi,m = m,n = n)
-    Event_DS_sig<-get_Event_DS_sig(Events_DS,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI)
-    data.table::fwrite(as.data.frame(Event_DS_sig),file = paste0(path_use,"DS_mat.txt"),
-                       row.names = F,col.names = T,quote = F,sep = "\t")
-
-    cat("Step2:Preparing data...\n")
-    RBP_use<-get_RBP_use(expr,m = m,n = n,RBP_cutoff=RBP_cutoff)
-
-
-    cat("Step3:Constructing RBP-Event regulatory relationship network...\n")
-    rbp_corr_work<-MRAS_net_single_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
-                                        method=method,BS = BS,
-                                        dpsi_network_threshold = dpsi_network_threshold,
-                                        threads = threads,path_use = path_use)
-
-    rbp_corr_group_work<-MRAS_net_group_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
-                                             method=method,BS=BS,
-                                             rbp_corr_work = rbp_corr_work,
-                                             dpsi_network_threshold = dpsi_network_threshold,
-                                             string_net = string_net,
-                                             threads = threads,path_use = path_use)
-    network_work<-get_MRAS_net(rbp_net_mat_group = rbp_net_mat_group,
-                               rbp_corr_group_work = rbp_corr_group_work,
-                               Regulate_threshold = Regulate_threshold,BS = BS,
-                               threads = threads,path_use = path_use)
-    if (group){
-      rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal/group"))
-      rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal/group"))
-    }else{
-      rbp_event_deal_all_total<-get_rbp_event_deal_all_total(path_useful = paste0(path_use,"deal/single"))
-      rbp_event_deal_all<-get_rbp_event_deal_all(path_useful = paste0(path_use,"deal/single"))
-    }
-    cat("Step4:Performing enrichment analysis...\n")
-    result<-score_matrix(rbp_interested = rbp_interested,
-                         Events_DS = Events_DS,Event_DS_sig = Event_DS_sig,
-                         RBP_use = RBP_use,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI,
-                         result_type = result_type,threads = threads,
-                         rbp_event_deal_all_total = rbp_event_deal_all_total,
-                         rbp_event_deal_all = rbp_event_deal_all,path_use = path_use)
-    cat("Finish!\n")
-    return(result)
-  }
-  if (input_type == "3"){
     cat("Step1:Performing differential splicing analysis...\n")
     Events_DS<-DS_matrix(psi,m = m,n = n)
     Event_DS_sig<-get_Event_DS_sig(Events_DS,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI)

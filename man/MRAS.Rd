@@ -34,8 +34,7 @@ MRAS(
 \arguments{
 \item{input_type}{input type, different options for user's different needs.
 "1": input differential splicing events and use pre-constructed regulatory network;
-"2": input data and inferred relationships by MRAS.
-"3": input data and construct a network using the user's own data}
+"2": input data and construct a network using the user's own data}
 
 \item{expr}{RBP expression matrix.}
 
