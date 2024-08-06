@@ -121,7 +121,7 @@ result_sc<-MRAS(input_type = "3",
 result_sc
 ```
 
-### Type of MRAS result.
+### Type of MRAS result
 
 After running `MRAS()`, there are three ways to display the results. In addition to setting the form directly in the parameters, users can also obtain other result display forms through the functions `get_Top10()`, `get_tab_all()`, and `get_tab_simple()`. This allows users to access additional result display formats without having to rerun `MRAS()`.
 
@@ -134,7 +134,7 @@ head(result_tab_simple[1:5,])
 ```
 
 
-### Interacting RBPs and co-regulated splicing events.
+### Interacting RBPs and co-regulated splicing events
 
 ```r
 # get interacting RBPs。
@@ -173,6 +173,4 @@ This function converts splicing event IDs recognized by two different splicing e
 If you want to know more details, you can get help by  `??MRAS::FUN` or `help("FUN")`.
 
 ## Help
-Of course, you can also distribute the MRAS analysis, which will help you better understand the principles of MRAS.
-
-Finally, if you have any more questions, you can submit them in Github and we will do our best to answer them (https://github.com/zhou-lei5/MRAS).
+If you have any more questions, you can submit them in Github and we will do our best to answer them (https://github.com/zhou-lei5/MRAS).

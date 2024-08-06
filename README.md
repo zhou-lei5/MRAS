@@ -9,9 +9,9 @@ Menu
     - [The basic code of input type 2](#the-basic-code-of-input-type-2)
       - [BULK RNA-seq](#bulk-rna-seq)
       - [Single-cell RNA-seq](#single-cell-rna-seq)
-    - [Type of MRAS result.](#type-of-mras-result)
+    - [Type of MRAS result](#type-of-mras-result)
     - [Interacting RBPs and co-regulated splicing
-      events.](#interacting-rbps-and-co-regulated-splicing-events)
+      events](#interacting-rbps-and-co-regulated-splicing-events)
   - [Tools: AS Events ID Converter](#tools-as-events-id-converter)
     - [`id_find()`](#id_find)
     - [`id_normalization()`](#id_normalization)
@@ -187,7 +187,7 @@ result_sc
 #> NULL
 ```
 
-### Type of MRAS result.
+### Type of MRAS result
 
 After running `MRAS()`, there are three ways to display the results. In
 addition to setting the form directly in the parameters, users can also
@@ -220,7 +220,7 @@ head(result_tab_simple[1:5,])
 #> 5  7.25027  1.511901e-63  0.9876247
 ```
 
-### Interacting RBPs and co-regulated splicing events.
+### Interacting RBPs and co-regulated splicing events
 
 ``` r
 # get interacting RBPs。
@@ -279,9 +279,5 @@ If you want to know more details, you can get help by `??MRAS::FUN` or
 
 ## Help
 
-Of course, you can also distribute the MRAS analysis, which will help
-you better understand the principles of MRAS.
-
-Finally, if you have any more questions, you can submit them in Github
-and we will do our best to answer them
-(<https://github.com/zhou-lei5/MRAS>).
+If you have any more questions, you can submit them in Github and we
+will do our best to answer them (<https://github.com/zhou-lei5/MRAS>).
