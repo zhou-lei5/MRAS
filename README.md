@@ -25,10 +25,11 @@ Menu
 <!-- badges: start -->
 <!-- badges: end -->
 
-MRAS is designed to identify crucial RNA-binding proteins (RBPs)
-responsible for splicing variations in diverse scenarios, including
-cancer vs. normal, primary vs. recurrence, and more, not just in bulk
-data but also in single-cell data.
+MRAS (Master Regulator analysis of Alternative Splicing) is designed to
+identify the critical splicing factors whose altered expression drives
+the extensive splicing abnormalities, particularly in the biological
+scenario of lacking spliceosomal mutations or other known manipulations
+causing splicing disorders.
 
 ## The Overview of MRAS
 
@@ -171,13 +172,13 @@ result_bulk<-MRAS(input_type = "2",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6175247659083" "PKM" "22.88256" "IGF2BP2"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.5899767987584" "PKM" "22.85554" "IGF2BP2"
 #>      rank3              RBP4   rank4              RBP5   rank5             
-#> [1,] "22.1506577536509" "RRP9" "20.9228316363839" "BOP1" "20.8025987894227"
-#>      RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.8759992974528" "NELFE" "18.1738217060028" "RBM42"
+#> [1,] "22.2017643472635" "RRP9" "20.9209997759724" "BOP1" "20.7841115174311"
+#>      RBP6   rank6             RBP7    rank7              RBP8   
+#> [1,] "XPO5" "18.873985072277" "NELFE" "18.2044314838444" "SNRPA"
 #>      rank8              RBP9    rank9              RBP10  rank10            
-#> [1,] "18.0682781359785" "SNRPA" "18.0283652545762" "RALY" "17.3425771752556"
+#> [1,] "18.0574588502211" "RBM42" "18.0067502353316" "RALY" "17.3473395077791"
 ```
 
 #### Single-cell RNA-seq
@@ -202,16 +203,16 @@ result_sc<-MRAS(input_type = "2",
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_sc
-#>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3   
-#> [1,] "ESRP1"        "1"  "ESRP1" "11.25983" "RBM47" "2.51179571845793" "CELF2"
+#>      rbp_interested rank RBP1    rank1      RBP2    rank2             RBP3   
+#> [1,] "ESRP1"        "1"  "ESRP1" "11.26356" "RBM47" "2.5137081485694" "CELF2"
 #>      rank3              RBP4       rank4              RBP5   
-#> [1,] "2.24950602787266" "APOBEC3C" "1.95375166897499" "MBNL1"
+#> [1,] "2.25172406252253" "APOBEC3C" "1.95310163485293" "MBNL1"
 #>      rank5               RBP6      rank6               RBP7   
-#> [1,] "0.991226378026721" "HNRNPH2" "0.642902059016624" "DDX24"
-#>      rank7               RBP8    rank8              RBP9    rank9              
-#> [1,] "0.622807398769675" "RBM28" "0.56052073723487" "RBM38" "0.548345181932454"
-#>      RBP10   rank10             
-#> [1,] "SRSF5" "0.510920740017652"
+#> [1,] "0.988392580519441" "HNRNPH2" "0.645398342968591" "DDX24"
+#>      rank7               RBP8    rank8               RBP9   
+#> [1,] "0.623595742677122" "RBM28" "0.561124061180352" "RBM38"
+#>      rank9               RBP10   rank10             
+#> [1,] "0.547968605430604" "SRSF5" "0.511359475110382"
 ```
 
 ### Type of MRAS result
@@ -228,23 +229,23 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>        RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
-#> 1    ESRP1 4.622624 743.8016 743  1.0000000       986 0.8289931 1.723390
-#> 2    RBM47 1.756513 238.1931 596  0.3187915       792 0.7913975 1.646040
-#> 3    CELF2 4.018223 244.8588 220  0.3277722       272 0.8467071 1.755691
-#> 4 APOBEC3C 3.641784 246.6118 254  0.3301341       329 0.7778915 1.630367
-#> 5    MBNL1 2.199534 156.1656 262  0.2082756       358 0.7242600 1.513054
+#> 1    ESRP1 4.622624 743.8016 743  1.0000000       986 0.8289931 1.725444
+#> 2    RBM47 1.756513 238.1931 596  0.3187915       792 0.7913975 1.648238
+#> 3    CELF2 4.018223 244.8588 220  0.3277722       272 0.8467071 1.758134
+#> 4 APOBEC3C 3.641784 246.6118 254  0.3301341       329 0.7778915 1.629582
+#> 5    MBNL1 2.199534 156.1656 262  0.2082756       358 0.7242600 1.509960
 #>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
-#> 1 0.000999001      1038 0.8385299 1.467224 0.000999001     743       3197
-#> 2 0.000999001      1038 0.8508408 1.303274 0.000999001     596       3197
-#> 3 0.000999001      1038 0.9241963 1.169573 0.000999001     221       3197
-#> 4 0.000999001      1038 0.8770687 1.210395 0.000999001     254       3197
-#> 5 0.000999001      1038 0.8779637 1.168162 0.000999001     262       3197
+#> 1 0.000999001      1038 0.8385299 1.465962 0.000999001     743       3197
+#> 2 0.000999001      1038 0.8508408 1.302527 0.000999001     596       3197
+#> 3 0.000999001      1038 0.9241963 1.169100 0.000999001     221       3197
+#> 4 0.000999001      1038 0.8770687 1.210576 0.000999001     254       3197
+#> 5 0.000999001      1038 0.8779637 1.167209 0.000999001     262       3197
 #>         OR          pval     score3
-#> 1 19.82914 7.028806e-261 11.2598300
-#> 2 13.48972 1.819226e-186  2.5117957
-#> 3 11.17066  1.233928e-67  2.2495060
-#> 4  8.99358  8.460565e-70  1.9537517
-#> 5  7.25027  1.511901e-63  0.9912264
+#> 1 19.82914 7.028806e-261 11.2635600
+#> 2 13.48972 1.819226e-186  2.5137081
+#> 3 11.17066  1.233928e-67  2.2517241
+#> 4  8.99358  8.460565e-70  1.9531016
+#> 5  7.25027  1.511901e-63  0.9883926
 ```
 
 ### Interacting RBPs and co-regulated splicing events
