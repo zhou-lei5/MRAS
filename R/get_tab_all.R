@@ -8,5 +8,7 @@
 get_tab_all<-function(path_useful){
   rbp_uni_mat_2=NULL
   load(paste0(path_useful,"/result_tab_all.RData"))
-  return(rbp_uni_mat_2)
+  tmp<-rbp_uni_mat_2[,c("RBP","Events","score1_nor","nes1_nes","nes2_nes","OR","score3")]
+  colnames(tmp)<-c("RBP","Targets","D","NES1","NES2","odds","MRAS_Score")
+  return(tmp)
 }

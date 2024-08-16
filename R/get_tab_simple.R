@@ -7,5 +7,7 @@
 #'
 get_tab_simple<-function(path_useful){
   dat<-read.table(paste0(path_useful,"/result_tab_simple.txt"),header = T)
-  return(dat)
+  tmp<-dat[,c("RBP","score1_nor","nes1_nes","nes2_nes","OR","score3")]
+  colnames(tmp)<-c("RBP","D","NES1","NES2","odds","MRAS_Score")
+  return(tmp)
 }

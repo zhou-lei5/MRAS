@@ -8,10 +8,12 @@ Menu
     - [The basic code of input type 1](#the-basic-code-of-input-type-1)
     - [The basic code of input type 2](#the-basic-code-of-input-type-2)
       - [BULK RNA-seq](#bulk-rna-seq)
-      - [Single-cell RNA-seq](#single-cell-rna-seq)
+      - [Single cell RNA-seq](#single-cell-rna-seq)
     - [Type of MRAS result](#type-of-mras-result)
     - [Interacting RBPs and co-regulated splicing
       events](#interacting-rbps-and-co-regulated-splicing-events)
+  - [The pre-constructed networks for 33 TCGA cancer
+    types.](#the-pre-constructed-networks-for-33-tcga-cancer-types)
   - [Tools: AS Events ID Converter](#tools-as-events-id-converter)
     - [`id_find()`](#id_find)
     - [`id_normalization()`](#id_normalization)
@@ -64,13 +66,7 @@ choose between the following options:
     the identification of key RBPs involved in the regulation of these
     specific splicing events.
 
-2)  Reconstruct the network using inferred relationships: Users can
-    combine the inferred relationships between RBPs and splicing events
-    obtained from MRAS with their own data. This approach allows the
-    integration of user-specific information into the MRAS network,
-    potentially revealing additional regulatory relationships.
-
-3)  Construct a network using the user’s own data: If the sample size is
+2)  Construct a network using the user’s own data: If the sample size is
     sufficient, users have the option of constructing their own
     regulatory network using their own data. MRAS can use this
     user-provided data to infer the relationships between RBPs and
@@ -105,7 +101,7 @@ MRAS(input_type = "1",
 
 ### The basic code of input type 2
 
-Input type 3: Construct a network using the user’s own data.
+Input type 2: Construct a network using the user’s own data.
 
 Here, we have prepared some test data for users to better understand the
 usage of MRAS. Test data is included in MRAS and you can import it using
@@ -172,18 +168,18 @@ result_bulk<-MRAS(input_type = "2",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.5899767987584" "PKM" "22.85554" "IGF2BP2"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6342980087946" "PKM" "22.86047" "IGF2BP2"
 #>      rank3              RBP4   rank4              RBP5   rank5             
-#> [1,] "22.2017643472635" "RRP9" "20.9209997759724" "BOP1" "20.7841115174311"
+#> [1,] "22.1729866928249" "RRP9" "20.9156019808808" "BOP1" "20.7589465423559"
 #>      RBP6   rank6             RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.873985072277" "NELFE" "18.2044314838444" "SNRPA"
-#>      rank8              RBP9    rank9              RBP10  rank10            
-#> [1,] "18.0574588502211" "RBM42" "18.0067502353316" "RALY" "17.3473395077791"
+#> [1,] "XPO5" "18.917127517709" "NELFE" "18.2349144993104" "SNRPA"
+#>      rank8              RBP9    rank9             RBP10  rank10            
+#> [1,] "18.0691470183756" "RBM42" "18.057534440028" "RALY" "17.3297803469232"
 ```
 
-#### Single-cell RNA-seq
+#### Single cell RNA-seq
 
-Use MRAS in single-cell rna-seq data:
+Use MRAS on single cell RNA-seq data:
 
 ``` r
 data("sc_brca_expr")
@@ -203,16 +199,16 @@ result_sc<-MRAS(input_type = "2",
 #> Step4:Performing enrichment analysis...
 #> Finish!
 result_sc
-#>      rbp_interested rank RBP1    rank1      RBP2    rank2             RBP3   
-#> [1,] "ESRP1"        "1"  "ESRP1" "11.26356" "RBM47" "2.5137081485694" "CELF2"
+#>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3   
+#> [1,] "ESRP1"        "1"  "ESRP1" "11.26827" "RBM47" "2.51664708725879" "CELF2"
 #>      rank3              RBP4       rank4              RBP5   
-#> [1,] "2.25172406252253" "APOBEC3C" "1.95310163485293" "MBNL1"
+#> [1,] "2.25859056287425" "APOBEC3C" "1.95820088678253" "MBNL1"
 #>      rank5               RBP6      rank6               RBP7   
-#> [1,] "0.988392580519441" "HNRNPH2" "0.645398342968591" "DDX24"
+#> [1,] "0.989616616088329" "HNRNPH2" "0.644446395251371" "DDX24"
 #>      rank7               RBP8    rank8               RBP9   
-#> [1,] "0.623595742677122" "RBM28" "0.561124061180352" "RBM38"
+#> [1,] "0.622953519314553" "RBM28" "0.560451185770362" "RBM38"
 #>      rank9               RBP10   rank10             
-#> [1,] "0.547968605430604" "SRSF5" "0.511359475110382"
+#> [1,] "0.546574027492764" "SRSF5" "0.510854052283557"
 ```
 
 ### Type of MRAS result
@@ -228,24 +224,12 @@ result_Top10<-get_Top10(path_use = "./tests/")
 result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
-#>        RBP    logFC   score1  m1 score1_nor nes1_size   nes1_es nes1_nes
-#> 1    ESRP1 4.622624 743.8016 743  1.0000000       986 0.8289931 1.725444
-#> 2    RBM47 1.756513 238.1931 596  0.3187915       792 0.7913975 1.648238
-#> 3    CELF2 4.018223 244.8588 220  0.3277722       272 0.8467071 1.758134
-#> 4 APOBEC3C 3.641784 246.6118 254  0.3301341       329 0.7778915 1.629582
-#> 5    MBNL1 2.199534 156.1656 262  0.2082756       358 0.7242600 1.509960
-#>        nes1_p nes2_size   nes2_es nes2_nes      nes2_p overlap total_size
-#> 1 0.000999001      1038 0.8385299 1.465962 0.000999001     743       3197
-#> 2 0.000999001      1038 0.8508408 1.302527 0.000999001     596       3197
-#> 3 0.000999001      1038 0.9241963 1.169100 0.000999001     221       3197
-#> 4 0.000999001      1038 0.8770687 1.210576 0.000999001     254       3197
-#> 5 0.000999001      1038 0.8779637 1.167209 0.000999001     262       3197
-#>         OR          pval     score3
-#> 1 19.82914 7.028806e-261 11.2635600
-#> 2 13.48972 1.819226e-186  2.5137081
-#> 3 11.17066  1.233928e-67  2.2517241
-#> 4  8.99358  8.460565e-70  1.9531016
-#> 5  7.25027  1.511901e-63  0.9883926
+#>        RBP         D     NES1     NES2     odds MRAS_Score
+#> 1    ESRP1 1.0000000 1.723756 1.468011 19.82914 11.2682700
+#> 2    RBM47 0.3187915 1.648863 1.303556 13.48972  2.5166471
+#> 3    CELF2 0.3277722 1.762482 1.169772 11.17066  2.2585906
+#> 4 APOBEC3C 0.3301341 1.633275 1.210991  8.99358  1.9582009
+#> 5    MBNL1 0.2082756 1.511037 1.167821  7.25027  0.9896166
 ```
 
 ### Interacting RBPs and co-regulated splicing events
@@ -257,6 +241,11 @@ head(result_tab_simple[1:5,])
 # get splicing events co-regulated by interacting RBPs.
 `get_group_events(rbp_interested,rbp_event_deal_all)`
 ```
+
+## The pre-constructed networks for 33 TCGA cancer types.
+
+The pre-constructed networks for 33 TCGA cancer types can be downloaded
+at ASCancer Altas (<https://ngdc.cncb.ac.cn/ascancer/download/mars>).
 
 ## Tools: AS Events ID Converter
 

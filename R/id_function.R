@@ -842,7 +842,8 @@ id_change<-function(id1,id2,err_len=2){
 
     }else{
       if (x[3]=="IR"){
-        a<-tryCatch(tj(del(x[6:9]),"_"),warning = function(w){
+        tmp<-x[6:11][!is.na(x[6:11])]
+        a<-tryCatch(tj(del(tmp),"_"),warning = function(w){
           # browser()
           message(paste0(x[1],"_",w))
           return(NA)

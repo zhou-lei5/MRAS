@@ -27,3 +27,5 @@ DS<-function(x,m,n){
   FDR<-stats::p.adjust(a$p.value,method = "BH")
   return(list(pvalue=a$p.value,FDR=FDR,dPSI=dPSI,abs_dPSI=abs(dPSI)))
 }
+
+

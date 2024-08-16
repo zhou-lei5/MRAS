@@ -487,9 +487,13 @@ score_matrix<-function(rbp_interested,Events_DS,Event_DS_sig,RBP_use,DS_pvalue,D
     return(score_matrix_all)
   }else {
     if (result_type == "tab_simple"){
-      return(rbp_uni_mat_3)
+      tmp<-rbp_uni_mat_3[,c("RBP","score1_nor","nes1_nes","nes2_nes","OR","score3")]
+      colnames(tmp)<-c("RBP","D","NES1","NES2","odds","MRAS_Score")
+      return(tmp)
     }else{
-      return(rbp_uni_mat_2)
+      tmp<-rbp_uni_mat_2[,c("RBP","Events","score1_nor","nes1_nes","nes2_nes","OR","score3")]
+      colnames(tmp)<-c("RBP","Targets","D","NES1","NES2","odds","MRAS_Score")
+      return(tmp)
     }
   }
 }
