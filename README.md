@@ -13,7 +13,7 @@ Menu
     - [Interacting RBPs and co-regulated splicing
       events](#interacting-rbps-and-co-regulated-splicing-events)
   - [The pre-constructed networks for 33 TCGA cancer
-    types.](#the-pre-constructed-networks-for-33-tcga-cancer-types)
+    types](#the-pre-constructed-networks-for-33-tcga-cancer-types)
   - [Tools: AS Events ID Converter](#tools-as-events-id-converter)
     - [`id_find()`](#id_find)
     - [`id_normalization()`](#id_normalization)
@@ -168,13 +168,13 @@ result_bulk<-MRAS(input_type = "2",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6342980087946" "PKM" "22.86047" "IGF2BP2"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6091169482863" "PKM" "22.83395" "IGF2BP2"
 #>      rank3              RBP4   rank4              RBP5   rank5             
-#> [1,] "22.1729866928249" "RRP9" "20.9156019808808" "BOP1" "20.7589465423559"
-#>      RBP6   rank6             RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.917127517709" "NELFE" "18.2349144993104" "SNRPA"
-#>      rank8              RBP9    rank9             RBP10  rank10            
-#> [1,] "18.0691470183756" "RBM42" "18.057534440028" "RALY" "17.3297803469232"
+#> [1,] "22.1366750344505" "RRP9" "20.9478844462111" "BOP1" "20.7134659700031"
+#>      RBP6   rank6              RBP7    rank7              RBP8   
+#> [1,] "XPO5" "18.9022792914131" "NELFE" "18.2109697537408" "RBM42"
+#>      rank8              RBP9    rank9              RBP10  rank10            
+#> [1,] "18.0527396852879" "SNRPA" "17.9917991451762" "RALY" "17.3288055278799"
 ```
 
 #### Single cell RNA-seq
@@ -200,15 +200,15 @@ result_sc<-MRAS(input_type = "2",
 #> Finish!
 result_sc
 #>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3   
-#> [1,] "ESRP1"        "1"  "ESRP1" "11.26827" "RBM47" "2.51664708725879" "CELF2"
+#> [1,] "ESRP1"        "1"  "ESRP1" "11.25044" "RBM47" "2.51224872115645" "CELF2"
 #>      rank3              RBP4       rank4              RBP5   
-#> [1,] "2.25859056287425" "APOBEC3C" "1.95820088678253" "MBNL1"
+#> [1,] "2.25503226759437" "APOBEC3C" "1.95143874918872" "MBNL1"
 #>      rank5               RBP6      rank6               RBP7   
-#> [1,] "0.989616616088329" "HNRNPH2" "0.644446395251371" "DDX24"
+#> [1,] "0.988548995478133" "HNRNPH2" "0.645211405867111" "DDX24"
 #>      rank7               RBP8    rank8               RBP9   
-#> [1,] "0.622953519314553" "RBM28" "0.560451185770362" "RBM38"
-#>      rank9               RBP10   rank10             
-#> [1,] "0.546574027492764" "SRSF5" "0.510854052283557"
+#> [1,] "0.623609359645462" "RBM28" "0.560557030029269" "RBM38"
+#>      rank9               RBP10   rank10            
+#> [1,] "0.546902831686321" "SRSF5" "0.51233207206364"
 ```
 
 ### Type of MRAS result
@@ -225,11 +225,11 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>        RBP         D     NES1     NES2     odds MRAS_Score
-#> 1    ESRP1 1.0000000 1.723756 1.468011 19.82914 11.2682700
-#> 2    RBM47 0.3187915 1.648863 1.303556 13.48972  2.5166471
-#> 3    CELF2 0.3277722 1.762482 1.169772 11.17066  2.2585906
-#> 4 APOBEC3C 0.3301341 1.633275 1.210991  8.99358  1.9582009
-#> 5    MBNL1 0.2082756 1.511037 1.167821  7.25027  0.9896166
+#> 1    ESRP1 1.0000000 1.722579 1.466691 19.82914  11.250440
+#> 2    RBM47 0.3187915 1.647201 1.302590 13.48972   2.512249
+#> 3    CELF2 0.3277722 1.761026 1.168895 11.17066   2.255032
+#> 4 APOBEC3C 0.3301341 1.628394 1.210427  8.99358   1.951439
+#> 5    MBNL1 0.2082756 1.509019 1.168121  7.25027   0.988549
 ```
 
 ### Interacting RBPs and co-regulated splicing events
@@ -242,10 +242,10 @@ head(result_tab_simple[1:5,])
 `get_group_events(rbp_interested,rbp_event_deal_all)`
 ```
 
-## The pre-constructed networks for 33 TCGA cancer types.
+## The pre-constructed networks for 33 TCGA cancer types
 
 The pre-constructed networks for 33 TCGA cancer types can be downloaded
-at ASCancer Altas (<https://ngdc.cncb.ac.cn/ascancer/download/mars>).
+at ASCancer Altas (<https://ngdc.cncb.ac.cn/ascancer/download/mras>).
 
 ## Tools: AS Events ID Converter
 

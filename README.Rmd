@@ -141,9 +141,9 @@ head(result_tab_simple[1:5,])
 `get_group_events(rbp_interested,rbp_event_deal_all)`
 
 ```
-## The pre-constructed networks for 33  TCGA cancer types.
+## The pre-constructed networks for 33  TCGA cancer types
 
-The pre-constructed networks for 33  TCGA cancer types can be downloaded at ASCancer Altas (https://ngdc.cncb.ac.cn/ascancer/download/mars).
+The pre-constructed networks for 33  TCGA cancer types can be downloaded at ASCancer Altas (https://ngdc.cncb.ac.cn/ascancer/download/mras).
 
 
 ## Tools: AS Events ID Converter
