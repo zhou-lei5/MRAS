@@ -12,6 +12,6 @@
 #' tj(a)
 tj<-function(name_list,type = ","){
   name_list<-name_list[complete.cases(name_list)]
-  name<-paste(name_list,collapse = type)
+  name<-paste0(name_list,collapse = type)
   return(name)
 }

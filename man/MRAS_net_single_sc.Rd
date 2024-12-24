@@ -10,6 +10,8 @@ MRAS_net_single_sc(
   num1 = 0.1,
   num2 = 0.1,
   method = "spearman",
+  cor_cutoff = 0,
+  cor_p_cutoff = 0.05,
   dpsi_network_threshold = 0.1,
   BS = NULL,
   threads = 2,
@@ -26,6 +28,10 @@ Input requirements: if the input is less than 1, the input is considered as the 
 When choosing the input sample proportion, it is required to be no greater than 0.5.}
 
 \item{method}{The method to calculate correlation.}
+
+\item{cor_cutoff}{The cutoff of co-regulation of RBP to event j, with a default value of 0.}
+
+\item{cor_p_cutoff}{The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.}
 
 \item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 

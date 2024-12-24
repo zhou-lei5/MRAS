@@ -6,6 +6,8 @@
 #' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -20,6 +22,7 @@
 #'
 #'
 MRAS_net_single<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
+                          cor_cutoff=0.3,cor_p_cutoff=0.05,
                           dpsi_network_threshold = 0.1,BS = NULL,
                           threads = 2,path_use = path_use){
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
@@ -64,7 +67,7 @@ MRAS_net_single<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -128,6 +131,8 @@ MRAS_net_single<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
 #' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -143,6 +148,7 @@ MRAS_net_single<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
 #' @export
 #'
 MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spearman",BS=NULL,
+                         cor_cutoff=0.3,cor_p_cutoff=0.05,
                          MRAS_net_single_re = MRAS_net_single_re,
                          dpsi_network_threshold = 0.1,
                          string_net = string_net,
@@ -150,7 +156,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
   rbp_net_mat<-MRAS_net_single_re$rbp_net_mat
   rbp_corr<-MRAS_net_single_re$corr_mat
 
-  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>0.3)&(rbp_corr$p<0.05)),]
+  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>cor_cutoff)&(rbp_corr$p<cor_p_cutoff)),]
   rbp_corr_deal$cor<-abs(rbp_corr_deal$cor)
   rbp_corr_deal_tab<-table(rbp_corr_deal$col)
   rbp_corr_deal_remove<-names(rbp_corr_deal_tab)[which(rbp_corr_deal_tab == 1)]
@@ -197,6 +203,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
     return(results[,1])
   }
   MRAS_net_group_pre1<-function(rbp,psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method=method,
+                                cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                 num1 = 0.5,num2 = 0.5,dpsi_network_threshold = 0.1,
                                 rbp_bind_event){
 
@@ -217,7 +224,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -308,6 +315,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
     psi_deal<-psi[rownames(rbp_bind_event),]
     if (nrow(psi_deal)>0){
       re_new<-MRAS_net_group_pre1(rbp = rbp,psi_deal = psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method = method,
+                                  cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                   num1 = num1,num2 = num2,dpsi_network_threshold = dpsi_network_threshold,
                                   rbp_bind_event = rbp_bind_event)
       re_new<-as.matrix(re_new)
@@ -336,6 +344,8 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential splicing events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
 #' @param path_use The path to the file used to store the output.
@@ -349,6 +359,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
 #'
 
 MRAS_net_single_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
+                               cor_cutoff=0.3,cor_p_cutoff=0.05,
                                dpsi_network_threshold = 0.1,BS = NULL,
                                threads = 2,path_use = path_use){
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
@@ -393,7 +404,7 @@ MRAS_net_single_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -428,6 +439,8 @@ MRAS_net_single_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
 #' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -446,6 +459,7 @@ MRAS_net_single_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
 
 
 MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
+                              cor_cutoff=0.3,cor_p_cutoff=0.05,
                               method="spearman",BS=NULL,
                               rbp_corr_work = rbp_corr_work,
                               dpsi_network_threshold = 0.1,
@@ -453,7 +467,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
                               threads = 2,path_use = path_use){
   rbp_corr<-rbp_corr_work
 
-  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>0.3)&(rbp_corr$p<0.05)),]
+  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>cor_cutoff)&(rbp_corr$p<cor_p_cutoff)),]
   rbp_corr_deal$cor<-abs(rbp_corr_deal$cor)
   rbp_corr_deal_tab<-table(rbp_corr_deal$col)
   rbp_corr_deal_remove<-names(rbp_corr_deal_tab)[which(rbp_corr_deal_tab == 1)]
@@ -502,6 +516,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     return(results[,1])
   }
   MRAS_net_group_pre1<-function(rbp,psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method = method,
+                                cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                 num1 = 0.5,num2 = 0.5,dpsi_network_threshold = 0.1,
                                 rbp_bind_event){
     t1<-rbp_bind_event[,use_mat1[rbp,]]
@@ -520,7 +535,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -566,6 +581,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     psi_deal<-psi[rownames(rbp_bind_event),]
     if (nrow(psi_deal)>0){
       re_new<-MRAS_net_group_pre1(rbp = rbp,psi_deal = psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method = method,
+                                  cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                   num1 = num1,num2 = num2,dpsi_network_threshold = dpsi_network_threshold,
                                   rbp_bind_event = rbp_bind_event)
       re_new<-as.matrix(re_new)
@@ -591,6 +607,8 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
 #'
 #' @param expr RBP expression matrix.
 #' @param psi Events splicing matrix.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
@@ -607,6 +625,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
 #' @export
 #'
 MRAS_net_single_sc<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
+                             cor_cutoff=0,cor_p_cutoff=0.05,
                              dpsi_network_threshold = 0.1,BS = NULL,
                              threads = 2,path_use = path_use){
   # browser()
@@ -659,7 +678,7 @@ MRAS_net_single_sc<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
     # if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
-    if_cor<-ifelse((pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -724,6 +743,8 @@ MRAS_net_single_sc<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
 #' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -740,6 +761,7 @@ MRAS_net_single_sc<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
 #'
 
 MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
+                            cor_cutoff=0,cor_p_cutoff=0.05,
                             method="spearman",BS=NULL,
                             MRAS_net_single_re = MRAS_net_single_re,
                             dpsi_network_threshold = 0.1,
@@ -748,7 +770,7 @@ MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
   rbp_net_mat<-MRAS_net_single_re$rbp_net_mat
   rbp_corr<-MRAS_net_single_re$corr_mat
 
-  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>0.3)&(rbp_corr$p<0.05)),]
+  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>cor_cutoff)&(rbp_corr$p<cor_p_cutoff)),]
   rbp_corr_deal$cor<-abs(rbp_corr_deal$cor)
   rbp_corr_deal_tab<-table(rbp_corr_deal$event)
   rbp_corr_deal_remove<-names(rbp_corr_deal_tab)[which(rbp_corr_deal_tab == 1)]
@@ -801,6 +823,7 @@ MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
     return(results[,1])
   }
   MRAS_net_group_pre1<-function(rbp,psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method=method,
+                                cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                 num1 = 0.5,num2 = 0.5,dpsi_network_threshold = 0.1,
                                 rbp_bind_event){
 
@@ -820,8 +843,8 @@ MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    # if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
-    if_cor<-ifelse((pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
+    # if_cor<-ifelse((pp<0.05),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -915,6 +938,7 @@ MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
     psi_deal<-psi[rownames(rbp_bind_event),]
     if (nrow(psi_deal)>0){
       re_new<-MRAS_net_group_pre1(rbp = rbp,psi_deal = psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method=method,
+                                  cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                   num1 = num1,num2 = num2,dpsi_network_threshold = dpsi_network_threshold,
                                   rbp_bind_event = rbp_bind_event)
       re_new<-as.matrix(re_new)
@@ -955,6 +979,8 @@ MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
 #' @param path_use The path to the file used to store the output.
@@ -967,6 +993,7 @@ MRAS_net_group_sc<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,
 #' @export
 #'
 MRAS_net_single_sc_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
+                                  cor_cutoff=0,cor_p_cutoff=0.05,
                                   dpsi_network_threshold = 0.1,BS = NULL,
                                   threads = 2,path_use = path_use){
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
@@ -1015,8 +1042,8 @@ MRAS_net_single_sc_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearma
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    # if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
-    if_cor<-ifelse((pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
+    # if_cor<-ifelse((pp<0.05),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -1051,6 +1078,8 @@ MRAS_net_single_sc_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearma
 #' @param num1,num2 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'                  Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 #'                  When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -1066,6 +1095,7 @@ MRAS_net_single_sc_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearma
 #' @export
 #'
 MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
+                                 cor_cutoff=0,cor_p_cutoff=0.05,
                                  method="spearman",BS=NULL,
                                  rbp_corr_work = rbp_corr_work,
                                  dpsi_network_threshold = 0.1,
@@ -1073,7 +1103,7 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
                                  threads = 2,path_use = path_use){
   rbp_corr<-rbp_corr_work
 
-  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>0.3)&(rbp_corr$p<0.05)),]
+  rbp_corr_deal<-rbp_corr[which((abs(rbp_corr$cor)>cor_cutoff)&(rbp_corr$p<cor_p_cutoff)),]
   rbp_corr_deal$cor<-abs(rbp_corr_deal$cor)
   rbp_corr_deal_tab<-table(rbp_corr_deal$col)
   rbp_corr_deal_remove<-names(rbp_corr_deal_tab)[which(rbp_corr_deal_tab == 1)]
@@ -1127,6 +1157,7 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     return(results[,1])
   }
   MRAS_net_group_pre1<-function(rbp,psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method=method,
+                                cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                 num1 = 0.5,num2 = 0.5,dpsi_network_threshold = 0.1,
                                 rbp_bind_event){
 
@@ -1146,8 +1177,8 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    # if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
-    if_cor<-ifelse((pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
+    # if_cor<-ifelse((pp<0.05),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -1193,6 +1224,7 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     psi_deal<-psi[rownames(rbp_bind_event),]
     if (nrow(psi_deal)>0){
       re_new<-MRAS_net_group_pre1(rbp = rbp,psi_deal = psi_deal,use_mat1 = use_mat1,use_mat2 = use_mat2,method=method,
+                                  cor_cutoff=cor_cutoff,cor_p_cutoff=cor_p_cutoff,
                                   num1 = num1,num2 = num2,dpsi_network_threshold = dpsi_network_threshold,
                                   rbp_bind_event = rbp_bind_event)
       re_new<-as.matrix(re_new)
@@ -1221,6 +1253,8 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
 #' @param num1 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'             Input requirements: if the input is less than 1, the input is considered as the sample proportion.
 #'             When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -1238,6 +1272,7 @@ MRAS_net_group_sc_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
 #' @return network.
 #'
 MRAS_net_single_fc<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method="spearman",real=rbp_event_0.1,
+                             cor_cutoff=0.3,cor_p_cutoff=0.05,
                              sample=batch_matrix,dpsi_network_threshold = 0.1,BS = NULL,
                              threads = 2,path_use = path_use){
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
@@ -1277,7 +1312,7 @@ MRAS_net_single_fc<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method="spearma
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -1350,6 +1385,8 @@ MRAS_net_single_fc<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method="spearma
 #' @param num1 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'             Input requirements: if the input is less than 1, the input is considered as the sample proportion.
 #'             When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -1367,6 +1404,7 @@ MRAS_net_single_fc<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method="spearma
 #' @return network.
 #'
 MRAS_net_single_fc2<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("pearson","spearman"),real=rbp_event_0.1,
+                              cor_cutoff = 0.3,cor_p_cutoff = 0.05,
                               sample=batch_matrix,dpsi_network_threshold = 0.1,BS = NULL,
                               threads = 2,path_use = path_use){
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
@@ -1410,7 +1448,7 @@ MRAS_net_single_fc2<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("pear
     # abs_dpsi<-abs(as.numeric(dpsi))
     # abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])
@@ -1484,6 +1522,8 @@ MRAS_net_single_fc2<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("pear
 #' @param num1 Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 #'             Input requirements: if the input is less than 1, the input is considered as the sample proportion.
 #'             When choosing the input sample proportion, it is required to be no greater than 0.5.
+#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
+#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
 #' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param BS if input the binding data.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
@@ -1500,6 +1540,7 @@ MRAS_net_single_fc2<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("pear
 #' @return network.
 #'
 MRAS_net_single_fc_work<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("pearson","spearman"),
+                                  cor_cutoff = 0.3,cor_p_cutoff = 0.05,
                                   sample=batch_matrix,dpsi_network_threshold = 0.1,BS = NULL,
                                   threads = 2,path_use = path_use){
   if ((num1>0.5)&(num1<1)) stop("Wrong input : num!")
@@ -1543,7 +1584,7 @@ MRAS_net_single_fc_work<-function(expr,psi,fc_mat,dpsi_mat,num1 = 0.1,method=c("
     abs_dpsi<-abs(as.numeric(dpsi))
     abs_dpsi[which(abs_dpsi==1)]<-0
     logp<-(-log10(pp))
-    if_cor<-ifelse((abs(rr)>0.3)&(pp<0.05),1,0)
+    if_cor<-ifelse((abs(rr)>cor_cutoff)&(pp<cor_p_cutoff),1,0)
     P<-apply(t2,1,function(x){
       x1<-as.numeric(x[1:(ncol(t2)/2)])
       x2<-as.numeric(x[((ncol(t2)/2)+1):(ncol(t2))])

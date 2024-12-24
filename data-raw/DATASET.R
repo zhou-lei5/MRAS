@@ -30,4 +30,5 @@ usethis::use_data(brca_expr,brca_psi, overwrite = TRUE)
 
 load("./inst/extdata/string_net.RData")
 
-usethis::use_data(string_net,overwrite = TRUE,internal = T)
+usethis::use_data(string_net,overwrite = TRUE,internal = TRUE)
+

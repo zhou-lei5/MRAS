@@ -19,9 +19,7 @@
 #' @param BS RBP binding matrix.
 #' @param smooth network building type.User can choose "TRUE" or "FALSE" in the third input type.
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
-#' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential splicing events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
-#' @param cor_cutoff The cutoff of co-regulation of RBP to event j, with a default value of 0.3.
-#' @param cor_p_cutoff The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.
+#' @param dpsi_network_threshold A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1
 #' @param Regulate_threshold A threshold value to measure whether the RBP regulates a splicing event, greater than which the RBP is considered to regulate the splicing event, with a default threshold value of 0.5.
 #' @param rbp_net_mat_group first net which can get from "MRAS".
 #' @param path_use The path to the file used to store the output.
@@ -43,7 +41,7 @@ MRAS<-function(input_type,
                rbp_event_deal_all_total = NULL,rbp_event_deal_all = NULL,
                method = "spearman",BS = NULL,group = T,
                dpsi_network_threshold = 0.1,Regulate_threshold = 0.5,rbp_net_mat_group = NULL,
-               num1 = 0.5,num2 = 0.5,sc = F,cor_cutoff = ifelse(sc,0,0.3),cor_p_cutoff = 0.05,
+               num1 = 0.5,num2 = 0.5,sc = F,
                threads = 1,path_use ,smooth = FALSE,
                result_type = c("Top10","tab_simple","tab_all")){
   if (input_type == "1"){
@@ -124,24 +122,24 @@ MRAS<-function(input_type,
     cat("Step3:Constructing RBP-Event regulatory relationship network...\n")
     if (!sc){
       MRAS_net_single_re<-MRAS_net_single(expr = expr,psi = psi,num1 = num1,num2 = num2,
-                                          method=method,BS = BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
+                                          method=method,BS = BS,
                                           dpsi_network_threshold = dpsi_network_threshold,
                                           threads = threads,path_use = path_use)
 
       MRAS_net_group_re<-MRAS_net_group(expr = expr,psi = psi,num1 = num1,num2 = num2,
-                                        method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
+                                        method=method,BS=BS,
                                         MRAS_net_single_re = MRAS_net_single_re,
                                         dpsi_network_threshold = dpsi_network_threshold,
                                         string_net = string_net,
                                         threads = threads,path_use = path_use)
       if (!smooth){
         rbp_corr_work<-MRAS_net_single_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
-                                            method=method,BS = BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
+                                            method=method,BS = BS,
                                             dpsi_network_threshold = dpsi_network_threshold,
                                             threads = threads,path_use = path_use)
 
         rbp_corr_group_work<-MRAS_net_group_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
-                                                 method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
+                                                 method=method,BS=BS,
                                                  rbp_corr_work = rbp_corr_work,
                                                  dpsi_network_threshold = dpsi_network_threshold,
                                                  string_net = string_net,
@@ -156,26 +154,21 @@ MRAS<-function(input_type,
                                           threads = 6,path_use = path_use)
       }
     }else{
-
       MRAS_net_single_re<-MRAS_net_single_sc(expr = expr,psi = psi,num1 = num1,num2 = num2,
-                                             cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
                                              dpsi_network_threshold = dpsi_network_threshold,BS = BS,
                                              threads = threads,path_use = path_use)
 
       MRAS_net_group_re<-MRAS_net_group_sc(expr = expr,psi = psi,num1 = num1,num2 = num2,BS=BS,
-                                           cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
                                            MRAS_net_single_re = MRAS_net_single_re,
                                            dpsi_network_threshold = dpsi_network_threshold,
                                            string_net = string_net,
                                            threads = threads,path_use = path_use)
       if (!smooth){
         rbp_corr_work<-MRAS_net_single_sc_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
-                                               cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
                                                dpsi_network_threshold = dpsi_network_threshold,BS = BS,
                                                threads = threads,path_use = path_use)
 
         rbp_corr_group_work<-MRAS_net_group_sc_work(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,BS=BS,
-                                                    cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
                                                     rbp_corr_work = rbp_corr_work,
                                                     dpsi_network_threshold = dpsi_network_threshold,
                                                     string_net = string_net,

@@ -11,6 +11,8 @@ MRAS_net_single_fc_work(
   dpsi_mat,
   num1 = 0.1,
   method = c("pearson", "spearman"),
+  cor_cutoff = 0.3,
+  cor_p_cutoff = 0.05,
   sample = batch_matrix,
   dpsi_network_threshold = 0.1,
   BS = NULL,
@@ -32,6 +34,10 @@ Input requirements: if the input is less than 1, the input is considered as the 
 When choosing the input sample proportion, it is required to be no greater than 0.5.}
 
 \item{method}{The method to calculate correlation.}
+
+\item{cor_cutoff}{The cutoff of co-regulation of RBP to event j, with a default value of 0.3.}
+
+\item{cor_p_cutoff}{The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.}
 
 \item{sample}{batch matrix.}
 

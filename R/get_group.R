@@ -18,13 +18,13 @@ get_group<-function(rbp_interested){
 #'
 #' @param rbp_interested The name of the RBP interested.
 #' @param rbp_event_deal_all The network built by MRAS.
-#' @param DE_events The differetial splicing events got by MRAS.
+#' @param Event_DS_sig The differetial splicing events got by MRAS.
 #'
 #' @return splicing events co-regulated by interacting RBPs.
 #' @export
 #'
 
-get_group_events<-function(rbp_interested,rbp_event_deal_all,DE_events){
+get_group_events<-function(rbp_interested,rbp_event_deal_all,Event_DS_sig){
   tab<-string_net[which(rownames(string_net)==rbp_interested),which(string_net[which(rownames(string_net)==rbp_interested),]!=0)]
   if (!(nrow(tab)>0)){
     stop("This RBP may have no interacting RBP.")

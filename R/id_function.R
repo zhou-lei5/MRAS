@@ -776,6 +776,7 @@ id_change<-function(id1,id2,err_len=2){
   }
   colnames(id1_mat)<-c("id1","symbol","type","chr","chain","loc1","loc2",
                        "loc3","loc4","loc5","loc6","loc7","loc8")
+  id2_mat<-id2_mat[,1:13]
   id1_mat$id_new<-unlist(apply(id1_mat,1,function(x){
     if (x[5]=="MEX"){
       a<-tryCatch(tj(del(x[6:13]),"_"),warning = function(w){

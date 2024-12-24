@@ -9,6 +9,8 @@ MRAS_net_group_sc_work(
   psi = psi,
   num1 = 0.5,
   num2 = 0.5,
+  cor_cutoff = 0,
+  cor_p_cutoff = 0.05,
   method = "spearman",
   BS = NULL,
   rbp_corr_work = rbp_corr_work,
@@ -26,6 +28,10 @@ MRAS_net_group_sc_work(
 \item{num1, num2}{Denotes the proportion/number of samples to take the expression high or low and to construct the regulatory relationship, respectively.
 Input requirements: if the input is less than 1, the input is considered as the sample proportion, and greater than 1, the input is considered as the number of samples.
 When choosing the input sample proportion, it is required to be no greater than 0.5.}
+
+\item{cor_cutoff}{The cutoff of co-regulation of RBP to event j, with a default value of 0.3.}
+
+\item{cor_p_cutoff}{The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.}
 
 \item{method}{The method to calculate correlation.}
 

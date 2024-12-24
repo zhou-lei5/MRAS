@@ -25,6 +25,8 @@ MRAS(
   num1 = 0.5,
   num2 = 0.5,
   sc = F,
+  cor_cutoff = ifelse(sc, 0, 0.3),
+  cor_p_cutoff = 0.05,
   threads = 1,
   path_use,
   smooth = FALSE,
@@ -60,7 +62,7 @@ MRAS(
 
 \item{group}{TRUE or FALSE.If consider the synergy between RBPs.}
 
-\item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
+\item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential splicing events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 
 \item{Regulate_threshold}{A threshold value to measure whether the RBP regulates a splicing event, greater than which the RBP is considered to regulate the splicing event, with a default threshold value of 0.5.}
 
@@ -71,6 +73,10 @@ Input requirements: if the input is less than 1, the input is considered as the 
 When choosing the input sample proportion, it is required to be no greater than 0.5.}
 
 \item{sc}{TRUE or FALSE. If single cell data.}
+
+\item{cor_cutoff}{The cutoff of co-regulation of RBP to event j, with a default value of 0.3.}
+
+\item{cor_p_cutoff}{The cutoff of p-value of co-regulation of RBP to event j, with a default value of 0.05.}
 
 \item{threads}{If you want to use multiple threads, you can set threads, where the default parameter is 1.}
 
