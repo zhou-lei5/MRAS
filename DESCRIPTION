@@ -1,7 +1,7 @@
 Package: MRAS
 Type: Package
 Title: Master Regulator analysis of Alternative Splicing
-Version: 0.0.0.9000
+Version: 1.0
 Author: c(
     person("Lei"","ZHou",email="zhoulei@big.ac.cn",role=c("sut","cre","cph"))
     ) 
