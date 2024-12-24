@@ -15,7 +15,7 @@ DS_matrix<-function(psi,m,n){
     return(bb)
   }))
   Events_DS<-Events_DS[complete.cases(Events_DS),]
-  Events_DS[,"FDR"]<-stats::p.adjust(as.numeric(Events_DS[,"pvalue"]),method = "BH")
+  Events_DS[,3]<-stats::p.adjust(as.numeric(Events_DS[,2]),method = "BH")
   Events_DS<-cbind(rownames(Events_DS),Events_DS)
   colnames(Events_DS)<-c("Events_ID","pvalue","FDR","dPSI","abs_dPSI")
   return(Events_DS)
