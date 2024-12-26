@@ -225,7 +225,7 @@ data_integration_rmats<-function(path_rmats,type="default",design=NULL){
     }
 
   }
-  data<-fread(paste0(path_rmats,"/PSI.txt"),sep = ",",header = F)
+  data<-data.table::fread(paste0(path_rmats,"/PSI.txt"),sep = ",",header = F)
   data[,1]<-apply(data,1,function(x){
     return(gsub(" ","",x[1]))
   })
