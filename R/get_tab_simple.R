@@ -24,7 +24,7 @@ get_tab_simple<-function(path_useful){
 #' @return Return results with direction in "tab_simple" format
 #' @export
 #'
-get_direaction<-function(expr,m,n,result_tab_simple,RBP_cutoff=0.05){
+get_direction<-function(expr,m,n,result_tab_simple,RBP_cutoff=0.05){
   RBP_use<-as.data.frame(expr)
   RBP_use$logFC<-unlist(apply(expr,1,function(x){
     return(log2(mean(as.numeric(x[1:m]))/mean(as.numeric(x[(m+1):(m+n)]))))
@@ -46,6 +46,6 @@ get_direaction<-function(expr,m,n,result_tab_simple,RBP_cutoff=0.05){
     result_tab_simple$score3_new[i]<-ifelse(result_tab_simple$logFC_new[i]>0,result_tab_simple$score3[i],-result_tab_simple$score3[i])
   }
   # result_tab_simple<-result_tab_simple[order(result_tab_simple$score3_new,decreasing = T),]
-  result_tab_simple$direction[i]<-ifelse(result_tab_simple$logFC_new[i]>0,"Upregulation","Downregulation")
+  result_tab_simple$direction[i]<-ifelse(as.numeric(RBP_use[result_tab_simple$RBP[i],"logFC"])>0,"Upregulation","Downregulation")
   return(result_tab_simple)
 }
