@@ -44,8 +44,8 @@ get_direction<-function(expr,m,n,result_tab_simple,RBP_cutoff=0.05){
   for (i in 1:nrow(result_tab_simple)) {
     result_tab_simple$logFC_new[i]<-RBP_use[result_tab_simple$RBP[i],"logFC"]
     result_tab_simple$score3_new[i]<-ifelse(result_tab_simple$logFC_new[i]>0,result_tab_simple$score3[i],-result_tab_simple$score3[i])
+    result_tab_simple$direction[i]<-ifelse(as.numeric(RBP_use[result_tab_simple$RBP[i],"logFC"])>0,"Up","Down")
   }
   # result_tab_simple<-result_tab_simple[order(result_tab_simple$score3_new,decreasing = T),]
-  result_tab_simple$direction[i]<-ifelse(as.numeric(RBP_use[result_tab_simple$RBP[i],"logFC"])>0,"Upregulation","Downregulation")
-  return(result_tab_simple)
+   return(result_tab_simple)
 }
