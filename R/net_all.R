@@ -138,6 +138,7 @@ MRAS_net_single<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
 #' @param path_use The path to the file used to store the output.
 #' @param MRAS_net_single_re The output of function `MRAS_net_single()`.
+#' @param type "PPI" or "co-expr" use in group. Default is "PPI".
 #' @param string_net The relationship between RBPs.
 #' @param method The method to calculate correlation.
 #'
@@ -151,7 +152,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
                          cor_cutoff=0.3,cor_p_cutoff=0.05,
                          MRAS_net_single_re = MRAS_net_single_re,
                          dpsi_network_threshold = 0.1,
-                         string_net = string_net,
+                         string_net = string_net,type="PPI",
                          threads = 2,path_use = path_use){
   rbp_net_mat<-MRAS_net_single_re$rbp_net_mat
   rbp_corr<-MRAS_net_single_re$corr_mat
@@ -165,12 +166,20 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
   rbp_corr_mat<-reshape2::dcast(rbp_corr_deal,rbp~event,value.var = "cor",fill = 0)
   rownames(rbp_corr_mat)<-rbp_corr_mat[,1]
   rbp_corr_mat<-rbp_corr_mat[,-1]
-  rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
-  rbp_corr_mat<-as.matrix(rbp_corr_mat)
-  expr_rbp<-as.matrix(expr[intersect(rownames(string_net),rownames(rbp_corr_mat)),])
+  if (type=="PPI"){
+    rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
+    rbp_corr_mat<-as.matrix(rbp_corr_mat)
+    expr_rbp<-as.matrix(expr[intersect(rownames(string_net),rownames(rbp_corr_mat)),])
 
-  string_net_use<-string_net[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
-  string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
+    string_net_use<-string_net[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
+    string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
+  }
+  if (type=="co-expr"){
+    expr_rbp<-expr[rownames(rbp_corr_mat),]
+    string_net_use<-rbp_corr_mat
+    string_net_use[which(string_net_use!=0)]<-1
+  }
+
   #+1
   expr_rbp_log<-as.matrix(apply(expr_rbp,2,function(x){
     return(log2(as.numeric(x)+1))
@@ -446,6 +455,7 @@ MRAS_net_single_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
 #' @param threads If you want to use multiple threads, you can set threads, where the default parameter is 1.
 #' @param path_use The path to the file used to store the output.
 #' @param string_net The relationship between RBPs.
+#' @param type "PPI" or "co-expr" use in group. Default is "PPI".
 #' @param rbp_corr_work The output of function `MRAS_net_single_work()`.
 #' @param method The method to calculate correlation.
 #'
@@ -463,7 +473,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
                               method="spearman",BS=NULL,
                               rbp_corr_work = rbp_corr_work,
                               dpsi_network_threshold = 0.1,
-                              string_net = string_net,
+                              string_net = string_net,type="PPI",
                               threads = 2,path_use = path_use){
   rbp_corr<-rbp_corr_work
 
@@ -477,12 +487,19 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
   rbp_corr_mat[is.na(rbp_corr_mat)]<-0
   rownames(rbp_corr_mat)<-rbp_corr_mat[,1]
   rbp_corr_mat<-rbp_corr_mat[,-1]
-  rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
-  rbp_corr_mat<-as.matrix(rbp_corr_mat)
-  expr_rbp<-as.matrix(expr[intersect(rownames(string_net),rownames(rbp_corr_mat)),])
+  if (type=="PPI"){
+    rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
+    rbp_corr_mat<-as.matrix(rbp_corr_mat)
+    expr_rbp<-as.matrix(expr[intersect(rownames(string_net),rownames(rbp_corr_mat)),])
 
-  string_net_use<-string_net[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
-  string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
+    string_net_use<-string_net[intersect(rownames(string_net),rownames(rbp_corr_mat)),]
+    string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
+  }
+  if (type=="co-expr"){
+    expr_rbp<-expr[rownames(rbp_corr_mat),]
+    string_net_use<-rbp_corr_mat
+    string_net_use[which(string_net_use!=0)]<-1
+  }
   #+1
   expr_rbp_log<-as.matrix(apply(expr_rbp,2,function(x){
     return(log2(as.numeric(x)+1))

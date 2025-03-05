@@ -10,6 +10,7 @@ data_integration_preprocess_rmats(
   design = NULL,
   sample_num,
   psi_cutoff,
+  selected = NULL,
   reads_cutoff = NULL,
   reads_num = 10,
   colname_ann = FALSE,
@@ -27,6 +28,8 @@ data_integration_preprocess_rmats(
 \item{sample_num}{number}
 
 \item{psi_cutoff}{psi_cutoff}
+
+\item{selected}{if only some samples you want to use}
 
 \item{reads_cutoff}{reads_cutoff}
 

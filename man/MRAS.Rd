@@ -19,6 +19,7 @@ MRAS(
   method = "spearman",
   BS = NULL,
   group = T,
+  type = "PPI",
   dpsi_network_threshold = 0.1,
   Regulate_threshold = 0.5,
   rbp_net_mat_group = NULL,
@@ -61,6 +62,8 @@ MRAS(
 \item{BS}{RBP binding matrix.}
 
 \item{group}{TRUE or FALSE.If consider the synergy between RBPs.}
+
+\item{type}{"PPI" or "co-expr" use in group. Default is "PPI".}
 
 \item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential splicing events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 

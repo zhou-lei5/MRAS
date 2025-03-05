@@ -16,6 +16,7 @@ MRAS_net_group_work(
   rbp_corr_work = rbp_corr_work,
   dpsi_network_threshold = 0.1,
   string_net = string_net,
+  type = "PPI",
   threads = 2,
   path_use = path_use
 )
@@ -42,6 +43,8 @@ When choosing the input sample proportion, it is required to be no greater than 
 \item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential spliicng events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 
 \item{string_net}{The relationship between RBPs.}
+
+\item{type}{"PPI" or "co-expr" use in group. Default is "PPI".}
 
 \item{threads}{If you want to use multiple threads, you can set threads, where the default parameter is 1.}
 
