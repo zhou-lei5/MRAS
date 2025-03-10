@@ -176,8 +176,9 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
   }
   if (type=="co-expr"){
     expr_rbp<-expr[rownames(rbp_corr_mat),]
-    string_net_use<-rbp_corr_mat
-    string_net_use[which(string_net_use!=0)]<-1
+    string_net_use<-as.matrix(rbp_corr_mat)
+    string_net_use<-(string_net_use!=0) * 1
+    string_net_use<- as.data.frame(string_net_use)
   }
 
   #+1
@@ -497,8 +498,9 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
   }
   if (type=="co-expr"){
     expr_rbp<-expr[rownames(rbp_corr_mat),]
-    string_net_use<-rbp_corr_mat
-    string_net_use[which(string_net_use!=0)]<-1
+    string_net_use<-as.matrix(rbp_corr_mat)
+    string_net_use<-(string_net_use!=0) * 1
+    string_net_use<- as.data.frame(string_net_use)
   }
   #+1
   expr_rbp_log<-as.matrix(apply(expr_rbp,2,function(x){
