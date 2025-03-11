@@ -188,10 +188,14 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
     string_net_use<-as.matrix(co_expr_mat)
     string_net_use<-(string_net_use!=0) * 1
     string_net_use<- as.data.frame(string_net_use)
+    rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net_use),rownames(rbp_corr_mat)),]
+    rbp_corr_mat<-as.matrix(rbp_corr_mat)
   }
   if (type=="input"){
     expr_rbp<-expr[rownames(co_mat),]
     string_net_use<-co_mat
+    rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net_use),rownames(rbp_corr_mat)),]
+    rbp_corr_mat<-as.matrix(rbp_corr_mat)
   }
 
   #+1
@@ -523,10 +527,14 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     string_net_use<-as.matrix(co_expr_mat)
     string_net_use<-(string_net_use!=0) * 1
     string_net_use<- as.data.frame(string_net_use)
+    rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net_use),rownames(rbp_corr_mat)),]
+    rbp_corr_mat<-as.matrix(rbp_corr_mat)
   }
   if (type=="input"){
     expr_rbp<-expr[rownames(co_mat),]
     string_net_use<-co_mat
+    rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net_use),rownames(rbp_corr_mat)),]
+    rbp_corr_mat<-as.matrix(rbp_corr_mat)
   }
   #+1
   expr_rbp_log<-as.matrix(apply(expr_rbp,2,function(x){
