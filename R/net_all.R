@@ -179,7 +179,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
     string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
   }
   if (type=="co-expr"){
-    expr_rbp<-expr[rownames(rbp_corr_mat),]
+    expr_rbp<-as.matrix(expr[rownames(rbp_corr_mat),])
     expr_rbp_mat<-cor_spearman(as.matrix(expr_rbp),as.matrix(expr_rbp),method="pearson")
     expr_rbp_mat_deal<-expr_rbp_mat[which((abs(expr_rbp_mat$cor)>co_expr_cutoff)&(expr_rbp_mat$p<co_expr_p_cutoff)),]
     co_expr_mat<-reshape2::dcast(expr_rbp_mat_deal,row~col,value.var = "cor",fill = 0)
@@ -192,7 +192,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
     rbp_corr_mat<-as.matrix(rbp_corr_mat)
   }
   if (type=="input"){
-    expr_rbp<-expr[rownames(co_mat),]
+    expr_rbp<-as.matrix(expr[rownames(co_mat),])
     string_net_use<-co_mat
     rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net_use),rownames(rbp_corr_mat)),]
     rbp_corr_mat<-as.matrix(rbp_corr_mat)
@@ -518,7 +518,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     string_net_use<-string_net_use[,intersect(rownames(string_net),rownames(rbp_corr_mat))]
   }
   if (type=="co-expr"){
-    expr_rbp<-expr[rownames(rbp_corr_mat),]
+    expr_rbp<-as.matrix(expr[rownames(rbp_corr_mat),])
     expr_rbp_mat<-cor_spearman(as.matrix(expr_rbp),as.matrix(expr_rbp),method="pearson")
     expr_rbp_mat_deal<-expr_rbp_mat[which((abs(expr_rbp_mat$cor)>co_expr_cutoff)&(expr_rbp_mat$p<co_expr_p_cutoff)),]
     co_expr_mat<-reshape2::dcast(expr_rbp_mat_deal,row~col,value.var = "cor",fill = 0)
@@ -531,7 +531,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
     rbp_corr_mat<-as.matrix(rbp_corr_mat)
   }
   if (type=="input"){
-    expr_rbp<-expr[rownames(co_mat),]
+    expr_rbp<-as.matrix(expr[rownames(co_mat),])
     string_net_use<-co_mat
     rbp_corr_mat<-rbp_corr_mat[intersect(rownames(string_net_use),rownames(rbp_corr_mat)),]
     rbp_corr_mat<-as.matrix(rbp_corr_mat)
