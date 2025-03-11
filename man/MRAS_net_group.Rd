@@ -17,6 +17,9 @@ MRAS_net_group(
   dpsi_network_threshold = 0.1,
   string_net = string_net,
   type = "PPI",
+  co_expr_cutoff = 0.3,
+  co_expr_p_cutoff = 0.05,
+  co_mat = NULL,
   threads = 2,
   path_use = path_use
 )
@@ -45,6 +48,12 @@ When choosing the input sample proportion, it is required to be no greater than 
 \item{string_net}{The relationship between RBPs.}
 
 \item{type}{"PPI" or "co-expr" use in group. Default is "PPI".}
+
+\item{co_expr_cutoff}{The cor cutoff of co-expr RBPs.}
+
+\item{co_expr_p_cutoff}{The p-value of co-expr RBPs.}
+
+\item{co_mat}{If the users use their own co-regulation network.And it should be a zero-one matrix.}
 
 \item{threads}{If you want to use multiple threads, you can set threads, where the default parameter is 1.}
 

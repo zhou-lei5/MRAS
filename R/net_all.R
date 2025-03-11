@@ -139,6 +139,9 @@ MRAS_net_single<-function(expr,psi,num1 = 0.1,num2 = 0.1,method="spearman",
 #' @param path_use The path to the file used to store the output.
 #' @param MRAS_net_single_re The output of function `MRAS_net_single()`.
 #' @param type "PPI" or "co-expr" use in group. Default is "PPI".
+#' @param co_expr_cutoff The cor cutoff of co-expr RBPs.
+#' @param co_expr_p_cutoff The p-value of co-expr RBPs.
+#' @param co_mat If the users use their own co-regulation network.And it should be a zero-one matrix.
 #' @param string_net The relationship between RBPs.
 #' @param method The method to calculate correlation.
 #'
@@ -153,6 +156,7 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
                          MRAS_net_single_re = MRAS_net_single_re,
                          dpsi_network_threshold = 0.1,
                          string_net = string_net,type="PPI",
+                         co_expr_cutoff=0.3,co_expr_p_cutoff=0.05,co_mat=NULL,
                          threads = 2,path_use = path_use){
   rbp_net_mat<-MRAS_net_single_re$rbp_net_mat
   rbp_corr<-MRAS_net_single_re$corr_mat
@@ -176,9 +180,18 @@ MRAS_net_group<-function(expr = expr,psi = psi,num1 = 0.1,num2 = 0.1,method="spe
   }
   if (type=="co-expr"){
     expr_rbp<-expr[rownames(rbp_corr_mat),]
-    string_net_use<-as.matrix(rbp_corr_mat)
+    expr_rbp_mat<-cor_spearman(as.matrix(expr_rbp),as.matrix(expr_rbp),method="pearson")
+    expr_rbp_mat_deal<-expr_rbp_mat[which((abs(expr_rbp_mat$cor)>co_expr_cutoff)&(expr_rbp_mat$p<co_expr_p_cutoff)),]
+    co_expr_mat<-reshape2::dcast(expr_rbp_mat_deal,row~col,value.var = "cor",fill = 0)
+    rownames(co_expr_mat)<-co_expr_mat[,1]
+    co_expr_mat<-co_expr_mat[,-1]
+    string_net_use<-as.matrix(co_expr_mat)
     string_net_use<-(string_net_use!=0) * 1
     string_net_use<- as.data.frame(string_net_use)
+  }
+  if (type=="input"){
+    expr_rbp<-expr[rownames(co_mat),]
+    string_net_use<-co_mat
   }
 
   #+1
@@ -457,6 +470,9 @@ MRAS_net_single_work<-function(expr,psi,num1 = 0.5,num2 = 0.5,method="spearman",
 #' @param path_use The path to the file used to store the output.
 #' @param string_net The relationship between RBPs.
 #' @param type "PPI" or "co-expr" use in group. Default is "PPI".
+#' @param co_expr_cutoff The cor cutoff of co-expr RBPs.
+#' @param co_expr_p_cutoff The p-value of co-expr RBPs.
+#' @param co_mat If the users use their own co-regulation network.And it should be a zero-one matrix.
 #' @param rbp_corr_work The output of function `MRAS_net_single_work()`.
 #' @param method The method to calculate correlation.
 #'
@@ -475,6 +491,7 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
                               rbp_corr_work = rbp_corr_work,
                               dpsi_network_threshold = 0.1,
                               string_net = string_net,type="PPI",
+                              co_expr_cutoff=0.3,co_expr_p_cutoff=0.05,co_mat=NULL,
                               threads = 2,path_use = path_use){
   rbp_corr<-rbp_corr_work
 
@@ -498,9 +515,18 @@ MRAS_net_group_work<-function(expr = expr,psi = psi,num1 = 0.5,num2 = 0.5,
   }
   if (type=="co-expr"){
     expr_rbp<-expr[rownames(rbp_corr_mat),]
-    string_net_use<-as.matrix(rbp_corr_mat)
+    expr_rbp_mat<-cor_spearman(as.matrix(expr_rbp),as.matrix(expr_rbp),method="pearson")
+    expr_rbp_mat_deal<-expr_rbp_mat[which((abs(expr_rbp_mat$cor)>co_expr_cutoff)&(expr_rbp_mat$p<co_expr_p_cutoff)),]
+    co_expr_mat<-reshape2::dcast(expr_rbp_mat_deal,row~col,value.var = "cor",fill = 0)
+    rownames(co_expr_mat)<-co_expr_mat[,1]
+    co_expr_mat<-co_expr_mat[,-1]
+    string_net_use<-as.matrix(co_expr_mat)
     string_net_use<-(string_net_use!=0) * 1
     string_net_use<- as.data.frame(string_net_use)
+  }
+  if (type=="input"){
+    expr_rbp<-expr[rownames(co_mat),]
+    string_net_use<-co_mat
   }
   #+1
   expr_rbp_log<-as.matrix(apply(expr_rbp,2,function(x){

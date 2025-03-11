@@ -27,6 +27,9 @@
 #' @param path_use The path to the file used to store the output.
 #' @param group TRUE or FALSE.If consider the synergy between RBPs.
 #' @param type "PPI" or "co-expr" use in group. Default is "PPI".
+#' @param co_expr_cutoff The cor cutoff of co-expr RBPs.
+#' @param co_expr_p_cutoff The p-value of co-expr RBPs.
+#' @param co_mat If the users use their own co-regulation network.And it should be a zero-one matrix.
 #' @param sc TRUE or FALSE. If single cell data.
 #' @param result_type The types of return values are "top10", "tab_simple", and "tab_all".
 #'                    "top10" returns the top 10 MRAS results;
@@ -43,6 +46,7 @@ MRAS<-function(input_type,
                DS_pvalue = 0.05,DS_dPSI = 0.1,
                rbp_event_deal_all_total = NULL,rbp_event_deal_all = NULL,
                method = "spearman",BS = NULL,group = T,type="PPI",
+               co_expr_cutoff=0.3,co_expr_p_cutoff=0.05,co_mat=NULL,
                dpsi_network_threshold = 0.1,Regulate_threshold = 0.5,rbp_net_mat_group = NULL,
                num1 = 0.5,num2 = 0.5,sc = F,cor_cutoff = ifelse(sc,0,0.3),cor_p_cutoff = 0.05,
                threads = 1,path_use ,smooth = FALSE,
@@ -131,7 +135,7 @@ MRAS<-function(input_type,
 
       MRAS_net_group_re<-MRAS_net_group(expr = expr,psi = psi,num1 = num1,num2 = num2,
                                         method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
-                                        MRAS_net_single_re = MRAS_net_single_re,type="PPI",
+                                        MRAS_net_single_re = MRAS_net_single_re,type="PPI",co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=NULL,
                                         dpsi_network_threshold = dpsi_network_threshold,
                                         string_net = string_net,
                                         threads = threads,path_use = path_use)
@@ -145,7 +149,7 @@ MRAS<-function(input_type,
                                                  method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
                                                  rbp_corr_work = rbp_corr_work,
                                                  dpsi_network_threshold = dpsi_network_threshold,
-                                                 string_net = string_net,type="PPI",
+                                                 string_net = string_net,type="PPI",co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=NULL,
                                                  threads = threads,path_use = path_use)
         network_work<-get_MRAS_net(rbp_net_mat_group = MRAS_net_group_re$rbp_net_mat_group,
                                    rbp_corr_group_work = rbp_corr_group_work,

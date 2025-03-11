@@ -20,6 +20,9 @@ MRAS(
   BS = NULL,
   group = T,
   type = "PPI",
+  co_expr_cutoff = 0.3,
+  co_expr_p_cutoff = 0.05,
+  co_mat = NULL,
   dpsi_network_threshold = 0.1,
   Regulate_threshold = 0.5,
   rbp_net_mat_group = NULL,
@@ -64,6 +67,12 @@ MRAS(
 \item{group}{TRUE or FALSE.If consider the synergy between RBPs.}
 
 \item{type}{"PPI" or "co-expr" use in group. Default is "PPI".}
+
+\item{co_expr_cutoff}{The cor cutoff of co-expr RBPs.}
+
+\item{co_expr_p_cutoff}{The p-value of co-expr RBPs.}
+
+\item{co_mat}{If the users use their own co-regulation network.And it should be a zero-one matrix.}
 
 \item{dpsi_network_threshold}{A threshold value that measures the absolute value of the degree of differential splicing events in two different condition, above which variable clipping is considered to have occurred, with a default threshold of 0.1}
 
