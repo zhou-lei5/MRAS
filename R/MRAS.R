@@ -116,7 +116,7 @@ MRAS<-function(input_type,
   #   return(result)
   # }
   if (input_type == "2"){
-    if (type %in% c("PPI","cp-expr","input")) stop("Wrong input : type!")
+    if (!(type %in% c("PPI","co-expr","input"))) stop("Wrong input : type!")
     cat("Step1:Performing differential splicing analysis...\n")
     Events_DS<-DS_matrix(psi,m = m,n = n)
     Event_DS_sig<-get_Event_DS_sig(Events_DS,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI)
@@ -136,7 +136,7 @@ MRAS<-function(input_type,
 
       MRAS_net_group_re<-MRAS_net_group(expr = expr,psi = psi,num1 = num1,num2 = num2,
                                         method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
-                                        MRAS_net_single_re = MRAS_net_single_re,type=type,co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=NULL,
+                                        MRAS_net_single_re = MRAS_net_single_re,type=type,co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=co_mat,
                                         dpsi_network_threshold = dpsi_network_threshold,
                                         string_net = string_net,
                                         threads = threads,path_use = path_use)
@@ -150,7 +150,7 @@ MRAS<-function(input_type,
                                                  method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
                                                  rbp_corr_work = rbp_corr_work,
                                                  dpsi_network_threshold = dpsi_network_threshold,
-                                                 string_net = string_net,type=type,co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=NULL,
+                                                 string_net = string_net,type=type,co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=co_mat,
                                                  threads = threads,path_use = path_use)
         network_work<-get_MRAS_net(rbp_net_mat_group = MRAS_net_group_re$rbp_net_mat_group,
                                    rbp_corr_group_work = rbp_corr_group_work,
@@ -158,7 +158,7 @@ MRAS<-function(input_type,
                                    threads = threads,path_use = path_use)
       }else{
         network_work<-get_MRAS_net_smooth(MRAS_net_group_re,
-                                          Regulate_threshold = 0.5,BS = NULL,
+                                          Regulate_threshold = 0.5,BS = BS,
                                           threads = 6,path_use = path_use)
       }
     }else{
@@ -192,7 +192,7 @@ MRAS<-function(input_type,
                                    threads = threads,path_use = path_use)
       }else{
         network_work<-get_MRAS_net_smooth(MRAS_net_group_re,
-                                          Regulate_threshold = 0.5,BS = NULL,
+                                          Regulate_threshold = 0.5,BS = BS,
                                           threads = 6,path_use = path_use)
       }
     }
