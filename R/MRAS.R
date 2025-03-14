@@ -116,6 +116,7 @@ MRAS<-function(input_type,
   #   return(result)
   # }
   if (input_type == "2"){
+    if (type %in% c("PPI","cp-expr","input")) stop("Wrong input : type!")
     cat("Step1:Performing differential splicing analysis...\n")
     Events_DS<-DS_matrix(psi,m = m,n = n)
     Event_DS_sig<-get_Event_DS_sig(Events_DS,DS_pvalue = DS_pvalue,DS_dPSI = DS_dPSI)
