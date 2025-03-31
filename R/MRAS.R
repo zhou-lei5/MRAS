@@ -126,6 +126,11 @@ MRAS<-function(input_type,
     cat("Step2:Preparing data...\n")
     RBP_use<-get_RBP_use(expr,m = m,n = n,RBP_cutoff=RBP_cutoff)
 
+    if (cor_cutoff == "auto"){
+      a<-cor_spearman(as.matrix(expr),as.matrix(psi))
+      # quantile (abs(a$cor), probs = c(.9,.95,.99))
+      cor_cutoff<-quantile(abs(a$cor), probs = c(.95))
+    }
 
     cat("Step3:Constructing RBP-Event regulatory relationship network...\n")
     if (!sc){
@@ -136,7 +141,8 @@ MRAS<-function(input_type,
 
       MRAS_net_group_re<-MRAS_net_group(expr = expr,psi = psi,num1 = num1,num2 = num2,
                                         method=method,BS=BS,cor_cutoff = cor_cutoff,cor_p_cutoff = cor_p_cutoff,
-                                        MRAS_net_single_re = MRAS_net_single_re,type=type,co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=co_mat,
+                                        MRAS_net_single_re = MRAS_net_single_re,type=type,
+                                        co_expr_cutoff=co_expr_cutoff,co_expr_p_cutoff=co_expr_p_cutoff,co_mat=co_mat,
                                         dpsi_network_threshold = dpsi_network_threshold,
                                         string_net = string_net,
                                         threads = threads,path_use = path_use)
@@ -158,8 +164,8 @@ MRAS<-function(input_type,
                                    threads = threads,path_use = path_use)
       }else{
         network_work<-get_MRAS_net_smooth(MRAS_net_group_re,
-                                          Regulate_threshold = 0.5,BS = BS,
-                                          threads = 6,path_use = path_use)
+                                          Regulate_threshold = Regulate_threshold,BS = BS,
+                                          threads = threads,path_use = path_use)
       }
     }else{
 
@@ -192,8 +198,8 @@ MRAS<-function(input_type,
                                    threads = threads,path_use = path_use)
       }else{
         network_work<-get_MRAS_net_smooth(MRAS_net_group_re,
-                                          Regulate_threshold = 0.5,BS = BS,
-                                          threads = 6,path_use = path_use)
+                                          Regulate_threshold = Regulate_threshold,BS = BS,
+                                          threads = threads,path_use = path_use)
       }
     }
     if (group){
