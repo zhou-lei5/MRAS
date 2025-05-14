@@ -19,6 +19,7 @@ Menu
     - [`id_normalization()`](#id_normalization)
     - [`id_change()`](#id_change)
   - [Help](#help)
+  - [Citation](#citation)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -172,13 +173,13 @@ result_bulk<-MRAS(input_type = "2",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6255651830965" "PKM" "22.86164" "IGF2BP2"
-#>      rank3              RBP4   rank4              RBP5   rank5            
-#> [1,] "22.1646894858871" "RRP9" "20.9194482358376" "BOP1" "20.794131995501"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6511489710036" "PKM" "22.85558" "IGF2BP2"
+#>      rank3              RBP4   rank4             RBP5   rank5            
+#> [1,] "22.1590809941096" "RRP9" "20.903326560401" "BOP1" "20.805290272569"
 #>      RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.8631771796667" "NELFE" "18.2244465957722" "SNRPA"
-#>      rank8            RBP9    rank9              RBP10  rank10            
-#> [1,] "18.07417435112" "RBM42" "18.0508390100557" "RALY" "17.3265454378688"
+#> [1,] "XPO5" "18.8772529892285" "NELFE" "18.1880057486556" "RBM42"
+#>      rank8              RBP9    rank9              RBP10  rank10            
+#> [1,] "18.0470434018124" "SNRPA" "17.9958017340112" "RALY" "17.3300473355784"
 ```
 
 #### Single cell RNA-seq
@@ -204,15 +205,15 @@ result_sc<-MRAS(input_type = "2",
 #> Finish!
 result_sc
 #>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3   
-#> [1,] "ESRP1"        "1"  "ESRP1" "11.15723" "RBM47" "2.49155421569417" "CELF2"
+#> [1,] "ESRP1"        "1"  "ESRP1" "11.13273" "RBM47" "2.48678615794543" "CELF2"
 #>      rank3              RBP4       rank4              RBP5   
-#> [1,] "2.23016267865674" "APOBEC3C" "1.50373075701632" "MBNL1"
+#> [1,] "2.23462307947504" "APOBEC3C" "1.50890010061124" "MBNL1"
 #>      rank5              RBP6    rank6               RBP7    rank7              
-#> [1,] "1.00126048580099" "RBM38" "0.546780862950188" "DDX24" "0.546221704729049"
+#> [1,] "1.00022061399644" "DDX24" "0.546994249451687" "RBM38" "0.544773854275487"
 #>      RBP8    rank8               RBP9    rank9               RBP10    
-#> [1,] "RBM28" "0.515070281541045" "SRSF5" "0.478036471570654" "HNRNPH2"
+#> [1,] "RBM28" "0.515964079828774" "SRSF5" "0.479583551183498" "HNRNPH2"
 #>      rank10             
-#> [1,] "0.471381105291745"
+#> [1,] "0.470700471678271"
 ```
 
 ### Type of MRAS result
@@ -229,11 +230,11 @@ result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
 #>        RBP         D     NES1     NES2      odds MRAS_Score
-#> 1    ESRP1 1.0000000 1.715316 1.460698 19.829140  11.157230
-#> 2    RBM47 0.3185927 1.636065 1.301465 13.489720   2.491554
-#> 3    CELF2 0.3280913 1.740197 1.168702 11.170660   2.230163
-#> 4 APOBEC3C 0.3263268 1.580184 1.156696  6.355952   1.503731
-#> 5    MBNL1 0.2132633 1.532424 1.150862  7.086920   1.001260
+#> 1    ESRP1 1.0000000 1.711511 1.460730 19.829140  11.132730
+#> 2    RBM47 0.3185927 1.633654 1.300892 13.489720   2.486786
+#> 3    CELF2 0.3280913 1.744292 1.168291 11.170660   2.234623
+#> 4 APOBEC3C 0.3263268 1.585323 1.156910  6.355952   1.508900
+#> 5    MBNL1 0.2132633 1.530773 1.150907  7.086920   1.000221
 ```
 
 ### Interacting RBPs and co-regulated splicing events
@@ -303,7 +304,9 @@ If you want to know more details, you can get help by `??MRAS::FUN` or
 If you have any more questions, you can submit them in Github and we
 will do our best to answer them (<https://github.com/zhou-lei5/MRAS>).
 
-\##Citation To cite the MRAS package in publications use:
+## Citation
+
+To cite the MRAS package in publications use:
 
 ``` shell
 Zhou L, Huang Y, Zhao Y, et al. MRAS: Master Regulator Analysis of Alternative Splicing. Adv Sci (Weinh). Published online May 5, 2025. doi:10.1002/advs.202414493
