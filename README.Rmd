@@ -173,3 +173,9 @@ If you want to know more details, you can get help by  `??MRAS::FUN` or `help("F
 
 ## Help
 If you have any more questions, you can submit them in Github and we will do our best to answer them (https://github.com/zhou-lei5/MRAS).
+
+##Citation
+To cite the MRAS package in publications use:
+```shell
+Zhou L, Huang Y, Zhao Y, et al. MRAS: Master Regulator Analysis of Alternative Splicing. Adv Sci (Weinh). Published online May 5, 2025. doi:10.1002/advs.202414493
+```

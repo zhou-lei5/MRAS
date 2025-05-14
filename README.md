@@ -116,6 +116,10 @@ Use MRAS in bulk rna-seq data:
 ## "hcc_expr" is RBP expression matrix.
 library(MRAS)
 #> Loading required package: fgsea
+#> Registered S3 methods overwritten by 'backports':
+#>   method                    from 
+#>   as.character.Rconcordance tools
+#>   print.Rconcordance        tools
 data("hcc_expr")
 hcc_expr[1:5,1:5]
 #>        SRR3182261 SRR3129836 SRR3129837 SRR3129838 SRR3129839
@@ -168,13 +172,13 @@ result_bulk<-MRAS(input_type = "2",
 #> Finish!
 result_bulk
 #>      rbp_interested rank RBP1    rank1              RBP2  rank2      RBP3     
-#> [1,] "SF3B4"        "1"  "SF3B4" "24.6091169482863" "PKM" "22.83395" "IGF2BP2"
-#>      rank3              RBP4   rank4              RBP5   rank5             
-#> [1,] "22.1366750344505" "RRP9" "20.9478844462111" "BOP1" "20.7134659700031"
+#> [1,] "SF3B4"        "1"  "SF3B4" "24.6255651830965" "PKM" "22.86164" "IGF2BP2"
+#>      rank3              RBP4   rank4              RBP5   rank5            
+#> [1,] "22.1646894858871" "RRP9" "20.9194482358376" "BOP1" "20.794131995501"
 #>      RBP6   rank6              RBP7    rank7              RBP8   
-#> [1,] "XPO5" "18.9022792914131" "NELFE" "18.2109697537408" "RBM42"
-#>      rank8              RBP9    rank9              RBP10  rank10            
-#> [1,] "18.0527396852879" "SNRPA" "17.9917991451762" "RALY" "17.3288055278799"
+#> [1,] "XPO5" "18.8631771796667" "NELFE" "18.2244465957722" "SNRPA"
+#>      rank8            RBP9    rank9              RBP10  rank10            
+#> [1,] "18.07417435112" "RBM42" "18.0508390100557" "RALY" "17.3265454378688"
 ```
 
 #### Single cell RNA-seq
@@ -200,15 +204,15 @@ result_sc<-MRAS(input_type = "2",
 #> Finish!
 result_sc
 #>      rbp_interested rank RBP1    rank1      RBP2    rank2              RBP3   
-#> [1,] "ESRP1"        "1"  "ESRP1" "11.25044" "RBM47" "2.51224872115645" "CELF2"
+#> [1,] "ESRP1"        "1"  "ESRP1" "11.15723" "RBM47" "2.49155421569417" "CELF2"
 #>      rank3              RBP4       rank4              RBP5   
-#> [1,] "2.25503226759437" "APOBEC3C" "1.95143874918872" "MBNL1"
-#>      rank5               RBP6      rank6               RBP7   
-#> [1,] "0.988548995478133" "HNRNPH2" "0.645211405867111" "DDX24"
-#>      rank7               RBP8    rank8               RBP9   
-#> [1,] "0.623609359645462" "RBM28" "0.560557030029269" "RBM38"
-#>      rank9               RBP10   rank10            
-#> [1,] "0.546902831686321" "SRSF5" "0.51233207206364"
+#> [1,] "2.23016267865674" "APOBEC3C" "1.50373075701632" "MBNL1"
+#>      rank5              RBP6    rank6               RBP7    rank7              
+#> [1,] "1.00126048580099" "RBM38" "0.546780862950188" "DDX24" "0.546221704729049"
+#>      RBP8    rank8               RBP9    rank9               RBP10    
+#> [1,] "RBM28" "0.515070281541045" "SRSF5" "0.478036471570654" "HNRNPH2"
+#>      rank10             
+#> [1,] "0.471381105291745"
 ```
 
 ### Type of MRAS result
@@ -224,12 +228,12 @@ result_Top10<-get_Top10(path_use = "./tests/")
 result_tab_simple<-get_tab_simple(path_use = "./tests/")
 result_tab_all<-get_tab_all(path_use = "./tests/")
 head(result_tab_simple[1:5,])
-#>        RBP         D     NES1     NES2     odds MRAS_Score
-#> 1    ESRP1 1.0000000 1.722579 1.466691 19.82914  11.250440
-#> 2    RBM47 0.3187915 1.647201 1.302590 13.48972   2.512249
-#> 3    CELF2 0.3277722 1.761026 1.168895 11.17066   2.255032
-#> 4 APOBEC3C 0.3301341 1.628394 1.210427  8.99358   1.951439
-#> 5    MBNL1 0.2082756 1.509019 1.168121  7.25027   0.988549
+#>        RBP         D     NES1     NES2      odds MRAS_Score
+#> 1    ESRP1 1.0000000 1.715316 1.460698 19.829140  11.157230
+#> 2    RBM47 0.3185927 1.636065 1.301465 13.489720   2.491554
+#> 3    CELF2 0.3280913 1.740197 1.168702 11.170660   2.230163
+#> 4 APOBEC3C 0.3263268 1.580184 1.156696  6.355952   1.503731
+#> 5    MBNL1 0.2132633 1.532424 1.150862  7.086920   1.001260
 ```
 
 ### Interacting RBPs and co-regulated splicing events
@@ -298,3 +302,9 @@ If you want to know more details, you can get help by `??MRAS::FUN` or
 
 If you have any more questions, you can submit them in Github and we
 will do our best to answer them (<https://github.com/zhou-lei5/MRAS>).
+
+\##Citation To cite the MRAS package in publications use:
+
+``` shell
+Zhou L, Huang Y, Zhao Y, et al. MRAS: Master Regulator Analysis of Alternative Splicing. Adv Sci (Weinh). Published online May 5, 2025. doi:10.1002/advs.202414493
+```
